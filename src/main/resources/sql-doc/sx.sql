@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 18/10/2019 22:00:50
+ Date: 21/10/2019 19:32:11
 */
 
 SET NAMES utf8mb4;
@@ -114,8 +114,8 @@ CREATE TABLE `sx_report` (
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   `gmt_start` date DEFAULT NULL COMMENT '实习开始时间',
   `gmt_end` date DEFAULT NULL COMMENT '实习结束时间',
-  `guide_date` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '指导时间,应该为时间段，留varchar',
-  `guide_way` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '指导方式',
+  `stage1_guide_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第一阶段指导时间,应该为时间段，留varchar',
+  `stage1_guide_way` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第一阶段指导方式',
   `stage1_summary` text COLLATE utf8mb4_general_ci COMMENT '第一阶段实习总结',
   `stage1_date` date DEFAULT NULL COMMENT '第一阶段填写日期',
   `stage1_comment` text COLLATE utf8mb4_general_ci COMMENT '第一阶段学院实习指导教师评语',
@@ -128,6 +128,8 @@ CREATE TABLE `sx_report` (
   `stage2_grade_date` date DEFAULT NULL COMMENT '第二阶段实习成绩评定日期',
   `total_grade` text COLLATE utf8mb4_general_ci COMMENT '学院实习指导老师总评',
   `total_score` varchar(12) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '学院实习指导老师总评成绩ABCDE',
+  `stage2_guide_date` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第二阶段指导时间',
+  `stage2_guide_way` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '第二阶段实习指导方式',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -149,6 +151,28 @@ CREATE TABLE `sx_root` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sx_root` VALUES (1, 'admin', '21232F297A57A5A743894A0E4A801FC3', '2019-10-17 19:51:46', '2019-10-17 19:51:46');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sx_stagemanage
+-- ----------------------------
+DROP TABLE IF EXISTS `sx_stagemanage`;
+CREATE TABLE `sx_stagemanage` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `is_report_stage1_open` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '报告册第一阶段开放:学生填写阶段1,教师评价阶段1',
+  `is_report_stage2_open` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '报告册第二阶段开放:学生填写阶段2,教师评价阶段2',
+  `is_report_stage3_open` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '报告册第三阶段开放:教师进行总评/打总成绩',
+  `is_identify_form_stage1_open` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '鉴定表第一阶段开放:学生填写阶段',
+  `is_identify_form_stage2_open` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '鉴定表第二阶段开放:其他角色(除学院领导小组)进行意见填写/打分',
+  `is_identify_form_stage3_open` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '鉴定表第三阶段开放:学院领导小组意见填写/打分',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of sx_stagemanage
+-- ----------------------------
+BEGIN;
+INSERT INTO `sx_stagemanage` VALUES (1, 1, 1, 1, 1, 1, 1);
 COMMIT;
 
 -- ----------------------------
@@ -179,6 +203,8 @@ CREATE TABLE `sx_student` (
   `corp_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '企业名称',
   `corp_reg_code` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '企业注册号',
   `corp_position` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '实习岗位',
+  `teacher_no` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '校内导师工号',
+  `corp_teacher_no` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '校外导师工号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='学生信息';
 
@@ -186,7 +212,7 @@ CREATE TABLE `sx_student` (
 -- Records of sx_student
 -- ----------------------------
 BEGIN;
-INSERT INTO `sx_student` VALUES (1, '2019209007', '21232F297A57A5A743894A0E4A801FC3', '阮坤', 24, '男', '18783551223', '314445437', 'ruankun521', '510623199507266911', '信息工程学院', '101', '农业信息工程', '101001', NULL, NULL, 0, '2019-10-17 20:10:24', '2019-10-17 20:10:54', NULL, NULL, NULL, NULL);
+INSERT INTO `sx_student` VALUES (1, '2019209007', '21232F297A57A5A743894A0E4A801FC3', '阮坤', 24, '男', '18783551223', '314445437', 'ruankun521', '510623199507266911', '信息工程学院', '101', '农业信息工程', '101001', NULL, NULL, 0, '2019-10-17 20:10:24', '2019-10-17 20:10:54', NULL, NULL, NULL, NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
