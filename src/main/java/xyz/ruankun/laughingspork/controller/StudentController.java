@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.repository.SxStudentRepository;
+import xyz.ruankun.laughingspork.util.ControllerUtil;
+import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class StudentController {
     private SxStudentRepository sxStudentRepository;
 
     @GetMapping("/getAll")
-    public List<SxStudent> getAllStudent() {
-        return sxStudentRepository.findAll();
+    public ResponseVO getAllStudent() {
+        return ControllerUtil.getDataResult(sxStudentRepository.findAll());
     }
 }
