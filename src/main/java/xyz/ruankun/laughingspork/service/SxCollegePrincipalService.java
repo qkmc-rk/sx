@@ -20,10 +20,10 @@ public interface SxCollegePrincipalService {
 
     /**
      * 查看实习鉴定表
-     * @param sxStudent
+     * @param stuNo
      * @return
      */
-    public SxIdentifyForm getIdentifyFormByStuId(SxStudent sxStudent);
+    public SxIdentifyForm getIdentifyFormByStuId(String stuNo);
 
     /**
      * 操作鉴定表
@@ -31,5 +31,5 @@ public interface SxCollegePrincipalService {
      * @param comprehsvGrade
      * @return
      */
-    public SxIdentifyForm operateIdentifyForm(SxStudent sxStudent,String collegePrincipalOpinion,String comprehsvGrade);
+    public SxIdentifyForm operateIdentifyForm(String stuNo,String collegePrincipalOpinion,String comprehsvGrade);
 }

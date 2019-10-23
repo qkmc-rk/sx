@@ -28,20 +28,20 @@ public class SxCorpTeacherServiceImpl implements SxCorpTeacherService {
 	}
 
 	@Override
-	public SxIdentifyForm getIdentifyFormByStuId(SxStudent sxStudent) {
-		return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+	public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
+		return sxIdentifyFormRepository.findByStuNo(stuNo);
 	}
 
 	@Override
-	public SxIdentifyForm operateIdentifyForm(SxStudent sxStudent, String teacherOpinion, String teacherScore,String teacherGrade) {
+	public SxIdentifyForm operateIdentifyForm(String stuNo, String teacherOpinion, String teacherScore,String teacherGrade) {
 		//校外老师意见，校外老师打分，评定等级,操作日期
-		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(stuNo);
 		oldForm.setCorpTeacherOpinion(teacherOpinion);
 		oldForm.setCorpTeacherScore(teacherScore);
 		oldForm.setCorpTeacherGrade(teacherGrade);
 		oldForm.setCTODate((java.sql.Date) new Date());
 		oldForm.setCTGDate((java.sql.Date) new Date());
 		sxIdentifyFormRepository.save(oldForm);
-		return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+		return sxIdentifyFormRepository.findByStuNo(stuNo);
 	}
 }

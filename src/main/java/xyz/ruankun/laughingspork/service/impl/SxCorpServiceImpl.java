@@ -26,16 +26,16 @@ public class SxCorpServiceImpl implements SxCorpService {
 		return sxStudentRepository.findByCorpName(sxCorp.getCorp());
 	}
 	@Override
-	public SxIdentifyForm getIdentifyFormByStuId(SxStudent sxStudent) {
-		return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+	public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
+		return sxIdentifyFormRepository.findByStuNo(stuNo);
 	}
 
 	@Override
-	public SxIdentifyForm operateIdentifyForm(SxStudent sxStudent, String corpOpinion) {
-		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+	public SxIdentifyForm operateIdentifyForm(String stuNo, String corpOpinion) {
+		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(stuNo);
 		oldForm.setCorpOpinion(corpOpinion);
 		oldForm.setCODate((java.sql.Date) new Date());
 		sxIdentifyFormRepository.save(oldForm);
-		return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+		return sxIdentifyFormRepository.findByStuNo(stuNo);
 	}
 }
