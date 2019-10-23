@@ -27,18 +27,18 @@ public class SxCollegePrincipalServiceImpl implements SxCollegePrincipalService 
 	}
 
 	@Override
-	public SxIdentifyForm getIdentifyFormByStuId(SxStudent sxStudent) {
-		return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+	public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
+		return sxIdentifyFormRepository.findByStuNo(stuNo);
 	}
 
 	@Override
-	public SxIdentifyForm operateIdentifyForm(SxStudent sxStudent,String collegePrincipalOpinion, String comprehsvGrade) {
-		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+	public SxIdentifyForm operateIdentifyForm(String stuNo,String collegePrincipalOpinion, String comprehsvGrade) {
+		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(stuNo);
 		oldForm.setCollegePrincipalOpinion(collegePrincipalOpinion);
 		oldForm.setCPODate((java.sql.Date) new Date());
 		oldForm.setComprehsvGrade(comprehsvGrade);
 		oldForm.setCGDate((java.sql.Date) new Date());
 		sxIdentifyFormRepository.save(oldForm);
-		return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+		return sxIdentifyFormRepository.findByStuNo(stuNo);
 	}
 }

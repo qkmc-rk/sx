@@ -20,17 +20,17 @@ public interface SxCorpTeacherService {
 
     /**
      * 获得学生实习鉴定表
-     * @param sxStudent
+     * @param stuNo
      * @return
      */
-    public SxIdentifyForm getIdentifyFormByStuId(SxStudent sxStudent);
+    public SxIdentifyForm getIdentifyFormByStuId(String stuNo);
 
     /**
      * 操作实习鉴定表
-     * @param sxStudent
+     * @param stuNo
      * @param teacherOpinion
      * @param teacherScore
      * @return
      */
-    public SxIdentifyForm operateIdentifyForm(SxStudent sxStudent, String teacherOpinion, String teacherScore,String teacherGrade);
+    public SxIdentifyForm operateIdentifyForm(String stuNo, String teacherOpinion, String teacherScore,String teacherGrade);
 }
