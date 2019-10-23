@@ -1,5 +1,7 @@
 package xyz.ruankun.laughingspork.entity;
 
+import org.hibernate.annotations.Generated;
+
 import javax.persistence.*;
 
 /**
@@ -14,6 +16,7 @@ public class SxCollegePrincipal {
 	 * default value: null
 	 */
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false)
 	private Long id;
 

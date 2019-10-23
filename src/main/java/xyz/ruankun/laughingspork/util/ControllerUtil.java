@@ -25,9 +25,9 @@ public class ControllerUtil {
      *
      * @param rs 真真假假
      * @return 假假真真
-                */
-        public static ResponseVO getTrueOrFalseResult(boolean rs) {
-            ResponseVO ResponseVO = new ResponseVO();
+     */
+    public static ResponseVO getTrueOrFalseResult(boolean rs) {
+        ResponseVO ResponseVO = new ResponseVO();
         if (rs)
             ResponseVO.success(null);
         else

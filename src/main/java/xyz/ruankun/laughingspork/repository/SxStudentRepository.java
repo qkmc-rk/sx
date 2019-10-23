@@ -7,11 +7,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 @Repository
-public interface SxStudentRepository extends JpaRepository<SxStudent, Long>{
+public interface SxStudentRepository extends JpaRepository<SxStudent, Long> {
 
     List<SxStudent> findByCorpTeacherNo(String account);
 
     List<SxStudent> findByCorpName(String corp);
 
     List<SxStudent> findByCollege(String college);
+
+    SxStudent findByStuNo(String stuNo);
 }

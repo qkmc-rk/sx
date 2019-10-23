@@ -1,9 +1,6 @@
 package xyz.ruankun.laughingspork.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 实习公司负责人
@@ -17,6 +14,7 @@ public class SxCorp {
 	 * default value: null
 	 */
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false)
 	private Long id;
 
