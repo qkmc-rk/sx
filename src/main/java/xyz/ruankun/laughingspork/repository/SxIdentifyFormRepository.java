@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface SxIdentifyFormRepository extends JpaRepository<SxIdentifyForm, Long>{
 
+    SxIdentifyForm findByStuNo(String stuNo);
 }
