@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface SxTeacherRepository extends JpaRepository<SxTeacher, Long>{
-
+    SxTeacher findByTeacherNo(String teacherNo);
 }

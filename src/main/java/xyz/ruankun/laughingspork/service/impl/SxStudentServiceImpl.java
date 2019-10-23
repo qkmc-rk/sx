@@ -10,4 +10,9 @@ import xyz.ruankun.laughingspork.repository.SxStudentRepository;
 public class SxStudentServiceImpl implements SxStudentService {
 	@Autowired
 	private SxStudentRepository resp;
+
+	@Override
+	public SxStudent findByStuNo(String StuNo) {
+		return resp.findByStuNo(StuNo);
+	}
 }

@@ -8,6 +8,11 @@ import xyz.ruankun.laughingspork.repository.SxTeacherRepository;
 
 @Service
 public class SxTeacherServiceImpl implements SxTeacherService {
-	@Autowired
-	private SxTeacherRepository resp;
+    @Autowired
+    private SxTeacherRepository resp;
+
+    @Override
+    public SxTeacher findByTeacherNo(String teacherNo) {
+        return resp.findByTeacherNo(teacherNo);
+    }
 }

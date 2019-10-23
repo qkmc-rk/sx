@@ -14,6 +14,7 @@ public class SxRoot {
 	 * default value: null
 	 */
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false)
 	private Long id;
 
