@@ -1,11 +1,11 @@
 server:
-  port: 8080
+  port: 80
 
 spring:
   # 数据源
   datasource:
     username: root
-    password: root
+    password: xuxiao
     url: jdbc:mysql://localhost:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
