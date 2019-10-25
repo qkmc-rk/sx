@@ -16,8 +16,6 @@ public interface SxStudentRepository extends JpaRepository<SxStudent, Long> {
 
     List<SxStudent> findByCollege(String college);
 
-    List<SxStudent> findByGroupCode(String groupCode);
-
     List<SxStudent> findByTeacherNo(String teacherNo);
 
     SxStudent findByStuNo(String stuNo);

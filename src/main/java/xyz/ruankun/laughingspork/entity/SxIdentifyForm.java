@@ -26,20 +26,6 @@ public class SxIdentifyForm {
 	private String stuNo;
 
 	/**
-	 * 创建时间
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_create", nullable = false)
-	private java.util.Date gmtCreate;
-
-	/**
-	 * 修改时间
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_modified", nullable = false)
-	private java.util.Date gmtModified;
-
-	/**
 	 * 实习开始时间
 	 * default value: null
 	 */
@@ -188,38 +174,6 @@ public class SxIdentifyForm {
 		this.stuNo = stuNo;
 	}
 	
-	public java.util.Date getGmtCreate() {
-		return this.gmtCreate;
-	}
-	
-	public void setGmtCreate(java.util.Date gmtCreate) {
-		this.gmtCreate = gmtCreate;
-	}
-	
-	public java.util.Date getGmtModified() {
-		return this.gmtModified;
-	}
-	
-	public void setGmtModified(java.util.Date gmtModified) {
-		this.gmtModified = gmtModified;
-	}
-	
-	public java.sql.Date getGmtStart() {
-		return this.gmtStart;
-	}
-	
-	public void setGmtStart(java.sql.Date gmtStart) {
-		this.gmtStart = gmtStart;
-	}
-	
-	public java.sql.Date getGmtEnd() {
-		return this.gmtEnd;
-	}
-	
-	public void setGmtEnd(java.sql.Date gmtEnd) {
-		this.gmtEnd = gmtEnd;
-	}
-	
 	public String getSxContent() {
 		return this.sxContent;
 	}
@@ -361,8 +315,6 @@ public class SxIdentifyForm {
 		return "SxIdentifyForm{" +
 				"id=" + id +
 				", stuNo='" + stuNo + '\'' +
-				", gmtCreate=" + gmtCreate +
-				", gmtModified=" + gmtModified +
 				", gmtStart=" + gmtStart +
 				", gmtEnd=" + gmtEnd +
 				", sxContent='" + sxContent + '\'' +

@@ -33,4 +33,12 @@ public interface SxCorpService {
      */
     public SxIdentifyForm operateIdentifyForm(String stuNo, String corpOpinion);
 
+    /**
+     *  根据账号查找实习公司负责人
+     * @param account :
+     * @return: xyz.ruankun.laughingspork.entity.SxCorp
+     */
+    SxCorp findByAccount(String account);
+
+    void save(SxCorp sxCorp);
 }

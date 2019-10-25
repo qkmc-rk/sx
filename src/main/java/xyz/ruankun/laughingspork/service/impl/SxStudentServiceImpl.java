@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 
+import java.util.Optional;
+
 @Service
 public class SxStudentServiceImpl implements SxStudentService {
 	@Autowired
@@ -32,14 +34,6 @@ public class SxStudentServiceImpl implements SxStudentService {
 	}
 
 
-	@Override
-	public List<SxStudent> getGroupList(String groupCode) {
-		List<SxStudent> sxStudentList = sxStudentRepository.findByGroupCode(groupCode);
-		if (sxStudentList.isEmpty()){
-			return null;
-		}
-		return sxStudentList;
-	}
 
 	@Override
 	public SxStudent getByStuNo(String StuNo) {
@@ -64,7 +58,28 @@ public class SxStudentServiceImpl implements SxStudentService {
 		sxReportRepository.save(sxReport);
 		return sxReportRepository.getSxReportByStuNo(sxStudent.getStuNo());
 	}
+    @Autowired
+    private SxStudentRepository resp;
 
+    @Override
+    public SxStudent findById(long id) {
+        Optional<SxStudent> optionalSxStudent = resp.findById(id);
+        if (optionalSxStudent.isPresent()) {
+            return optionalSxStudent.get();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public SxStudent findByStuNo(String StuNo) {
+        return resp.findByStuNo(StuNo);
+    }
+
+    @Override
+    public void save(SxStudent sxStudent) {
+        resp.save(sxStudent);
+    }
 	@Override
 	public SxReport stage2_summary(SxStudent sxStudent, String stage2_summary) {
 		SxReport sxReport = sxReportRepository.getSxReportByStuNo(sxStudent.getStuNo());

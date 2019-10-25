@@ -15,30 +15,41 @@ import java.util.List;
 
 @Service
 public class SxCollegePrincipalServiceImpl implements SxCollegePrincipalService {
-	@Autowired
-	private SxCollegePrincipalRepository resp;
-	@Autowired
-	private SxStudentRepository sxStudentRepository;
-	@Autowired
-	private SxIdentifyFormRepository sxIdentifyFormRepository;
-	@Override
-	public List<SxStudent> getOwnedStudentsList(SxCollegePrincipal sxCollegePrincipal) {
-		return sxStudentRepository.findByCollege(sxCollegePrincipal.getCollege());
-	}
+    @Autowired
+    private SxCollegePrincipalRepository resp;
+    @Autowired
+    private SxStudentRepository sxStudentRepository;
+    @Autowired
+    private SxIdentifyFormRepository sxIdentifyFormRepository;
 
-	@Override
-	public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
-		return sxIdentifyFormRepository.findByStuNo(stuNo);
-	}
+    @Override
+    public List<SxStudent> getOwnedStudentsList(SxCollegePrincipal sxCollegePrincipal) {
+        return sxStudentRepository.findByCollege(sxCollegePrincipal.getCollege());
+    }
 
-	@Override
-	public SxIdentifyForm operateIdentifyForm(String stuNo,String collegePrincipalOpinion, String comprehsvGrade) {
-		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(stuNo);
-		oldForm.setCollegePrincipalOpinion(collegePrincipalOpinion);
-		oldForm.setCPODate((java.sql.Date) new Date());
-		oldForm.setComprehsvGrade(comprehsvGrade);
-		oldForm.setCGDate((java.sql.Date) new Date());
-		sxIdentifyFormRepository.save(oldForm);
-		return sxIdentifyFormRepository.findByStuNo(stuNo);
-	}
+    @Override
+    public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
+        return sxIdentifyFormRepository.findByStuNo(stuNo);
+    }
+
+    @Override
+    public SxIdentifyForm operateIdentifyForm(String stuNo, String collegePrincipalOpinion, String comprehsvGrade) {
+        SxIdentifyForm oldForm = sxIdentifyFormRepository.findByStuNo(stuNo);
+        oldForm.setCollegePrincipalOpinion(collegePrincipalOpinion);
+        oldForm.setCPODate((java.sql.Date) new Date());
+        oldForm.setComprehsvGrade(comprehsvGrade);
+        oldForm.setCGDate((java.sql.Date) new Date());
+        sxIdentifyFormRepository.save(oldForm);
+        return sxIdentifyFormRepository.findByStuNo(stuNo);
+    }
+
+    @Override
+    public SxCollegePrincipal findByAccount(String account) {
+        return resp.findByAccount(account);
+    }
+
+    @Override
+    public void save(SxCollegePrincipal sxCollegePrincipal) {
+        resp.save(sxCollegePrincipal);
+    }
 }
