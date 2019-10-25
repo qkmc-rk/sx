@@ -4,7 +4,9 @@ import xyz.ruankun.laughingspork.entity.SxReport;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+
+
 @Repository
 public interface SxReportRepository extends JpaRepository<SxReport, Long>{
-
+    SxReport getSxReportByStuNo(String stuNo);
 }
