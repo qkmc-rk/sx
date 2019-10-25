@@ -24,19 +24,13 @@ public interface SxStudentService {
     SxStudent getByStuNo(String StuNo);
 
 
-    /** 
+    /**
      * 教师通过教师号查找管理学生
      * @param teacherNo :
      * @return: java.util.List<xyz.ruankun.laughingspork.entity.SxStudent>
      */
     List<SxStudent> getByTeacherNo(String teacherNo);
 
-    /**
-     * 查找小组成员列表
-     * @param groupCode :
-     * @return: java.util.List<xyz.ruankun.laughingspork.entity.SxStudent>
-     */
-    List<SxStudent> getGroupList(String groupCode);
 
     /**
      * 学生保存鉴定表内容
@@ -58,4 +52,7 @@ public interface SxStudentService {
 
     SxReport stage3_summary(SxStudent sxStudent,String stage3_summary);
 
+    SxStudent findById(long id);
+    SxStudent findByStuNo(String StuNo);
+    void save(SxStudent sxStudent);
 }

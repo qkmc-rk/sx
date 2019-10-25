@@ -110,41 +110,6 @@ public class SxStudent {
 	private String majorCode;
 
 	/**
-	 * 组
-	 * default value: null
-	 */
-	@Column(name = "group", nullable = true)
-	private String group;
-
-	/**
-	 * 组代码
-	 * default value: null
-	 */
-	@Column(name = "group_code", nullable = true)
-	private String groupCode;
-
-	/**
-	 * 是否是小组长
-	 * default value: 0
-	 */
-	@Column(name = "is_group_head", nullable = false)
-	private Boolean isGroupHead;
-
-	/**
-	 * 创建时间
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_create", nullable = false)
-	private java.util.Date gmtCreate;
-
-	/**
-	 * 更新时间
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_modified", nullable = false)
-	private java.util.Date gmtModified;
-
-	/**
 	 * 实习企业信用代码
 	 * default value: null
 	 */
@@ -298,46 +263,6 @@ public class SxStudent {
 		this.majorCode = majorCode;
 	}
 	
-	public String getGroup() {
-		return this.group;
-	}
-	
-	public void setGroup(String group) {
-		this.group = group;
-	}
-	
-	public String getGroupCode() {
-		return this.groupCode;
-	}
-	
-	public void setGroupCode(String groupCode) {
-		this.groupCode = groupCode;
-	}
-	
-	public Boolean getIsGroupHead() {
-		return this.isGroupHead;
-	}
-	
-	public void setIsGroupHead(Boolean isGroupHead) {
-		this.isGroupHead = isGroupHead;
-	}
-	
-	public java.util.Date getGmtCreate() {
-		return this.gmtCreate;
-	}
-	
-	public void setGmtCreate(java.util.Date gmtCreate) {
-		this.gmtCreate = gmtCreate;
-	}
-	
-	public java.util.Date getGmtModified() {
-		return this.gmtModified;
-	}
-	
-	public void setGmtModified(java.util.Date gmtModified) {
-		this.gmtModified = gmtModified;
-	}
-	
 	public String getCorpTaxcode() {
 		return this.corpTaxcode;
 	}
@@ -403,11 +328,6 @@ public class SxStudent {
 				", collegeCode='" + collegeCode + '\'' +
 				", major='" + major + '\'' +
 				", majorCode='" + majorCode + '\'' +
-				", group='" + group + '\'' +
-				", groupCode='" + groupCode + '\'' +
-				", isGroupHead=" + isGroupHead +
-				", gmtCreate=" + gmtCreate +
-				", gmtModified=" + gmtModified +
 				", corpTaxcode='" + corpTaxcode + '\'' +
 				", corpName='" + corpName + '\'' +
 				", corpRegCode='" + corpRegCode + '\'' +

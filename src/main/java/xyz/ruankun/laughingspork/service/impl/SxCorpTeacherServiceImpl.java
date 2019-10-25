@@ -15,33 +15,44 @@ import java.util.List;
 
 @Service
 public class SxCorpTeacherServiceImpl implements SxCorpTeacherService {
-	@Autowired
-	private SxCorpTeacherRepository resp;
-	@Autowired
-	private SxStudentRepository sxStudentRepository;
-	@Autowired
-	private SxIdentifyFormRepository sxIdentifyFormRepository;
+    @Autowired
+    private SxCorpTeacherRepository resp;
+    @Autowired
+    private SxStudentRepository sxStudentRepository;
+    @Autowired
+    private SxIdentifyFormRepository sxIdentifyFormRepository;
 
-	@Override
-	public List<SxStudent> getOwnedStudentsList(SxCorpTeacher sxCorpTeacher) {
-		return sxStudentRepository.findByCorpTeacherNo(sxCorpTeacher.getAccount());//select * from sx_student where corp_teacher_no=?
-	}
+    @Override
+    public void save(SxCorpTeacher sxCorpTeacher) {
+        resp.save(sxCorpTeacher);
+    }
 
-	@Override
-	public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
-		return sxIdentifyFormRepository.findByStuNo(stuNo);
-	}
+    @Override
+    public List<SxStudent> getOwnedStudentsList(SxCorpTeacher sxCorpTeacher) {
+        return sxStudentRepository.findByCorpTeacherNo(sxCorpTeacher.getAccount());//select * from sx_student where corp_teacher_no=?
+    }
 
-	@Override
-	public SxIdentifyForm operateIdentifyForm(String stuNo, String teacherOpinion, String teacherScore,String teacherGrade) {
-		//校外老师意见，校外老师打分，评定等级,操作日期
-		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(stuNo);
-		oldForm.setCorpTeacherOpinion(teacherOpinion);
-		oldForm.setCorpTeacherScore(teacherScore);
-		oldForm.setCorpTeacherGrade(teacherGrade);
-		oldForm.setCTODate((java.sql.Date) new Date());
-		oldForm.setCTGDate((java.sql.Date) new Date());
-		sxIdentifyFormRepository.save(oldForm);
-		return sxIdentifyFormRepository.findByStuNo(stuNo);
-	}
+    @Override
+    public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
+        return sxIdentifyFormRepository.findByStuNo(stuNo);
+    }
+
+    @Override
+    public SxIdentifyForm operateIdentifyForm(String stuNo, String teacherOpinion, String teacherScore, String teacherGrade) {
+        //校外老师意见，校外老师打分，评定等级,操作日期
+        SxIdentifyForm oldForm = sxIdentifyFormRepository.findByStuNo(stuNo);
+        oldForm.setCorpTeacherOpinion(teacherOpinion);
+        oldForm.setCorpTeacherScore(teacherScore);
+        oldForm.setCorpTeacherGrade(teacherGrade);
+        oldForm.setCTODate((java.sql.Date) new Date());
+        oldForm.setCTGDate((java.sql.Date) new Date());
+        sxIdentifyFormRepository.save(oldForm);
+        return sxIdentifyFormRepository.findByStuNo(stuNo);
+    }
+
+
+    @Override
+    public SxCorpTeacher findByAccount(String account) {
+        return resp.findByAccount(account);
+    }
 }

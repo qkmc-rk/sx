@@ -22,10 +22,20 @@ public class SxTeacherServiceImpl implements SxTeacherService {
     }
 
     @Override
+    public void save(SxTeacher sxTeacher) {
+        resp.save(sxTeacher);
+    }
+
+    @Override
     public SxIdentifyForm fillIndentifyAdvice(SxStudent sxStudent, String CTOpnion, String CTScore) {
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
 //        sxIdentifyForm.setCTOption(CTOpnion);表中没有校内指导老师意见
         sxIdentifyForm.setTeacherGrade(CTScore);
         return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+    }
+
+    @Override
+    public SxTeacher findByTeacherNo(String teacherNo) {
+        return resp.findByTeacherNo(teacherNo);
     }
 }

@@ -3,6 +3,10 @@ package xyz.ruankun.laughingspork.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +25,11 @@ import java.util.List;
 public class StudentController {
 
     @Autowired
-    private SxStudentRepository sxStudentRepository;
+    private SxStudentService sxStudentService;
 
-    @Autowired
-    SxStudentService sxStudentService;
+
+    Logger logger = LoggerFactory.getLogger(StudentController.class);
+
 
 
     @ApiOperation(value = "学生查看自己信息",httpMethod = "GET")
@@ -89,16 +94,22 @@ public class StudentController {
 
 
 
-    @ApiOperation(value = "学生组长查看组成员",httpMethod = "GET")
+    @ApiOperation(value = "根据ID查找学生", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "groupCode",value = "组编号", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "id", value = "1", required = true, paramType = "query"),
     })
-    @GetMapping("/groupManage")
-    public ResponseVO gruopStudentsList(String groupCode){
-        List<SxStudent> sxStudentList = sxStudentService.getGroupList(groupCode);
-        if (sxStudentList == null){
-            return ControllerUtil.getFalseResultMsgBySelf( "您没有找到相关组员数据");
+    @GetMapping("/findStudentById")
+    public ResponseVO findStudentById(long id) {
+        SxStudent sxStudent = sxStudentService.findById(id);
+        if (sxStudent == null) {
+            return ControllerUtil.getFalseResultMsgBySelf("没有找到学生");
         }
-        return ControllerUtil.getSuccessResultBySelf(sxStudentList);
+        return ControllerUtil.getSuccessResultBySelf(sxStudent);
+    }
+
+    @GetMapping("/test")
+    public ResponseVO test(String StuNo) {
+        Subject subject = SecurityUtils.getSubject();
+        return ControllerUtil.getDataResult(sxStudentService.findByStuNo(StuNo));
     }
 }

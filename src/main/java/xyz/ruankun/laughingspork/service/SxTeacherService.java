@@ -8,4 +8,7 @@ public interface SxTeacherService {
     SxTeacher getByTeacherNo(String teacherNo);
     SxIdentifyForm fillIndentifyAdvice(SxStudent sxStudent, String CTOpnion, String CTScore);
 
+    SxTeacher findByTeacherNo(String teacherNo);
+
+    void save(SxTeacher sxTeacher);
 }

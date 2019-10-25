@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface SxCorpRepository extends JpaRepository<SxCorp, Long>{
+public interface SxCorpRepository extends JpaRepository<SxCorp, Long> {
 
+    SxCorp findByAccount(String account);
 }

@@ -1,7 +1,5 @@
 package xyz.ruankun.laughingspork.entity;
 
-import org.hibernate.annotations.Generated;
-
 import javax.persistence.*;
 
 /**
@@ -47,20 +45,6 @@ public class SxCollegePrincipal {
 	 */
 	@Column(name = "college_code", nullable = true)
 	private String collegeCode;
-
-	/**
-	 * 创建时间
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_create", nullable = false)
-	private java.util.Date gmtCreate;
-
-	/**
-	 * 修改时间
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_modified", nullable = false)
-	private java.util.Date gmtModified;
 	
 	public Long getId() {
 		return this.id;
@@ -85,7 +69,7 @@ public class SxCollegePrincipal {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getCollege() {
 		return this.college;
 	}
@@ -101,22 +85,6 @@ public class SxCollegePrincipal {
 	public void setCollegeCode(String collegeCode) {
 		this.collegeCode = collegeCode;
 	}
-	
-	public java.util.Date getGmtCreate() {
-		return this.gmtCreate;
-	}
-	
-	public void setGmtCreate(java.util.Date gmtCreate) {
-		this.gmtCreate = gmtCreate;
-	}
-	
-	public java.util.Date getGmtModified() {
-		return this.gmtModified;
-	}
-	
-	public void setGmtModified(java.util.Date gmtModified) {
-		this.gmtModified = gmtModified;
-	}
 
 	@Override
 	public String toString() {
@@ -126,8 +94,6 @@ public class SxCollegePrincipal {
 				", password='" + password + '\'' +
 				", college='" + college + '\'' +
 				", collegeCode='" + collegeCode + '\'' +
-				", gmtCreate=" + gmtCreate +
-				", gmtModified=" + gmtModified +
 				'}';
 	}
 }
