@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  # 数据源
+  datasource:
+    username: root
+    password: 479803313
+    url: jdbc:mysql://localhost:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  # 热重启
+  devtools:
+    restart:
+      enabled: true
+
+  # 允许同名bean覆盖注册
+  main:
+    allow-bean-definition-overriding: true
+
+debug: false
