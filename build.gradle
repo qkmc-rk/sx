@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.apache.shiro:shiro-spring-boot-web-starter:1.4.1'
+    implementation 'org.apache.shiro:shiro-spring-boot-web-starter:1.4.1'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.0'
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'

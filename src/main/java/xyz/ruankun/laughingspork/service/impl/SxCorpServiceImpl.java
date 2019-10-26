@@ -15,27 +15,39 @@ import java.util.List;
 
 @Service
 public class SxCorpServiceImpl implements SxCorpService {
-	@Autowired
-	private SxCorpRepository resp;
-	@Autowired
-	private SxStudentRepository sxStudentRepository;
-	@Autowired
-	private SxIdentifyFormRepository sxIdentifyFormRepository;
-	@Override
-	public List<SxStudent> getOwnedStudentsList(SxCorp sxCorp) {
-		return sxStudentRepository.findByCorpName(sxCorp.getCorp());
-	}
-	@Override
-	public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
-		return sxIdentifyFormRepository.findByStuNo(stuNo);
-	}
+    @Autowired
+    private SxCorpRepository resp;
+    @Autowired
+    private SxStudentRepository sxStudentRepository;
+    @Autowired
+    private SxIdentifyFormRepository sxIdentifyFormRepository;
 
-	@Override
-	public SxIdentifyForm operateIdentifyForm(String stuNo, String corpOpinion) {
-		SxIdentifyForm oldForm=sxIdentifyFormRepository.findByStuNo(stuNo);
-		oldForm.setCorpOpinion(corpOpinion);
-		oldForm.setCODate((java.sql.Date) new Date());
-		sxIdentifyFormRepository.save(oldForm);
-		return sxIdentifyFormRepository.findByStuNo(stuNo);
-	}
+    @Override
+    public List<SxStudent> getOwnedStudentsList(SxCorp sxCorp) {
+        return sxStudentRepository.findByCorpName(sxCorp.getCorp());
+    }
+
+    @Override
+    public SxIdentifyForm getIdentifyFormByStuId(String stuNo) {
+        return sxIdentifyFormRepository.findByStuNo(stuNo);
+    }
+
+    @Override
+    public SxIdentifyForm operateIdentifyForm(String stuNo, String corpOpinion) {
+        SxIdentifyForm oldForm = sxIdentifyFormRepository.findByStuNo(stuNo);
+        oldForm.setCorpOpinion(corpOpinion);
+        oldForm.setCODate((java.sql.Date) new Date());
+        sxIdentifyFormRepository.save(oldForm);
+        return sxIdentifyFormRepository.findByStuNo(stuNo);
+    }
+
+    @Override
+    public SxCorp findByAccount(String account) {
+        return resp.findByAccount(account);
+    }
+
+    @Override
+    public void save(SxCorp sxCorp) {
+        resp.save(sxCorp);
+    }
 }

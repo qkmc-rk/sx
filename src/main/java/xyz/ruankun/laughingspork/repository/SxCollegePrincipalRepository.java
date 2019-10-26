@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface SxCollegePrincipalRepository extends JpaRepository<SxCollegePrincipal, Long> {
-
+    SxCollegePrincipal findByAccount(String account);
 }

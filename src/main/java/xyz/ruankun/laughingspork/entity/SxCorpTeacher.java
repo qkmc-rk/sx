@@ -108,20 +108,6 @@ public class SxCorpTeacher {
 	 */
 	@Column(name = "wechat", nullable = true)
 	private String wechat;
-
-	/**
-	 * 创建时间
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_create", nullable = false)
-	private java.util.Date gmtCreate;
-
-	/**
-	 * 更新时间
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_modified", nullable = false)
-	private java.util.Date gmtModified;
 	
 	public Long getId() {
 		return this.id;
@@ -234,22 +220,6 @@ public class SxCorpTeacher {
 	public void setWechat(String wechat) {
 		this.wechat = wechat;
 	}
-	
-	public java.util.Date getGmtCreate() {
-		return this.gmtCreate;
-	}
-	
-	public void setGmtCreate(java.util.Date gmtCreate) {
-		this.gmtCreate = gmtCreate;
-	}
-	
-	public java.util.Date getGmtModified() {
-		return this.gmtModified;
-	}
-	
-	public void setGmtModified(java.util.Date gmtModified) {
-		this.gmtModified = gmtModified;
-	}
 
 	@Override
 	public String toString() {
@@ -268,8 +238,6 @@ public class SxCorpTeacher {
 				", qq='" + qq + '\'' +
 				", mail='" + mail + '\'' +
 				", wechat='" + wechat + '\'' +
-				", gmtCreate=" + gmtCreate +
-				", gmtModified=" + gmtModified +
 				'}';
 	}
 }
