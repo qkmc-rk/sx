@@ -17,6 +17,7 @@ import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.shiro.UserToken;
 
 
+
 @RestController
 @RequestMapping("/user")
 @Api(value = "用户类", description = "处理用户登录、注册、注销请求")
@@ -135,7 +136,6 @@ public class UserController {
 
 
     @ApiOperation(value = "学院领导小组注册")
-
     @PostMapping("/collegePrincipalRegister")
     public String collegePrincipalRegister(SxCollegePrincipal sxCollegePrincipal) {
         logger.info(sxCollegePrincipal.toString());
@@ -159,4 +159,5 @@ public class UserController {
         SecurityUtils.getSubject().logout();
         return "/login";
     }
+
 }
