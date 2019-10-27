@@ -20,7 +20,7 @@ public class SxReportServiceImpl implements SxReportService {
 
 	@Override
 	public SxReport getReportInfo(String stuNo) {
-		SxReport sxReport = sxReportRepository.getSxReportByStuNo(stuNo);
+		SxReport sxReport = sxReportRepository.findSxReportByStuNo(stuNo);
 		if (sxReport == null){
 			return null;
 		}
