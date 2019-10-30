@@ -32,10 +32,8 @@ public class SxTeacherServiceImpl implements SxTeacherService {
     }
 
     @Override
-    public SxIdentifyForm fillIndentifyAdvice(String stuNo, String opinion, String score) {
+    public SxIdentifyForm fillIndentifyAdvice(String stuNo, String score) {
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(stuNo);
-//        sxIdentifyForm.setCTOption(CTOpnion);表中没有校内指导老师意见，随便找了个字段（SelfSummary）存
-        sxIdentifyForm.setSelfSummary(opinion);
         sxIdentifyForm.setTeacherGrade(score);
         sxIdentifyFormRepository.save(sxIdentifyForm);
         return sxIdentifyFormRepository.findByStuNo(stuNo);

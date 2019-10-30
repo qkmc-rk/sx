@@ -59,15 +59,15 @@ public class ShiroConfig {
      *
      * @return: org.apache.shiro.authc.credential.HashedCredentialsMatcher
      */
-    @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        //散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");
-        //散列的次数，比如散列两次，相当于 md5(md5(""));
-        hashedCredentialsMatcher.setHashIterations(2);
-        return hashedCredentialsMatcher;
-    }
+//    @Bean
+//    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+//        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+//        //散列算法:这里使用MD5算法;
+//        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+//        //散列的次数，比如散列两次，相当于 md5(md5(""));
+//        hashedCredentialsMatcher.setHashIterations(2);
+//        return hashedCredentialsMatcher;
+//    }
 
     //自定义身份认证Realm（包含用户名密码校验，权限校验等）
     @Bean
@@ -84,19 +84,6 @@ public class ShiroConfig {
         return teacherRealm;
     }
 
-    @Bean
-    public CorpRealm corpRealm() {
-        CorpRealm corpRealm = new CorpRealm();
-        corpRealm.setCredentialsMatcher(new CustomCredentialsMatcher());
-        return corpRealm;
-    }
-
-    @Bean
-    public CorpTeacherRealm corpTeacherRealm() {
-        CorpTeacherRealm CorpTeacherRealm = new CorpTeacherRealm();
-        CorpTeacherRealm.setCredentialsMatcher(new CustomCredentialsMatcher());
-        return CorpTeacherRealm;
-    }
 
     @Bean
     public CollegePrincipalRealm collegePrincipalRealm() {
@@ -113,8 +100,6 @@ public class ShiroConfig {
         List<Realm> realmList = new ArrayList<>();
         realmList.add(studentRealm());
         realmList.add(teacherRealm());
-        realmList.add(corpRealm());
-        realmList.add(corpTeacherRealm());
         realmList.add(collegePrincipalRealm());
         securityManager.setRealms(realmList);
         return securityManager;

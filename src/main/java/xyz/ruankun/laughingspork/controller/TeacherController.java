@@ -87,7 +87,7 @@ public class TeacherController {
             @ApiImplicitParam(name = "score",value = "校内教师打分",required = true,paramType = "path")
     })
     @PostMapping("/students/indentify/{stuNo}")
-    public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String opinion,@RequestParam String score){
-        return ControllerUtil.getDataResult(sxTeacherService.fillIndentifyAdvice(stuNo,opinion,score));
+    public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String score){
+        return ControllerUtil.getDataResult(sxTeacherService.fillIndentifyAdvice(stuNo,score));
     }
 }

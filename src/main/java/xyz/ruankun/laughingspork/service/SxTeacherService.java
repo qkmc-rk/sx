@@ -16,6 +16,7 @@ public interface SxTeacherService {
 
     /**
      * 返回这个老师所带的学生列表信息
+     *
      * @param sxTeacher :
      * @return: java.util.List<xyz.ruankun.laughingspork.entity.SxStudent>
      */
@@ -23,15 +24,16 @@ public interface SxTeacherService {
 
     /**
      * 通过学号给学生写意见和打分
-     * @param stuNo :
-     * @param opinion :
+     *
+     * @param stuNo
      * @param score :
      * @return: xyz.ruankun.laughingspork.entity.SxIdentifyForm
      */
-    SxIdentifyForm fillIndentifyAdvice(String stuNo, String opinion, String score);
+    SxIdentifyForm fillIndentifyAdvice(String stuNo, String score);
 
     /**
      * findByTeacherNo
+     *
      * @param teacherNo :
      * @return: xyz.ruankun.laughingspork.entity.SxTeacher
      */
