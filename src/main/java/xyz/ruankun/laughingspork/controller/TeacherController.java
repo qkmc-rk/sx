@@ -81,7 +81,7 @@ public class TeacherController {
         return ControllerUtil.getDataResult(sxIdentifyForm);
     }
 
-    @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "GET")
+    @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "opinion",value = "校内教师意见",required = true,paramType = "path"),
             @ApiImplicitParam(name = "score",value = "校内教师打分",required = true,paramType = "path")

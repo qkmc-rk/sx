@@ -45,7 +45,7 @@ public class StudentController {
     }
 
 
-    @ApiOperation(value = "学生填写鉴定表信息",httpMethod = "GET")
+    @ApiOperation(value = "学生填写鉴定表信息",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "practiceContent",value = "实习内容", required = true, paramType = "query"),
             @ApiImplicitParam(name = "selfSummary",value = "自我总结", required = true, paramType = "query"),
@@ -61,7 +61,7 @@ public class StudentController {
         }
     }
 
-    @ApiOperation(value = "学生填写报告阶段信息",httpMethod = "GET")
+    @ApiOperation(value = "学生填写报告阶段信息",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stage1_summary",value = "阶段一", required = true, paramType = "query"),
     })
@@ -75,7 +75,7 @@ public class StudentController {
             return ControllerUtil.getDataResult(sxStudentService.stage1_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(),stage1_summary));
         }
     }
-    @ApiOperation(value = "学生填写报告阶段信息",httpMethod = "GET")
+    @ApiOperation(value = "学生填写报告阶段信息",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stage2_summary",value = "阶段二", required = true, paramType = "query"),
     })
