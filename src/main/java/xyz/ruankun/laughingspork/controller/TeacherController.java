@@ -86,7 +86,7 @@ public class TeacherController {
     @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "opinion",value = "校内教师意见",required = true,paramType = "path"),
-            @ApiImplicitParam(name = "score",value = "校内教师打分",required = true,paramType = "path")
+            @ApiImplicitParam(name = "score",value = "学院导师成绩评定",required = true,paramType = "path")
     })
     @PostMapping("/students/indentify/{stuNo}")
     public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String score){
