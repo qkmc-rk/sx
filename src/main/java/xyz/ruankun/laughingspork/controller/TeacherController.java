@@ -1,5 +1,6 @@
 package xyz.ruankun.laughingspork.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/teacher")
+@Api(tags = {"校内导师操作"})
 public class TeacherController {
 
     @Autowired
@@ -81,13 +83,13 @@ public class TeacherController {
         return ControllerUtil.getDataResult(sxIdentifyForm);
     }
 
-    @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "GET")
+    @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "opinion",value = "校内教师意见",required = true,paramType = "path"),
             @ApiImplicitParam(name = "score",value = "校内教师打分",required = true,paramType = "path")
     })
     @PostMapping("/students/indentify/{stuNo}")
-    public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String opinion,@RequestParam String score){
-        return ControllerUtil.getDataResult(sxTeacherService.fillIndentifyAdvice(stuNo,opinion,score));
+    public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String score){
+        return ControllerUtil.getDataResult(sxTeacherService.fillIndentifyAdvice(stuNo,score));
     }
 }

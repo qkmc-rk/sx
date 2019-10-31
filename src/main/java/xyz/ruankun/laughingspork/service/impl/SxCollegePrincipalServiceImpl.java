@@ -9,8 +9,8 @@ import xyz.ruankun.laughingspork.repository.SxIdentifyFormRepository;
 import xyz.ruankun.laughingspork.repository.SxStudentRepository;
 import xyz.ruankun.laughingspork.service.SxCollegePrincipalService;
 import xyz.ruankun.laughingspork.repository.SxCollegePrincipalRepository;
+import xyz.ruankun.laughingspork.util.DateUtil;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,9 +36,9 @@ public class SxCollegePrincipalServiceImpl implements SxCollegePrincipalService 
     public SxIdentifyForm operateIdentifyForm(String stuNo, String collegePrincipalOpinion, String comprehsvGrade) {
         SxIdentifyForm oldForm = sxIdentifyFormRepository.findByStuNo(stuNo);
         oldForm.setCollegePrincipalOpinion(collegePrincipalOpinion);
-        oldForm.setCPODate((java.sql.Date) new Date());
+        oldForm.setCPODate(DateUtil.today());
         oldForm.setComprehsvGrade(comprehsvGrade);
-        oldForm.setCGDate((java.sql.Date) new Date());
+        oldForm.setCGDate(DateUtil.today());
         sxIdentifyFormRepository.save(oldForm);
         return sxIdentifyFormRepository.findByStuNo(stuNo);
     }
