@@ -2,8 +2,6 @@ package xyz.ruankun.laughingspork.controller;
 
 import io.swagger.annotations.*;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
@@ -17,7 +15,7 @@ import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 @RestController
 @RequestMapping("/user")
-@Api(value = "用户类", description = "处理用户登录、注册、注销请求")
+@Api(tags = {"用户登录、注销"})
 public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -46,5 +44,13 @@ public class UserController {
         } catch (Exception e) {
             return ControllerUtil.getFalseResultMsgBySelf("未知错误");
         }
+    }
+
+
+    @ApiOperation(value = "用户注销接口")
+    @GetMapping("/logout")
+    public ResponseVO logout() {
+        SecurityUtils.getSubject().logout();
+        return ControllerUtil.getSuccessResultBySelf("注销成功");
     }
 }

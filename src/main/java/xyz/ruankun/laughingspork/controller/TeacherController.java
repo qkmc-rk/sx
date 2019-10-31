@@ -1,5 +1,6 @@
 package xyz.ruankun.laughingspork.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/teacher")
+@Api(tags = {"校内导师操作"})
 public class TeacherController {
 
     @Autowired
