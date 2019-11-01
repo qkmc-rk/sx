@@ -12,6 +12,9 @@ import xyz.ruankun.laughingspork.shiro.UserToken;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/user")
@@ -22,21 +25,24 @@ public class UserController {
 
     @ApiOperation(value = "用户登录接口", notes = "account类型与loginType一一对应,严格区分大小写.\n" +
             "account(loginType):    " +
-            "学生学号(Student)、校内导师编号(Teacher)、" +
-            "学院负责人账号(CollegePricipal)", httpMethod = "POST")
+            "学生学号(Student)、校内导师编号(Teacher)、",
+            httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "account", value = "2019209007", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "password", value = "admin", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "account", value = "2018000001", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "password", value = "123", required = true, paramType = "query"),
             @ApiImplicitParam(name = "loginType", value = "Student", required = true, paramType = "query")
     })
     @PostMapping("/login")
     public ResponseVO login(String account, String password, String loginType) {
         Subject subject = SecurityUtils.getSubject();
-        //  设置Session永不过期
+        //  设置Session不过期
         subject.getSession().setTimeout(-1000L);
         try {
             subject.login(new UserToken(account, password, loginType));
-            return ControllerUtil.getSuccessResultBySelf("登录成功");
+            HashMap<String, Object> data = new HashMap<>();
+            //登录成功返回SessionId
+            data.put("Authorization", subject.getSession().getId());
+            return ControllerUtil.getSuccessResultBySelf(data);
         } catch (IncorrectCredentialsException e) {
             return ControllerUtil.getFalseResultMsgBySelf("密码错误");
         } catch (UnknownAccountException e) {

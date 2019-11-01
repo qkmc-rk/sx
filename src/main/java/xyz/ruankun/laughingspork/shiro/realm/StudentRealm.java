@@ -23,18 +23,20 @@ public class StudentRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRole("student");
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        if (principals.getRealmNames().toString().contains("Student")) {
+            simpleAuthorizationInfo.addRole("Student");
+        }
         return simpleAuthorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         //  获得当前用户的用户名
-        String stuNo = (String)token.getPrincipal();
+        String stuNo = (String) token.getPrincipal();
         //  根据用户名查询用户
         SxStudent sxStudent = sxStudentService.findByStuNo(stuNo);
-        if(sxStudent == null){
+        if (sxStudent == null) {
             return null;
         }
         //校验用户名密码是否正确
