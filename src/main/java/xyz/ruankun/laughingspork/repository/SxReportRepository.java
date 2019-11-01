@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface SxReportRepository extends JpaRepository<SxReport, Long>{
-    SxReport findSxReportByStuNo(String stuNo);
+    SxReport findByStuNo(String stuNo);
 }
