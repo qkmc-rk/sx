@@ -1,6 +1,5 @@
 package xyz.ruankun.laughingspork.service.impl;
 
-import org.apache.juli.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +45,12 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Override
     public SxReport stage1_summary(SxStudent sxStudent, String stage1_summary) {
         SxReport sxReport = sxReportRepository.findByStuNo(sxStudent.getStuNo());
-        if (sxReport == null) {
-            return null;
-        } else {
+        if (sxReport != null) {
             sxReport.setStage1Summary(stage1_summary);
             sxReportRepository.save(sxReport);
             return sxReportRepository.findByStuNo(sxStudent.getStuNo());
         }
+        return null;
     }
 
     @Override
@@ -68,9 +66,12 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Override
     public SxReport stage2_summary(SxStudent sxStudent, String stage2_summary) {
         SxReport sxReport = sxReportRepository.findByStuNo(sxStudent.getStuNo());
-        sxReport.setStage2Summary(stage2_summary);
-        sxReportRepository.save(sxReport);
-        return sxReportRepository.findByStuNo(sxStudent.getStuNo());
+        if (sxReport != null) {
+            sxReport.setStage2Summary(stage2_summary);
+            sxReportRepository.save(sxReport);
+            return sxReportRepository.findByStuNo(sxStudent.getStuNo());
+        }
+        return null;
     }
 
     @Override
