@@ -24,11 +24,10 @@ public interface SxTeacherService {
     /**
      * 通过学号给学生写意见和打分
      * @param stuNo :
-     * @param opinion :
      * @param score :
      * @return: xyz.ruankun.laughingspork.entity.SxIdentifyForm
      */
-    SxIdentifyForm fillIndentifyAdvice(String stuNo, String opinion, String score);
+    SxIdentifyForm fillIndentifyAdvice(String stuNo,String score);
 
     /**
      * findByTeacherNo
