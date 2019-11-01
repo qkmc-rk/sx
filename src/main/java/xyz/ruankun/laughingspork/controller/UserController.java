@@ -17,6 +17,7 @@ import java.util.Map;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/user")
 @Api(tags = {"用户登录、注销"})
 public class UserController {

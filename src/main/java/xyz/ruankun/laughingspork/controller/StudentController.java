@@ -19,6 +19,7 @@ import java.io.Serializable;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/student")
 @Api(tags = {"学生操作"})
 public class StudentController {
