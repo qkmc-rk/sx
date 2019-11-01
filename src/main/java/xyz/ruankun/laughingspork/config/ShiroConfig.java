@@ -13,17 +13,13 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-import xyz.ruankun.laughingspork.shiro.CustomCredentialsMatcher;
-import xyz.ruankun.laughingspork.shiro.CustomSessionManager;
-import xyz.ruankun.laughingspork.shiro.UserModularRealmAuthenticator;
+import xyz.ruankun.laughingspork.shiro.*;
 import xyz.ruankun.laughingspork.shiro.realm.*;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import javax.servlet.Filter;
+import java.util.*;
 
 @Configuration
 public class ShiroConfig {
@@ -32,27 +28,15 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        //  shiro拦截器
-        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+
+        //  自定义跨域拦截器
+        Map<String, Filter> filter = new HashMap<>();
+        filter.put("corsFilter", new CustomHttpAuthenticationFilter());
+        shiroFilterFactoryBean.setFilters(filter);
         //  过滤链定义，从上向下顺序执行，一般将/**放在最为下边 -->
-
-        // 配置不被拦截的资源及链接
-        filterChainDefinitionMap.put("/user/login", "anon");
-        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
-
-        //  配置需要认证权限的
-        filterChainDefinitionMap.put("/student/**", "roles[Student]");
-        filterChainDefinitionMap.put("/teacher/**", "roles[Teacher]");
-//        filterChainDefinitionMap.put("/**", "authc");
-        //  退出拦截器
-        filterChainDefinitionMap.put("/logout", "logout");
-        //  未登录的跳转链接
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        //  登录成功后要跳转的链接
-        shiroFilterFactoryBean.setSuccessUrl("/index");
-        //  未授权的跳转链接
-        shiroFilterFactoryBean.setUnauthorizedUrl("/401");
-
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
+        // 处理跨域请求
+        filterChainDefinitionMap.put("/**", "corsFilter");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -108,16 +92,29 @@ public class ShiroConfig {
         return securityManager;
     }
 
+    /**
+     * Shiro生命周期处理器
+     *
+     * @return
+     */
     @Bean
-    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 
+    /**
+     * 开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
+     * 配置以下两个bean(DefaultAdvisorAutoProxyCreator(可选)和AuthorizationAttributeSourceAdvisor)即可实现此功能
+     *
+     * @return
+     */
     @Bean
-    public static DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-        return new DefaultAdvisorAutoProxyCreator();
+    @DependsOn({"lifecycleBeanPostProcessor"})
+    public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        advisorAutoProxyCreator.setProxyTargetClass(true);
+        return advisorAutoProxyCreator;
     }
-
 
     //开启shiro aop注解支持，不开启的话权限验证就会失效
     @Bean
@@ -129,20 +126,20 @@ public class ShiroConfig {
 
     //处理异常，当用户没有权限时设置跳转到401页面
     @Bean(name = "simpleMappingExceptionResolver")
-    public SimpleMappingExceptionResolver createSimpleMappingExceptionResolver() {
-        SimpleMappingExceptionResolver simpleMappingExceptionResolver = new SimpleMappingExceptionResolver();
+    public CustomSimpleMappingExceptionResolver createCustomSimpleMappingExceptionResolver() {
+        CustomSimpleMappingExceptionResolver CustomSimpleMappingExceptionResolver = new CustomSimpleMappingExceptionResolver();
         Properties mappings = new Properties();
         //数据库异常处理
         mappings.setProperty("DatabaseException", "databaseError");
         //未经过认证
         mappings.setProperty("UnauthorizedException", "401");
         // None by default
-        simpleMappingExceptionResolver.setExceptionMappings(mappings);
+        CustomSimpleMappingExceptionResolver.setExceptionMappings(mappings);
         // No default
-        simpleMappingExceptionResolver.setDefaultErrorView("error");
+        CustomSimpleMappingExceptionResolver.setDefaultErrorView("error");
         // Default is "exception"
-        simpleMappingExceptionResolver.setExceptionAttribute("ex");
-        return simpleMappingExceptionResolver;
+        CustomSimpleMappingExceptionResolver.setExceptionAttribute("ex");
+        return CustomSimpleMappingExceptionResolver;
     }
 
     /**

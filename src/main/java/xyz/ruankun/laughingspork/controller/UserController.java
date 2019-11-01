@@ -13,13 +13,12 @@ import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 @RestController
-@CrossOrigin
 @RequestMapping("/user")
 @Api(tags = {"用户登录、注销"})
+@CrossOrigin
 public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);

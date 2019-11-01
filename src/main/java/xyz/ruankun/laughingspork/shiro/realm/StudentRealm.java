@@ -1,6 +1,5 @@
 package xyz.ruankun.laughingspork.shiro.realm;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -23,6 +22,7 @@ public class StudentRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        logger.info(principals.getRealmNames().toString());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         if (principals.getRealmNames().toString().contains("Student")) {
             simpleAuthorizationInfo.addRole("Student");
