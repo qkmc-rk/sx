@@ -6,14 +6,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
-import xyz.ruankun.laughingspork.entity.SxReport;
-import xyz.ruankun.laughingspork.entity.SxStudent;
-import xyz.ruankun.laughingspork.entity.SxTeacher;
-import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
-import xyz.ruankun.laughingspork.service.SxReportService;
-import xyz.ruankun.laughingspork.service.SxStudentService;
-import xyz.ruankun.laughingspork.service.SxTeacherService;
+import xyz.ruankun.laughingspork.entity.*;
+import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 import org.apache.shiro.SecurityUtils;
@@ -42,7 +36,10 @@ public class TeacherController {
     @Autowired
     private SxTeacherService sxTeacherService;
 
-    @ApiOperation(value = "导师查看所带的学生",httpMethod = "GET")
+    @ApiOperation(value = "教师根据根据学生学号获取对应学生信息",httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "stuNo",value = "学生学号",required = true,paramType = "query")
+    })
     @GetMapping("/students")
     public ResponseVO getStudentList(){
        List<SxStudent> sxStudents = sxTeacherService.getStudentListByTeacherNo((SxTeacher) SecurityUtils.getSubject().getPrincipal());
@@ -84,7 +81,7 @@ public class TeacherController {
     @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "opinion",value = "校内教师意见",required = true,paramType = "path"),
-            @ApiImplicitParam(name = "score",value = "校内教师打分",required = true,paramType = "path")
+            @ApiImplicitParam(name = "score",value = "学院导师成绩评定",required = true,paramType = "path")
     })
     @PostMapping("/students/indentify/{stuNo}")
     public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String score){
