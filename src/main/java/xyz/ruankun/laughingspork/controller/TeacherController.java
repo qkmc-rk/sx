@@ -41,10 +41,7 @@ public class TeacherController {
     @Autowired
     private SxTeacherService sxTeacherService;
 
-    @ApiOperation(value = "教师根据根据学生学号获取对应学生信息",httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "stuNo",value = "学生学号",required = true,paramType = "query")
-    })
+    @ApiOperation(value = "导师查看所带的学生",httpMethod = "GET")
     @GetMapping("/students")
     public ResponseVO getStudentList(){
        List<SxStudent> sxStudents = sxTeacherService.getStudentListByTeacherNo((SxTeacher) SecurityUtils.getSubject().getPrincipal());
