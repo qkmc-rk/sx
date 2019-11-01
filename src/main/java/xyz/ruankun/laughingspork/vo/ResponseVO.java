@@ -1,11 +1,15 @@
 package xyz.ruankun.laughingspork.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
 
 import java.util.Date;
 
 public class ResponseVO<T> {
+
+
     @JsonProperty("status")
     private Integer status;
     @JsonProperty("message")
@@ -42,7 +46,6 @@ public class ResponseVO<T> {
         this.status = status;
         this.message = message;
         this.data = data;
-
     }
 
     /**
@@ -56,5 +59,14 @@ public class ResponseVO<T> {
         this.status = status;
         this.message = message;
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 }

@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.*;
@@ -11,17 +12,18 @@ import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 import org.apache.shiro.SecurityUtils;
-
-
 import java.util.List;
+
+
 /**
  * 校内老师
  * @return:
  */
+
 @RestController
-@CrossOrigin
 @RequestMapping("/teacher")
 @Api(tags = {"校内导师操作"})
+@CrossOrigin
 public class TeacherController {
 
     @Autowired
@@ -41,8 +43,9 @@ public class TeacherController {
             @ApiImplicitParam(name = "stuNo",value = "学生学号",required = true,paramType = "query")
     })
     @GetMapping("/students")
+    @RequiresRoles("Teacher")
     public ResponseVO getStudentList(){
-       List<SxStudent> sxStudents = sxTeacherService.getStudentListByTeacherNo((SxTeacher) SecurityUtils.getSubject().getPrincipal());
+        List<SxStudent> sxStudents = sxTeacherService.getStudentListByTeacherNo((SxTeacher) SecurityUtils.getSubject().getPrincipal());
         if (sxStudents.isEmpty()){
             return ControllerUtil.getFalseResultMsgBySelf("没有找到相关信息");
         }
@@ -57,6 +60,7 @@ public class TeacherController {
             @ApiImplicitParam(name = "stuNo",value = "学生学号",required = true,paramType = "query")
     })
     @GetMapping("/students/report/{stuNo}")
+    @RequiresRoles("Teacher")
     private ResponseVO getReportInfo(@PathVariable("stuNo") String stuNO){
         SxReport sxReport = sxReportService.getReportInfo(stuNO);
         if (sxReport == null){
@@ -70,6 +74,7 @@ public class TeacherController {
             @ApiImplicitParam(name = "stuNo",value = "学生学号",required = true,paramType = "query")
     })
     @GetMapping("/students/indentify/{stuNo}")
+    @RequiresRoles("Teacher")
     public ResponseVO getIdentifyInfo(@PathVariable("stuNo") String stuNO){
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIndentifyInfo(stuNO);
         if (sxIdentifyForm == null){
@@ -84,6 +89,7 @@ public class TeacherController {
             @ApiImplicitParam(name = "score",value = "学院导师成绩评定",required = true,paramType = "path")
     })
     @PostMapping("/students/indentify/{stuNo}")
+    @RequiresRoles("Teacher")
     public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String score){
         return ControllerUtil.getDataResult(sxTeacherService.fillIndentifyAdvice(stuNo,score));
     }

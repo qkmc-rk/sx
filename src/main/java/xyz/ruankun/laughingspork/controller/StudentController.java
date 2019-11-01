@@ -19,9 +19,9 @@ import java.io.Serializable;
 
 
 @RestController
-@CrossOrigin
 @RequestMapping("/student")
 @Api(tags = {"学生操作"})
+@CrossOrigin
 public class StudentController {
 
     @Autowired
@@ -31,24 +31,28 @@ public class StudentController {
 
     @ApiOperation(value = "学生查看自己信息", httpMethod = "GET")
     @GetMapping("/selfInfo")
+    @RequiresRoles("Student")
     public ResponseVO getSelfInfo() {
         return ControllerUtil.getDataResult((SxStudent) SecurityUtils.getSubject().getPrincipal());
     }
 
     @ApiOperation(value = "学生查看自己校内导师信息", httpMethod = "GET")
     @GetMapping("/teacher")
+    @RequiresRoles("Student")
     public ResponseVO getTeacherInfo() {
         return ControllerUtil.getDataResult(sxStudentService.getTeacherInfo((SxStudent) SecurityUtils.getSubject().getPrincipal()));
     }
 
     @ApiOperation(value = "学生查看自己报告册信息", httpMethod = "GET")
     @GetMapping("/report")
+    @RequiresRoles("Student")
     public ResponseVO getSelfReportInfo() {
         return ControllerUtil.getDataResult(sxStudentService.getSelfReportInfo((SxStudent) SecurityUtils.getSubject().getPrincipal()));
     }
 
     @ApiOperation(value = "学生查看鉴定表信息", httpMethod = "GET")
     @GetMapping("/identify")
+    @RequiresRoles("Student")
     public ResponseVO getSelfIndentifyInfo() {
         return ControllerUtil.getDataResult(sxStudentService.getSelfIndentifyInfo((SxStudent) SecurityUtils.getSubject().getPrincipal()));
     }
@@ -60,7 +64,8 @@ public class StudentController {
             @ApiImplicitParam(name = "selfSummary", value = "自我总结", required = true),
     })
     @PostMapping("/identify")
-    public ResponseVO fillIndentifyForm(String practiceContent,String selfSummary) {
+    @RequiresRoles("Student")
+    public ResponseVO fillIndentifyForm(String practiceContent, String selfSummary) {
         if (practiceContent == null || selfSummary == null) {
             return ControllerUtil.getFalseResultMsgBySelf("请填写完成所有内容");
         } else {
@@ -74,8 +79,9 @@ public class StudentController {
             @ApiImplicitParam(name = "stage1_summary", value = "自我总结", required = true),
     })
     @PostMapping("/report/stage1")
-    public ResponseVO stage1_summary(@RequestParam String stage1_summary) {
-        if (stage1_summary == null) {
+    @RequiresRoles("Student")
+    public ResponseVO stage1_summary(String stage1_summary) {
+        if (stage1_summary == null || stage1_summary.isEmpty()) {
             return ControllerUtil.getFalseResultMsgBySelf("请填写完成所有内容");
         } else {
             //保存鉴定表内容到数据库
@@ -88,6 +94,7 @@ public class StudentController {
             @ApiImplicitParam(name = "stage2_summary", value = "自我总结", required = true),
     })
     @PostMapping("/report/stage2")
+    @RequiresRoles("Student")
     public ResponseVO stage2_summary(String stage2_summary) {
         try {
             if (stage2_summary == null) {
@@ -96,10 +103,9 @@ public class StudentController {
                 //保存鉴定表内容到数据库
                 return ControllerUtil.getDataResult(sxStudentService.stage2_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2_summary));
             }
-        }
-        catch (Exception ex){
-              logger.error(ex.toString());
-              return ControllerUtil.getDataResult("");
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+            return ControllerUtil.getDataResult("");
         }
     }
 }
