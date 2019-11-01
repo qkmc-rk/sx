@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.service.SxStudentService;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
+
+import java.io.Serializable;
 
 
 @RestController
@@ -24,10 +27,10 @@ public class StudentController {
     SxStudentService sxStudentService;
     Logger logger = LoggerFactory.getLogger(StudentController.class);
 
+
     @ApiOperation(value = "学生查看自己信息", httpMethod = "GET")
-    @GetMapping("/student")
+    @GetMapping("/selfInfo")
     public ResponseVO getSelfInfo() {
-        logger.info(SecurityUtils.getSubject().getSession().getId().toString());
         return ControllerUtil.getDataResult((SxStudent) SecurityUtils.getSubject().getPrincipal());
     }
 
