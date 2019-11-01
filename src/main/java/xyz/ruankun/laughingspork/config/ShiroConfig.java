@@ -43,7 +43,7 @@ public class ShiroConfig {
         //  配置需要认证权限的
         filterChainDefinitionMap.put("/student/**", "roles[Student]");
         filterChainDefinitionMap.put("/teacher/**", "roles[Teacher]");
-        filterChainDefinitionMap.put("/**", "authc");
+//        filterChainDefinitionMap.put("/**", "authc");
         //  退出拦截器
         filterChainDefinitionMap.put("/logout", "logout");
         //  未登录的跳转链接
