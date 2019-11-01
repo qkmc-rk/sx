@@ -34,9 +34,13 @@ public class SxTeacherServiceImpl implements SxTeacherService {
     @Override
     public SxIdentifyForm fillIndentifyAdvice(String stuNo, String score) {
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(stuNo);
-        sxIdentifyForm.setTeacherGrade(score);
-        sxIdentifyFormRepository.save(sxIdentifyForm);
-        return sxIdentifyFormRepository.findByStuNo(stuNo);
+        if (sxIdentifyForm != null) {
+            sxIdentifyForm.setTeacherGrade(score);
+            sxIdentifyFormRepository.save(sxIdentifyForm);
+            return sxIdentifyFormRepository.findByStuNo(stuNo);
+        } else {
+            return null;
+        }
     }
 
     @Override

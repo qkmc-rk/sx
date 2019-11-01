@@ -17,8 +17,6 @@ import xyz.ruankun.laughingspork.service.SxStudentService;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
-import java.io.Serializable;
-
 
 @RestController
 @RequestMapping("/student")

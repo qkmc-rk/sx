@@ -40,7 +40,7 @@ public class TeacherController {
     @Autowired
     private SxTeacherService sxTeacherService;
 
-    @ApiOperation(value = "教师根据根据学生学号获取对应学生信息", httpMethod = "GET")
+    @ApiOperation(value = "根据学生学号获取对应学生信息", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true, paramType = "query")
     })
@@ -67,7 +67,7 @@ public class TeacherController {
         if (sxReport == null) {
             return ControllerUtil.getFalseResultMsgBySelf("无相关信息");
         }
-        return ControllerUtil.getDataResult(sxReport);
+        return ControllerUtil.getSuccessResultBySelf(sxReport);
     }
 
     @ApiOperation(value = "根据学生学号查找对应鉴定表", httpMethod = "GET")
@@ -81,7 +81,7 @@ public class TeacherController {
         if (sxIdentifyForm == null) {
             return ControllerUtil.getFalseResultMsgBySelf("无相关信息");
         }
-        return ControllerUtil.getDataResult(sxIdentifyForm);
+        return ControllerUtil.getSuccessResultBySelf(sxIdentifyForm);
     }
 
     @ApiOperation(value = "校内教师填写鉴定表意见", httpMethod = "POST")
@@ -94,7 +94,7 @@ public class TeacherController {
     public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo, @RequestParam String score) {
         SxIdentifyForm sxIdentifyForm = sxTeacherService.fillIndentifyAdvice(stuNo, score);
         if (sxIdentifyForm != null) {
-            return ControllerUtil.getDataResult(sxIdentifyForm);
+            return ControllerUtil.getSuccessResultBySelf(sxIdentifyForm);
         } else {
             return ControllerUtil.getFalseResultMsgBySelf("未找到鉴定表");
         }
