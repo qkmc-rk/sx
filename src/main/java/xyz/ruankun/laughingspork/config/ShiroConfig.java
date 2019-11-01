@@ -1,17 +1,21 @@
 package xyz.ruankun.laughingspork.config;
 
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import xyz.ruankun.laughingspork.shiro.CustomCredentialsMatcher;
+import xyz.ruankun.laughingspork.shiro.CustomSessionManager;
 import xyz.ruankun.laughingspork.shiro.UserModularRealmAuthenticator;
 import xyz.ruankun.laughingspork.shiro.realm.*;
 
@@ -33,16 +37,15 @@ public class ShiroConfig {
         //  过滤链定义，从上向下顺序执行，一般将/**放在最为下边 -->
 
         // 配置不被拦截的资源及链接
-//        filterChainDefinitionMap.put("/static/**", "anon");
-//        filterChainDefinitionMap.put("/user/login", "anon");
-//        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/user/login", "anon");
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
 
-        //  配置需要认证权限的 未生效 原因未知
-//        filterChainDefinitionMap.put("/student/**", "roles[student]");
-
-        filterChainDefinitionMap.put("/**", "anon");
+        //  配置需要认证权限的
+        filterChainDefinitionMap.put("/student/**", "roles[Student]");
+        filterChainDefinitionMap.put("/teacher/**", "roles[Teacher]");
+//        filterChainDefinitionMap.put("/**", "authc");
         //  退出拦截器
-//        filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/logout", "logout");
         //  未登录的跳转链接
         shiroFilterFactoryBean.setLoginUrl("/login");
         //  登录成功后要跳转的链接
@@ -59,15 +62,15 @@ public class ShiroConfig {
      *
      * @return: org.apache.shiro.authc.credential.HashedCredentialsMatcher
      */
-    @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        //散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");
-        //散列的次数，比如散列两次，相当于 md5(md5(""));
-        hashedCredentialsMatcher.setHashIterations(2);
-        return hashedCredentialsMatcher;
-    }
+//    @Bean
+//    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+//        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+//        //散列算法:这里使用MD5算法;
+//        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+//        //散列的次数，比如散列两次，相当于 md5(md5(""));
+//        hashedCredentialsMatcher.setHashIterations(2);
+//        return hashedCredentialsMatcher;
+//    }
 
     //自定义身份认证Realm（包含用户名密码校验，权限校验等）
     @Bean
@@ -84,27 +87,14 @@ public class ShiroConfig {
         return teacherRealm;
     }
 
-    @Bean
-    public CorpRealm corpRealm() {
-        CorpRealm corpRealm = new CorpRealm();
-        corpRealm.setCredentialsMatcher(new CustomCredentialsMatcher());
-        return corpRealm;
-    }
 
+    // 注入自定义sessionManager
     @Bean
-    public CorpTeacherRealm corpTeacherRealm() {
-        CorpTeacherRealm CorpTeacherRealm = new CorpTeacherRealm();
-        CorpTeacherRealm.setCredentialsMatcher(new CustomCredentialsMatcher());
-        return CorpTeacherRealm;
+    public SessionManager sessionManager() {
+        CustomSessionManager customSessionManager = new CustomSessionManager();
+        customSessionManager.setSessionDAO(new EnterpriseCacheSessionDAO());
+        return customSessionManager;
     }
-
-    @Bean
-    public CollegePrincipalRealm collegePrincipalRealm() {
-        CollegePrincipalRealm CollegePrincipalRealm = new CollegePrincipalRealm();
-        CollegePrincipalRealm.setCredentialsMatcher(new CustomCredentialsMatcher());
-        return CollegePrincipalRealm;
-    }
-
 
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager() {
@@ -113,12 +103,21 @@ public class ShiroConfig {
         List<Realm> realmList = new ArrayList<>();
         realmList.add(studentRealm());
         realmList.add(teacherRealm());
-        realmList.add(corpRealm());
-        realmList.add(corpTeacherRealm());
-        realmList.add(collegePrincipalRealm());
         securityManager.setRealms(realmList);
+        securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
+
+    @Bean
+    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+
+    @Bean
+    public static DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+        return new DefaultAdvisorAutoProxyCreator();
+    }
+
 
     //开启shiro aop注解支持，不开启的话权限验证就会失效
     @Bean

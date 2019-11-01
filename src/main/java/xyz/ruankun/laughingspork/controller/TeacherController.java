@@ -1,18 +1,13 @@
 package xyz.ruankun.laughingspork.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
-import xyz.ruankun.laughingspork.entity.SxReport;
-import xyz.ruankun.laughingspork.entity.SxStudent;
-import xyz.ruankun.laughingspork.entity.SxTeacher;
-import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
-import xyz.ruankun.laughingspork.service.SxReportService;
-import xyz.ruankun.laughingspork.service.SxStudentService;
-import xyz.ruankun.laughingspork.service.SxTeacherService;
+import xyz.ruankun.laughingspork.entity.*;
+import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 import org.apache.shiro.SecurityUtils;
@@ -24,7 +19,9 @@ import java.util.List;
  * @return:
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/teacher")
+@Api(tags = {"校内导师操作"})
 public class TeacherController {
 
     @Autowired
@@ -81,13 +78,13 @@ public class TeacherController {
         return ControllerUtil.getDataResult(sxIdentifyForm);
     }
 
-    @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "GET")
+    @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "opinion",value = "校内教师意见",required = true,paramType = "path"),
-            @ApiImplicitParam(name = "score",value = "校内教师打分",required = true,paramType = "path")
+            @ApiImplicitParam(name = "score",value = "学院导师成绩评定",required = true,paramType = "path")
     })
     @PostMapping("/students/indentify/{stuNo}")
-    public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String opinion,@RequestParam String score){
-        return ControllerUtil.getDataResult(sxTeacherService.fillIndentifyAdvice(stuNo,opinion,score));
+    public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String score){
+        return ControllerUtil.getDataResult(sxTeacherService.fillIndentifyAdvice(stuNo,score));
     }
 }

@@ -9,8 +9,7 @@ public class DateUtil {
      *
      * @return: java.sql.Date
      */
-    public static final Date today() {
-        java.util.Date datetime = new java.util.Date();
-        return new Date(datetime.getYear(), datetime.getMonth(), datetime.getDate());
+    public static Date today() {
+        return new Date(System.currentTimeMillis());
     }
 }
