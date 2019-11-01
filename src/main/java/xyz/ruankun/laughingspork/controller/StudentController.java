@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
+import xyz.ruankun.laughingspork.entity.SxReport;
 import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.service.SxStudentService;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
@@ -70,7 +72,13 @@ public class StudentController {
             return ControllerUtil.getFalseResultMsgBySelf("请填写完成所有内容");
         } else {
             //保存鉴定表内容到数据库
-            return ControllerUtil.getDataResult(sxStudentService.saveIndentifyForm((SxStudent) SecurityUtils.getSubject().getPrincipal(), practiceContent, selfSummary));
+            SxIdentifyForm sxIdentifyForm = sxStudentService.saveIndentifyForm
+                    ((SxStudent) SecurityUtils.getSubject().getPrincipal(), practiceContent, selfSummary);
+            if (sxIdentifyForm != null) {
+                return ControllerUtil.getDataResult(sxIdentifyForm);
+            } else {
+                return ControllerUtil.getFalseResultMsgBySelf("未找到鉴定表");
+            }
         }
     }
 
@@ -85,7 +93,12 @@ public class StudentController {
             return ControllerUtil.getFalseResultMsgBySelf("请填写完成所有内容");
         } else {
             //保存鉴定表内容到数据库
-            return ControllerUtil.getDataResult(sxStudentService.stage1_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1_summary));
+            SxReport sxReport = sxStudentService.stage1_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1_summary);
+            if (sxReport != null) {
+                return ControllerUtil.getDataResult(sxReport);
+            } else {
+                return ControllerUtil.getFalseResultMsgBySelf("未找到实习报告");
+            }
         }
     }
 
@@ -96,16 +109,16 @@ public class StudentController {
     @PostMapping("/report/stage2")
     @RequiresRoles("Student")
     public ResponseVO stage2_summary(String stage2_summary) {
-        try {
-            if (stage2_summary == null) {
-                return ControllerUtil.getFalseResultMsgBySelf("请填写完成所有内容");
+        if (stage2_summary == null || stage2_summary.isEmpty()) {
+            return ControllerUtil.getFalseResultMsgBySelf("请填写完成所有内容");
+        } else {
+            //保存鉴定表内容到数据库
+            SxReport sxReport = sxStudentService.stage2_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2_summary);
+            if (sxReport != null) {
+                return ControllerUtil.getDataResult(sxReport);
             } else {
-                //保存鉴定表内容到数据库
-                return ControllerUtil.getDataResult(sxStudentService.stage2_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2_summary));
+                return ControllerUtil.getFalseResultMsgBySelf("未找到实习报告");
             }
-        } catch (Exception ex) {
-            logger.error(ex.toString());
-            return ControllerUtil.getDataResult("");
         }
     }
 }

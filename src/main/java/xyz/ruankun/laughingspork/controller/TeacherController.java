@@ -12,11 +12,13 @@ import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 import org.apache.shiro.SecurityUtils;
+
 import java.util.List;
 
 
 /**
  * 校内老师
+ *
  * @return:
  */
 
@@ -38,59 +40,63 @@ public class TeacherController {
     @Autowired
     private SxTeacherService sxTeacherService;
 
-    @ApiOperation(value = "教师根据根据学生学号获取对应学生信息",httpMethod = "GET")
+    @ApiOperation(value = "教师根据根据学生学号获取对应学生信息", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "stuNo",value = "学生学号",required = true,paramType = "query")
+            @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true, paramType = "query")
     })
     @GetMapping("/students")
     @RequiresRoles("Teacher")
-    public ResponseVO getStudentList(){
+    public ResponseVO getStudentList() {
         List<SxStudent> sxStudents = sxTeacherService.getStudentListByTeacherNo((SxTeacher) SecurityUtils.getSubject().getPrincipal());
-        if (sxStudents.isEmpty()){
+        if (sxStudents.isEmpty()) {
             return ControllerUtil.getFalseResultMsgBySelf("没有找到相关信息");
-        }
-        else {
+        } else {
             return ControllerUtil.getSuccessResultBySelf(sxStudents);
         }
     }
 
 
-    @ApiOperation(value = "根据学生学号查找对应报告表",httpMethod = "GET")
+    @ApiOperation(value = "根据学生学号查找对应报告表", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "stuNo",value = "学生学号",required = true,paramType = "query")
+            @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true, paramType = "query")
     })
     @GetMapping("/students/report/{stuNo}")
     @RequiresRoles("Teacher")
-    private ResponseVO getReportInfo(@PathVariable("stuNo") String stuNO){
+    private ResponseVO getReportInfo(@PathVariable("stuNo") String stuNO) {
         SxReport sxReport = sxReportService.getReportInfo(stuNO);
-        if (sxReport == null){
+        if (sxReport == null) {
             return ControllerUtil.getFalseResultMsgBySelf("无相关信息");
         }
         return ControllerUtil.getDataResult(sxReport);
     }
 
-    @ApiOperation(value = "根据学生学号查找对应鉴定表",httpMethod = "GET")
+    @ApiOperation(value = "根据学生学号查找对应鉴定表", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "stuNo",value = "学生学号",required = true,paramType = "query")
+            @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true, paramType = "query")
     })
     @GetMapping("/students/indentify/{stuNo}")
     @RequiresRoles("Teacher")
-    public ResponseVO getIdentifyInfo(@PathVariable("stuNo") String stuNO){
+    public ResponseVO getIdentifyInfo(@PathVariable("stuNo") String stuNO) {
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIndentifyInfo(stuNO);
-        if (sxIdentifyForm == null){
+        if (sxIdentifyForm == null) {
             return ControllerUtil.getFalseResultMsgBySelf("无相关信息");
         }
         return ControllerUtil.getDataResult(sxIdentifyForm);
     }
 
-    @ApiOperation(value = "校内教师填写鉴定表意见",httpMethod = "POST")
+    @ApiOperation(value = "校内教师填写鉴定表意见", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "opinion",value = "校内教师意见",required = true,paramType = "path"),
-            @ApiImplicitParam(name = "score",value = "学院导师成绩评定",required = true,paramType = "path")
+            @ApiImplicitParam(name = "opinion", value = "校内教师意见", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "score", value = "学院导师成绩评定", required = true, paramType = "path")
     })
     @PostMapping("/students/indentify/{stuNo}")
     @RequiresRoles("Teacher")
-    public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo,@RequestParam String score){
-        return ControllerUtil.getDataResult(sxTeacherService.fillIndentifyAdvice(stuNo,score));
+    public ResponseVO fillIndentifyAdvice(@PathVariable("stuNo") String stuNo, @RequestParam String score) {
+        SxIdentifyForm sxIdentifyForm = sxTeacherService.fillIndentifyAdvice(stuNo, score);
+        if (sxIdentifyForm != null) {
+            return ControllerUtil.getDataResult(sxIdentifyForm);
+        } else {
+            return ControllerUtil.getFalseResultMsgBySelf("未找到鉴定表");
+        }
     }
 }
