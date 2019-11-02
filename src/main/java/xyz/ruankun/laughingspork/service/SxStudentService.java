@@ -6,6 +6,7 @@ import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.entity.SxTeacher;
 
 
+import java.util.Date;
 import java.util.List;
 
 public interface SxStudentService {
@@ -37,7 +38,7 @@ public interface SxStudentService {
      * @return: xyz.ruankun.laughingspork.entity.SxIdentifyForm
      */
 
-    SxIdentifyForm getSelfIndentifyInfo(SxStudent sxStudent);
+    SxIdentifyForm getSelfIdentifyInfo(SxStudent sxStudent);
 
     /**
      * 返回这个学生的报告册信息
@@ -55,7 +56,7 @@ public interface SxStudentService {
      * @param selfSummary :
      * @return: xyz.ruankun.laughingspork.entity.SxStudent
      */
-    SxIdentifyForm saveIndentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary);
+    SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary);
 
     /**
      * 保存实习阶段的实习总结
@@ -63,12 +64,14 @@ public interface SxStudentService {
      * @param stage1_summary :
      * @return: xyz.ruankun.laughingspork.entity.SxReport
      */
-    SxReport stage1_summary(SxStudent sxStudent, String stage1_summary);
+    SxReport stage1_summary(SxStudent sxStudent, String stage1_summary, String stage1GuideWay, String stage1GuideDate);
 
-    SxReport stage2_summary(SxStudent sxStudent,String stage2_summary);
+    SxReport stage2_summary(SxStudent sxStudent,String stage2_summary,String stage2GuideWay,String stage2GuideDate);
 
     void save(SxStudent sxStudent);
 
     SxStudent findByStuNo(String StuNo);
+
+    Boolean testAuth(String tNo,String stuNO);
 }
 
