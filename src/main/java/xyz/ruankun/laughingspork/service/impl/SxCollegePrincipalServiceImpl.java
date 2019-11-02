@@ -36,9 +36,9 @@ public class SxCollegePrincipalServiceImpl implements SxCollegePrincipalService 
     public SxIdentifyForm operateIdentifyForm(String stuNo, String collegePrincipalOpinion, String comprehsvGrade) {
         SxIdentifyForm oldForm = sxIdentifyFormRepository.findByStuNo(stuNo);
         oldForm.setCollegePrincipalOpinion(collegePrincipalOpinion);
-        oldForm.setCPODate(DateUtil.today());
+        oldForm.setCPODate(DateUtil.getSqlDate());
         oldForm.setComprehsvGrade(comprehsvGrade);
-        oldForm.setCGDate(DateUtil.today());
+        oldForm.setCGDate(DateUtil.getSqlDate());
         sxIdentifyFormRepository.save(oldForm);
         return sxIdentifyFormRepository.findByStuNo(stuNo);
     }
