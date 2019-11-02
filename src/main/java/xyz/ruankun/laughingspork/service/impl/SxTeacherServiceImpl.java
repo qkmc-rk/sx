@@ -53,4 +53,13 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         sxReportRepository.save(sxReport);
         return sxReport;
     }
+
+    @Override
+    public SxReport saveTotal(String stuNo,String totalGrade, String totalScore) {
+        SxReport sxReport = sxReportRepository.findSxReportByStuNo(stuNo);
+        sxReport.setTotalGrade(totalGrade);
+        sxReport.setTotalScore(totalScore);
+        sxReportRepository.save(sxReport);
+        return sxReport;
+    }
 }

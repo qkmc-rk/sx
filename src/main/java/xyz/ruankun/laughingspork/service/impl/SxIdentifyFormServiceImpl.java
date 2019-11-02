@@ -26,7 +26,7 @@ public class SxIdentifyFormServiceImpl implements SxIdentifyFormService {
     }
 
     @Override
-    public void saveIdentifyForm(SxIdentifyForm sxIdentifyForm){
+    public void saveIdentifyForm(SxIdentifyForm sxIdentifyForm) {
         sxIdentifyFormRepository.save(sxIdentifyForm);
     }
 }

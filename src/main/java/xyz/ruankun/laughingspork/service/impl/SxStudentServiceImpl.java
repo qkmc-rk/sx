@@ -63,11 +63,6 @@ public class SxStudentServiceImpl implements SxStudentService {
     }
 
     @Override
-    public void save(SxStudent sxStudent) {
-        resp.save(sxStudent);
-    }
-
-    @Override
     public SxReport stage2_summary(SxStudent sxStudent, String stage2_summary, String stage2GuideWay, String stage2GuideDate) {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
         sxReport.setStage2Summary(stage2_summary);
@@ -102,8 +97,8 @@ public class SxStudentServiceImpl implements SxStudentService {
 
     @Override
     public Boolean testAuth(String tNo, String stuNO) {
-            if (resp.findByStuNoAndTeacherNo(stuNO, tNo) == null) {
-                return false;
-            } else return true;
+        if (resp.findByStuNoAndTeacherNo(stuNO, tNo) == null) {
+            return false;
+        } else return true;
     }
 }

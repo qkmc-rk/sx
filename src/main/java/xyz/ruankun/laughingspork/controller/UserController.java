@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.shiro.UserToken;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
+import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 @RestController
@@ -45,11 +45,11 @@ public class UserController {
             data.put("Authorization", subject.getSession().getId());
             return ControllerUtil.getSuccessResultBySelf(data);
         } catch (IncorrectCredentialsException e) {
-            return ControllerUtil.getFalseResultMsgBySelf("密码错误");
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
         } catch (UnknownAccountException e) {
-            return ControllerUtil.getFalseResultMsgBySelf("用户名错误");
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
         } catch (Exception e) {
-            return ControllerUtil.getFalseResultMsgBySelf("未知错误");
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_UNKNOWN_ERROR);
         }
     }
 
