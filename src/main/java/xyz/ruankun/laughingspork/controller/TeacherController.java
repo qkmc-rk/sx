@@ -38,7 +38,7 @@ public class TeacherController {
 
     public static final Logger logger = LoggerFactory.getLogger(TeacherController.class);
 
-    @ApiOperation(value = "教师根据根据学生学号获取对应学生列表信息", httpMethod = "GET")
+    @ApiOperation(value = "教师获取所有指导的学生", httpMethod = "GET")
 
     @RequiresRoles("Teacher")
     @GetMapping("/students")

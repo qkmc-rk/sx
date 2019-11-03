@@ -29,9 +29,9 @@ public class UserController {
             "学生学号(Student)、校内导师编号(Teacher)、",
             httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "account", value = "2018000001", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "account", value = "123456", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "123", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "loginType", value = "Student", required = true, paramType = "query")
+            @ApiImplicitParam(name = "loginType", value = "Teacher", required = true, paramType = "query")
     })
     @RequestMapping("/login")
     public ResponseVO login(String account, String password, String loginType) {
