@@ -16,12 +16,12 @@ public class DateUtil {
 
 
     /**
-     * 字符串日期转换成中文格式日期
+     * 返回中文日期
      *
      * @return yyyy年MM月dd日
      */
     public static String getCnDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
         String date = dateFormat.format(System.currentTimeMillis());
         String result = "";
         String[] cnDate = new String[]{"〇", "一", "二", "三", "四", "五", "六", "七", "八", "九"};

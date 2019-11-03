@@ -47,6 +47,10 @@ public class TeacherController {
         if (sxStudents.isEmpty()) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
         } else {
+            for (SxStudent s : sxStudents
+            ) {
+                s.setPassword(null);
+            }
             return ControllerUtil.getSuccessResultBySelf(sxStudents);
         }
     }
@@ -56,19 +60,20 @@ public class TeacherController {
             @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true)
     })
     @GetMapping("/student/{stuNo}")
-    public ResponseVO getStudentInfo(@PathVariable String stuNo){
+    @RequiresRoles("Teacher")
+    public ResponseVO getStudentInfo(@PathVariable String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
         String tNo = sxTeacher.getTeacherNo();
-        if(!sxStudentService.testAuth(tNo,stuNo)){
+        if (!sxStudentService.testAuth(tNo, stuNo)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
         }
         SxStudent sxStudent = sxStudentService.findByStuNo(stuNo);
-        if (sxStudent == null){
+        if (sxStudent == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
         }
+        sxStudent.setPassword(null);
         return ControllerUtil.getDataResult(sxStudent);
     }
-
 
 
     @ApiOperation(value = "根据学生学号查找对应报告表", httpMethod = "GET")
@@ -77,14 +82,14 @@ public class TeacherController {
     })
     @RequiresRoles("Teacher")
     @GetMapping("/student/report/{stuNo}")
-    private ResponseVO getReportInfo(@PathVariable("stuNo") String stuNO) {
+    public ResponseVO getReportInfo(String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
         String tNo = sxTeacher.getTeacherNo();
-        if(!sxStudentService.testAuth(tNo,stuNO)){
+        if (!sxStudentService.testAuth(tNo, stuNo)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
         }
 
-        SxReport sxReport = sxReportService.getReportInfo(stuNO);
+        SxReport sxReport = sxReportService.getReportInfo(stuNo);
         if (sxReport == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
         }
@@ -97,14 +102,13 @@ public class TeacherController {
     })
     @RequiresRoles("Teacher")
     @GetMapping("/student/identify/{stuNo}")
-    public ResponseVO getIdentifyInfo(@PathVariable("stuNo") String stuNO) {
-
+    public ResponseVO getIdentifyInfo(@PathVariable("stuNo") String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
         String tNo = sxTeacher.getTeacherNo();
-        if(!sxStudentService.testAuth(tNo,stuNO)){
+        if (!sxStudentService.testAuth(tNo, stuNo)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
         }
-        SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(stuNO);
+        SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(stuNo);
         if (sxIdentifyForm == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
         }
@@ -120,12 +124,9 @@ public class TeacherController {
     @RequiresRoles("Teacher")
     @PostMapping("student/reportStage1/{stuNo}")
     public ResponseVO operateReport1(@PathVariable String stuNo, String stage1_comment, String stage1_grade) {
-        if (stuNo == null || stage1_comment == null || stage1_grade == null) {
-            return ControllerUtil.getFalseResultMsgBySelf("请填写完所有信息");
-        } else {
-            SxReport sxReport = sxTeacherService.saveReport1(stuNo, stage1_comment, stage1_grade);
-            return ControllerUtil.getDataResult(sxReport);
-        }
+        SxReport sxReport = sxTeacherService.saveReport1(stuNo, stage1_comment, stage1_grade);
+        return ControllerUtil.getDataResult(sxReport);
+
     }
 
     @ApiOperation(value = "教师根据根据学生学号修改学生报告册阶段2信息", httpMethod = "POST")
@@ -137,12 +138,8 @@ public class TeacherController {
     @RequiresRoles("Teacher")
     @PostMapping("student/reportStage2/{stuNo}")
     public ResponseVO operateReport2(@PathVariable String stuNo, String stage2_comment, String stage2_grade) {
-        if (stuNo == null || stage2_comment == null || stage2_grade == null) {
-            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
-        } else {
-            SxReport sxReport = sxTeacherService.saveReport2(stuNo, stage2_comment, stage2_grade);
-            return ControllerUtil.getDataResult(sxReport);
-        }
+        SxReport sxReport = sxTeacherService.saveReport2(stuNo, stage2_comment, stage2_grade);
+        return ControllerUtil.getDataResult(sxReport);
     }
 
 
@@ -151,16 +148,30 @@ public class TeacherController {
     @PostMapping("/student/identifyForm")
     public ResponseVO operateIdentifyForm(SxIdentifyForm sxIdentifyForm) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
-        List<SxStudent> sxStudents = sxTeacherService.getStudentListByTeacherNo(sxTeacher);
+        String tNo = sxTeacher.getTeacherNo();
         String sNo = sxIdentifyForm.getStuNo();
-        for (SxStudent s : sxStudents
-        ) {
-            if (sNo.equals(s.getStuNo())) {
-                sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm);
-                return ControllerUtil.getDataResult(sxIdentifyFormService.getIdentifyInfo(sNo));
-            }
+        if (sxStudentService.testAuth(tNo, sNo)) {
+            sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm);
+            return ControllerUtil.getDataResult(sxIdentifyFormService.getIdentifyInfo(sNo));
+        } else {
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
         }
-        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
     }
+
+    @ApiOperation(value = "学院教师填写完善学生报告册", httpMethod = "POST")
+    @RequiresRoles("Teacher")
+    @PostMapping("/student/reportForm")
+    public ResponseVO operateReportForm(SxReport sxReport) {
+        SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
+        String tNo = sxTeacher.getTeacherNo();
+        String sNo = sxReport.getStuNo();
+        if (sxStudentService.testAuth(tNo, sNo)) {
+            sxReportService.saveReport(sxReport);
+            return ControllerUtil.getDataResult(sxReportService.getReportInfo(sNo));
+        } else {
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
+        }
+    }
+
 }
 

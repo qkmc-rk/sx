@@ -18,4 +18,5 @@ public interface SxReportService {
      */
     SxReport getReportInfo(String stuNo);
 
+    void saveReport(SxReport sxReport);
 }
