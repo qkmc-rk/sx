@@ -82,7 +82,7 @@ public class TeacherController {
     })
     @RequiresRoles("Teacher")
     @GetMapping("/student/report/{stuNo}")
-    public ResponseVO getReportInfo(String stuNo) {
+    public ResponseVO getReportInfo(@PathVariable String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
         String tNo = sxTeacher.getTeacherNo();
         if (!sxStudentService.testAuth(tNo, stuNo)) {
@@ -102,7 +102,7 @@ public class TeacherController {
     })
     @RequiresRoles("Teacher")
     @GetMapping("/student/identify/{stuNo}")
-    public ResponseVO getIdentifyInfo(@PathVariable("stuNo") String stuNo) {
+    public ResponseVO getIdentifyInfo(@PathVariable String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
         String tNo = sxTeacher.getTeacherNo();
         if (!sxStudentService.testAuth(tNo, stuNo)) {
