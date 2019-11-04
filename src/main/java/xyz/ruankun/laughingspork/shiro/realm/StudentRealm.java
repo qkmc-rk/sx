@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.service.SxStudentService;
+import xyz.ruankun.laughingspork.util.constant.RoleCode;
 
 public class StudentRealm extends AuthorizingRealm {
     Logger logger = LoggerFactory.getLogger(StudentRealm.class);
@@ -23,8 +24,8 @@ public class StudentRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        if (principals.getRealmNames().toString().contains("Student")) {
-            simpleAuthorizationInfo.addRole("Student");
+        if (principals.getRealmNames().toString().contains(RoleCode.STUDENT)) {
+            simpleAuthorizationInfo.addRole(RoleCode.STUDENT);
         }
         return simpleAuthorizationInfo;
     }
@@ -49,6 +50,6 @@ public class StudentRealm extends AuthorizingRealm {
 
     @Override
     public String getName() {
-        return "Student";
+        return RoleCode.STUDENT;
     }
 }

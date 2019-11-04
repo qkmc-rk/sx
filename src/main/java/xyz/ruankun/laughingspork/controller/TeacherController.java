@@ -14,6 +14,7 @@ import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.EntityUtil;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
+import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 import org.apache.shiro.SecurityUtils;
 
@@ -41,7 +42,7 @@ public class TeacherController {
 
     @ApiOperation(value = "教师获取所有指导的学生", httpMethod = "GET")
 
-    @RequiresRoles("Teacher")
+    @RequiresRoles(RoleCode.TEACHER)
     @GetMapping("/students")
     public ResponseVO getStudentList() {
         List<SxStudent> sxStudents = sxTeacherService.getStudentListByTeacherNo((SxTeacher) SecurityUtils.getSubject().getPrincipal());
@@ -51,7 +52,9 @@ public class TeacherController {
             for (SxStudent s : sxStudents
             ) {
                 s.setPassword(null);
+                logger.info(s.toString());
             }
+
             return ControllerUtil.getSuccessResultBySelf(sxStudents);
         }
     }
@@ -61,7 +64,7 @@ public class TeacherController {
             @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true)
     })
     @GetMapping("/student/{stuNo}")
-    @RequiresRoles("Teacher")
+    @RequiresRoles(RoleCode.TEACHER)
     public ResponseVO getStudentInfo(@PathVariable String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
         String tNo = sxTeacher.getTeacherNo();
@@ -81,7 +84,7 @@ public class TeacherController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true)
     })
-    @RequiresRoles("Teacher")
+    @RequiresRoles(RoleCode.TEACHER)
     @GetMapping("/student/report/{stuNo}")
     public ResponseVO getReportInfo(@PathVariable String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
@@ -101,7 +104,7 @@ public class TeacherController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true)
     })
-    @RequiresRoles("Teacher")
+    @RequiresRoles(RoleCode.TEACHER)
     @GetMapping("/student/identify/{stuNo}")
     public ResponseVO getIdentifyInfo(@PathVariable String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
@@ -122,7 +125,7 @@ public class TeacherController {
             @ApiImplicitParam(name = "stage1_comment", value = "阶段一教师评语", required = true),
             @ApiImplicitParam(name = "stage1_grade", value = "阶段一教师成绩评定", required = true),
     })
-    @RequiresRoles("Teacher")
+    @RequiresRoles(RoleCode.TEACHER)
     @PostMapping("student/reportStage1/{stuNo}")
     public ResponseVO operateReport1(@PathVariable String stuNo, String stage1_comment, String stage1_grade) {
         SxReport sxReport = sxTeacherService.saveReport1(stuNo, stage1_comment, stage1_grade);
@@ -136,7 +139,7 @@ public class TeacherController {
             @ApiImplicitParam(name = "stage2_comment", value = "阶段二教师评语", required = true),
             @ApiImplicitParam(name = "stage2_grade", value = "阶段二教师成绩评定", required = true),
     })
-    @RequiresRoles("Teacher")
+    @RequiresRoles(RoleCode.TEACHER)
     @PostMapping("student/reportStage2/{stuNo}")
     public ResponseVO operateReport2(@PathVariable String stuNo, String stage2_comment, String stage2_grade) {
         SxReport sxReport = sxTeacherService.saveReport2(stuNo, stage2_comment, stage2_grade);
@@ -145,7 +148,7 @@ public class TeacherController {
 
 
     @ApiOperation(value = "学院教师填写完善学生鉴定表", httpMethod = "POST")
-    @RequiresRoles("Teacher")
+    @RequiresRoles(RoleCode.TEACHER)
     @PostMapping("/student/identifyForm")
     public ResponseVO operateIdentifyForm(SxIdentifyForm sxIdentifyForm) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
@@ -162,7 +165,7 @@ public class TeacherController {
     }
 
     @ApiOperation(value = "学院教师填写完善学生报告册", httpMethod = "POST")
-    @RequiresRoles("Teacher")
+    @RequiresRoles(RoleCode.TEACHER)
     @PostMapping("/student/reportForm")
     public ResponseVO operateReportForm(SxReport sxReport) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
