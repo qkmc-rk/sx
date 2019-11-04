@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.*;
+import xyz.ruankun.laughingspork.repository.SxStudentRepository;
 import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.EntityUtil;
@@ -51,8 +52,9 @@ public class TeacherController {
         } else {
             for (SxStudent s : sxStudents
             ) {
+                sxTeacherService.isIdentifyFlag(s);
+                sxTeacherService.isReportFlag(s);
                 s.setPassword(null);
-                logger.info(s.toString());
             }
 
             return ControllerUtil.getSuccessResultBySelf(sxStudents);

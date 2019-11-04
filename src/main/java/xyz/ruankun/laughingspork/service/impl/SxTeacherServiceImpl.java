@@ -32,6 +32,50 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         return sxStudentRepository.findByTeacherNo(sxTeacher.getTeacherNo());
     }
 
+    @Override
+    public Boolean isIdentifyFlag(SxStudent sxStudent) {
+        SxIdentifyForm sxIdentifyForm=sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+        if(sxIdentifyForm == null ){
+            return null;
+        }else {
+            if(sxIdentifyForm.getCorpTeacherOpinion() == null || sxIdentifyForm.getCorpTeacherScore() == null
+                    || sxIdentifyForm.getCorpOpinion() == null || sxIdentifyForm.getCorpTeacherGrade() == null ||
+                    sxIdentifyForm.getTeacherGrade() == null || sxIdentifyForm.getComprehsvGrade() == null ||
+                    sxIdentifyForm.getCollegePrincipalOpinion() == null)
+            {
+                sxStudent.setIdentifyFlag(false);
+                sxStudentRepository.save(sxStudent);
+                return false;
+            }else {
+                sxStudent.setIdentifyFlag(true);
+                sxStudentRepository.save(sxStudent);
+                return true;
+            }
+        }
+
+    }
+
+    @Override
+    public Boolean isReportFlag(SxStudent sxStudent) {
+        SxReport sxReport=sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        if(sxReport == null){
+            return null;
+        }else {
+            if(sxReport.getStage1Comment() == null || sxReport.getStage1Grade() == null ||
+                    sxReport.getStage2Comment() == null || sxReport.getStage2Grade() == null ||
+                    sxReport.getTotalGrade() == null || sxReport.getTotalScore() == null){
+                sxStudent.setReportFlag(false);
+                sxStudentRepository.save(sxStudent);
+                return false;
+            }else {
+                sxStudent.setReportFlag(false);
+                sxStudentRepository.save(sxStudent);
+                return true;
+            }
+        }
+
+    }
+
 
     @Override
     public SxTeacher findByTeacherNo(String teacherNo) {
