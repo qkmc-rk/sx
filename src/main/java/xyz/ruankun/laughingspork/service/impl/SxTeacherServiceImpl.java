@@ -38,8 +38,7 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         if(sxIdentifyForm == null ){
             return null;
         }else {
-            if(sxIdentifyForm.getCorpTeacherOpinion() == null || sxIdentifyForm.getCorpTeacherScore() == null
-                    || sxIdentifyForm.getCorpOpinion() == null || sxIdentifyForm.getCorpTeacherGrade() == null ||
+            if(sxIdentifyForm.getCorpTeacherOpinion() == null || sxIdentifyForm.getCorpOpinion() == null || sxIdentifyForm.getCorpTeacherGrade() == null ||
                     sxIdentifyForm.getTeacherGrade() == null || sxIdentifyForm.getComprehsvGrade() == null ||
                     sxIdentifyForm.getCollegePrincipalOpinion() == null)
             {
@@ -68,7 +67,7 @@ public class SxTeacherServiceImpl implements SxTeacherService {
                 sxStudentRepository.save(sxStudent);
                 return false;
             }else {
-                sxStudent.setReportFlag(false);
+                sxStudent.setReportFlag(true);
                 sxStudentRepository.save(sxStudent);
                 return true;
             }
