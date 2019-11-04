@@ -1,11 +1,16 @@
 package xyz.ruankun.laughingspork.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 /**
  * 实习鉴定表
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "sx_identify_form")
 public class SxIdentifyForm {
 

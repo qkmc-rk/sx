@@ -10,7 +10,7 @@ import java.util.List;
 public interface SxTeacherService {
 
 /**
- * 这是学生教师接口
+ * 这是教师接口
  * @param sxTeacher :
  * @return: java.util.List<xyz.ruankun.laughingspork.entity.SxStudent>
  */
@@ -30,9 +30,6 @@ public interface SxTeacherService {
      * @return: xyz.ruankun.laughingspork.entity.SxTeacher
      */
     SxTeacher findByTeacherNo(String teacherNo);
-
-
-
 
     SxReport saveReport1(String stuNo, String stage1_comment, String stage1_grade);
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.*;
 import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
+import xyz.ruankun.laughingspork.util.EntityUtil;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 import org.apache.shiro.SecurityUtils;
@@ -76,7 +77,7 @@ public class TeacherController {
     }
 
 
-    @ApiOperation(value = "根据学生学号查找对应报告表", httpMethod = "GET")
+    @ApiOperation(value = "根据学生学号查找对应报告册", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true)
     })
@@ -151,6 +152,8 @@ public class TeacherController {
         String tNo = sxTeacher.getTeacherNo();
         String sNo = sxIdentifyForm.getStuNo();
         if (sxStudentService.testAuth(tNo, sNo)) {
+            SxIdentifyForm oldSxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sNo);
+            EntityUtil.update(sxIdentifyForm, oldSxIdentifyForm);
             sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm);
             return ControllerUtil.getDataResult(sxIdentifyFormService.getIdentifyInfo(sNo));
         } else {
@@ -166,6 +169,8 @@ public class TeacherController {
         String tNo = sxTeacher.getTeacherNo();
         String sNo = sxReport.getStuNo();
         if (sxStudentService.testAuth(tNo, sNo)) {
+            SxReport OldSxReport = sxReportService.getReportInfo(sNo);
+            EntityUtil.update(sxReport, OldSxReport);
             sxReportService.saveReport(sxReport);
             return ControllerUtil.getDataResult(sxReportService.getReportInfo(sNo));
         } else {
