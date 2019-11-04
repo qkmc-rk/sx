@@ -22,7 +22,17 @@ public interface SxTeacherService {
      */
     List<SxStudent> getStudentListByTeacherNo(SxTeacher sxTeacher);
 
+    /**
+     * 判断学生鉴定表状态
+     * @return Boolean
+     */
+    Boolean isIdentifyFlag(SxStudent sxStudent);
 
+    /**
+     * 判断学生报告状态
+     * @return Boolean
+     */
+    Boolean isReportFlag(SxStudent sxStudent);
 
     /**
      * findByTeacherNo
