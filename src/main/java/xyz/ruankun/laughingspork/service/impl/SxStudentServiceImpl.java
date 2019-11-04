@@ -14,6 +14,9 @@ import xyz.ruankun.laughingspork.repository.SxTeacherRepository;
 import xyz.ruankun.laughingspork.service.SxStudentService;
 import xyz.ruankun.laughingspork.repository.SxStudentRepository;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SxStudentServiceImpl implements SxStudentService {
@@ -30,12 +33,14 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Autowired
     private SxTeacherRepository sxTeacherRepository;
 
-    public static final Logger logger = LoggerFactory.getLogger(SxStudentServiceImpl.class);
 
     @Override
-    public SxIdentifyForm saveIndentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary) {
+    public SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary) {
         //实习内容，自我总结
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+        if (sxIdentifyForm == null) {
+            return null;
+        }
         sxIdentifyForm.setSxContent(practiceContent);
         sxIdentifyForm.setSelfSummary(selfSummary);
         sxIdentifyFormRepository.save(sxIdentifyForm);
@@ -43,14 +48,13 @@ public class SxStudentServiceImpl implements SxStudentService {
     }
 
     @Override
-    public SxReport stage1_summary(SxStudent sxStudent, String stage1_summary) {
-        SxReport sxReport = sxReportRepository.findByStuNo(sxStudent.getStuNo());
-        if (sxReport != null) {
-            sxReport.setStage1Summary(stage1_summary);
-            sxReportRepository.save(sxReport);
-            return sxReportRepository.findByStuNo(sxStudent.getStuNo());
-        }
-        return null;
+    public SxReport stage1_summary(SxStudent sxStudent, String stage1_summary, String stage1GuideWay, String stage1GuideDate) {
+        SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        sxReport.setStage1Summary(stage1_summary);
+        sxReport.setStage1GuideWay(stage1GuideWay);
+        sxReport.setStage1GuideDate(stage1GuideDate);
+        sxReportRepository.save(sxReport);
+        return sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
     }
 
     @Override
@@ -64,14 +68,13 @@ public class SxStudentServiceImpl implements SxStudentService {
     }
 
     @Override
-    public SxReport stage2_summary(SxStudent sxStudent, String stage2_summary) {
-        SxReport sxReport = sxReportRepository.findByStuNo(sxStudent.getStuNo());
-        if (sxReport != null) {
-            sxReport.setStage2Summary(stage2_summary);
-            sxReportRepository.save(sxReport);
-            return sxReportRepository.findByStuNo(sxStudent.getStuNo());
-        }
-        return null;
+    public SxReport stage2_summary(SxStudent sxStudent, String stage2_summary, String stage2GuideWay, String stage2GuideDate) {
+        SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        sxReport.setStage2Summary(stage2_summary);
+        sxReport.setStage2GuideWay(stage2GuideWay);
+        sxReport.setStage2GuideDate(stage2GuideDate);
+        sxReportRepository.save(sxReport);
+        return sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
     }
 
     @Override
@@ -81,19 +84,26 @@ public class SxStudentServiceImpl implements SxStudentService {
     }
 
     @Override
-    public SxIdentifyForm getSelfIndentifyInfo(SxStudent sxStudent) {
+    public SxIdentifyForm getSelfIdentifyInfo(SxStudent sxStudent) {
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
         return sxIdentifyForm;
     }
 
     @Override
     public SxReport getSelfReportInfo(SxStudent sxStudent) {
-        SxReport sxReport = sxReportRepository.findByStuNo(sxStudent.getStuNo());
+        SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
         return sxReport;
     }
 
     @Override
     public SxStudent findByStuNo(String StuNo) {
         return resp.findByStuNo(StuNo);
+    }
+
+    @Override
+    public Boolean testAuth(String tNo, String stuNO) {
+            if (resp.findByStuNoAndTeacherNo(stuNO, tNo) == null) {
+                return false;
+            } else return true;
     }
 }

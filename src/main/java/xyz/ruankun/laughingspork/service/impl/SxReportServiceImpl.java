@@ -13,17 +13,23 @@ import java.util.Optional;
 
 @Service
 public class SxReportServiceImpl implements SxReportService {
-	@Autowired
-	private SxReportRepository sxReportRepository;
+    @Autowired
+    private SxReportRepository sxReportRepository;
 
-	@Override
-	public SxReport getReportInfo(String stuNo) {
-		SxReport sxReport = sxReportRepository.findByStuNo(stuNo);
-		if (sxReport == null){
-			return null;
-		}
-		return sxReport;
-	}
+
+    @Override
+    public SxReport getReportInfo(String stuNo) {
+        SxReport sxReport = sxReportRepository.findSxReportByStuNo(stuNo);
+        if (sxReport == null) {
+            return null;
+        }
+        return sxReport;
+    }
+
+    @Override
+    public void saveReport(SxReport sxReport) {
+        sxReportRepository.save(sxReport);
+    }
 
 
 }

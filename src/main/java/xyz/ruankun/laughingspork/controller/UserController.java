@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.shiro.UserToken;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
+import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 import java.util.HashMap;
@@ -28,11 +29,11 @@ public class UserController {
             "学生学号(Student)、校内导师编号(Teacher)、",
             httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "account", value = "2018000001", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "account", value = "123456", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", value = "123", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "loginType", value = "Student", required = true, paramType = "query")
+            @ApiImplicitParam(name = "loginType", value = "Teacher", required = true, paramType = "query")
     })
-    @PostMapping("/login")
+    @RequestMapping("/login")
     public ResponseVO login(String account, String password, String loginType) {
         Subject subject = SecurityUtils.getSubject();
         //  设置Session不过期
@@ -44,11 +45,11 @@ public class UserController {
             data.put("Authorization", subject.getSession().getId());
             return ControllerUtil.getSuccessResultBySelf(data);
         } catch (IncorrectCredentialsException e) {
-            return ControllerUtil.getFalseResultMsgBySelf("密码错误");
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
         } catch (UnknownAccountException e) {
-            return ControllerUtil.getFalseResultMsgBySelf("用户名错误");
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
         } catch (Exception e) {
-            return ControllerUtil.getFalseResultMsgBySelf("未知错误");
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_UNKNOWN_ERROR);
         }
     }
 

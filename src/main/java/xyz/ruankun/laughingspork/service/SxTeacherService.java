@@ -1,6 +1,7 @@
 package xyz.ruankun.laughingspork.service;
 
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
+import xyz.ruankun.laughingspork.entity.SxReport;
 import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.entity.SxTeacher;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public interface SxTeacherService {
 
 /**
- * 这是学生教师接口
+ * 这是教师接口
  * @param sxTeacher :
  * @return: java.util.List<xyz.ruankun.laughingspork.entity.SxStudent>
  */
@@ -21,13 +22,7 @@ public interface SxTeacherService {
      */
     List<SxStudent> getStudentListByTeacherNo(SxTeacher sxTeacher);
 
-    /**
-     * 通过学号给学生写意见和打分
-     * @param stuNo :
-     * @param score :
-     * @return: xyz.ruankun.laughingspork.entity.SxIdentifyForm
-     */
-    SxIdentifyForm fillIndentifyAdvice(String stuNo,String score);
+
 
     /**
      * findByTeacherNo
@@ -36,6 +31,7 @@ public interface SxTeacherService {
      */
     SxTeacher findByTeacherNo(String teacherNo);
 
+    SxReport saveReport1(String stuNo, String stage1_comment, String stage1_grade);
 
-    void save(SxTeacher sxTeacher);
+    SxReport saveReport2(String stuNo, String stage2_comment, String stage2_grade);
 }
