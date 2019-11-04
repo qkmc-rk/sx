@@ -14,13 +14,19 @@ import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxReport;
 import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.entity.SxTeacher;
+import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
+import xyz.ruankun.laughingspork.service.SxReportService;
 import xyz.ruankun.laughingspork.service.SxStudentService;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
+import xyz.ruankun.laughingspork.util.WordUtil;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
+import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -28,20 +34,27 @@ import java.util.Date;
 @RequestMapping("/student")
 @Api(tags = {"学生操作"})
 public class StudentController {
+    public static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     SxStudentService sxStudentService;
 
+    @Autowired
+    SxIdentifyFormService sxIdentifyFormService;
+
+    @Autowired
+    SxReportService sxReportService;
+
 
     @ApiOperation(value = "学生查看自己信息", httpMethod = "GET")
-    @RequiresRoles("Student")
+    @RequiresRoles(RoleCode.STUDENT)
     @GetMapping("/selfInfo")
     public ResponseVO getSelfInfo() {
         return ControllerUtil.getDataResult((SxStudent) SecurityUtils.getSubject().getPrincipal());
     }
 
     @ApiOperation(value = "学生查看自己校内导师信息", httpMethod = "GET")
-    @RequiresRoles("Student")
+    @RequiresRoles(RoleCode.STUDENT)
     @GetMapping("/teacherInfo")
     public ResponseVO getTeacherInfo() {
         SxTeacher sxTeacher = sxStudentService.getTeacherInfo((SxStudent) SecurityUtils.getSubject().getPrincipal());
@@ -52,7 +65,7 @@ public class StudentController {
     }
 
     @ApiOperation(value = "学生查看自己报告册信息", httpMethod = "GET")
-    @RequiresRoles("Student")
+    @RequiresRoles(RoleCode.STUDENT)
     @GetMapping("/reportForm")
     public ResponseVO getSelfReportInfo() {
         SxReport sxReport = sxStudentService.getSelfReportInfo((SxStudent) SecurityUtils.getSubject().getPrincipal());
@@ -64,7 +77,7 @@ public class StudentController {
 
 
     @ApiOperation(value = "学生查看鉴定表信息", httpMethod = "GET")
-    @RequiresRoles("Student")
+    @RequiresRoles(RoleCode.STUDENT)
     @GetMapping("/identifyForm")
     public ResponseVO getSelfIndentifyInfo() {
         SxIdentifyForm sxIdentifyForm = sxStudentService.getSelfIdentifyInfo((SxStudent) SecurityUtils.getSubject().getPrincipal());
@@ -78,7 +91,7 @@ public class StudentController {
             @ApiImplicitParam(name = "practiceContent", value = "实习内容", required = true),
             @ApiImplicitParam(name = "selfSummary", value = "自我总结", required = true),
     })
-    @RequiresRoles("Student")
+    @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/identify")
     public ResponseVO fillIdentifyForm(String practiceContent,String selfSummary) {
         if (practiceContent == null || selfSummary == null) {
@@ -93,7 +106,7 @@ public class StudentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stage1_summary", value = "自我总结", required = true),
     })
-    @RequiresRoles("Student")
+    @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/report/stage1")
     public ResponseVO stage1_summary(@RequestParam String stage1_summary, @RequestParam String stage1GuideWay, @RequestParam String stage1GuideDate) {
         if (stage1_summary == null) {
@@ -108,7 +121,7 @@ public class StudentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stage2_summary", value = "自我总结", required = true),
     })
-    @RequiresRoles("Student")
+    @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/report/stage2")
     public ResponseVO stage2_summary(String stage2_summary,String  stage2GuideWay,String stage2GuideDate) {
             if (stage2_summary == null) {
@@ -120,62 +133,61 @@ public class StudentController {
     }
 
 
-//    @ApiOperation(value = "下载学生实习鉴定表", httpMethod = "GET")
-//    @GetMapping("/identify/form")
-//    @RequiresRoles("Student")
-//    public void downloadIdentify(HttpServletRequest request, HttpServletResponse response) {
-//        try {
-//            SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
-//            logger.error(sxStudent.toString());
-//            SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
-//            if (sxIdentifyForm != null) {
-//                Map<String, Object> params = new HashMap<>();
-//                params.put("stuName", sxStudent.getName());
-//                params.put("stuNo", sxStudent.getStuNo());
-//                params.put("college", sxStudent.getCollege());
-//                params.put("major", sxStudent.getMajor());
-//                params.put("corpName", sxStudent.getCorpName());
-//                params.put("content", sxIdentifyForm.getSxContent());
-//                params.put("selfSummary ", sxIdentifyForm.getSelfSummary());
-//                WordUtil.exportWord("word/identify.docx", "E:/temp",
-//                        "Identify_" + sxStudent.getStuNo() + ".docx", params, request, response);
-//            }
-//        } catch (Exception e) {
-//            logger.error(e.toString());
-//        }
-//    }
-//
-//
-//    @ApiOperation(value = "下载学生实习报告册", httpMethod = "GET")
-//    @GetMapping("/report/form")
-//    @RequiresRoles("Student")
-//    public void downloadReport(HttpServletRequest request, HttpServletResponse response) {
-//        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
-//        SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
-//        if (sxReport != null) {
-//            Map<String, Object> params = new HashMap<>();
-//            params.put("stuName", sxStudent.getName());
-//            params.put("stuNo", sxStudent.getStuNo());
-//            params.put("college", sxStudent.getCollege());
-//            params.put("major", sxStudent.getMajor());
-//            params.put("corpName", sxStudent.getCorpName());
-//            params.put("corpPosition", sxStudent.getCorpPosition());
-//            params.put("stage1GuideDate ", sxReport.getStage1GuideDate());
-//            params.put("stage1GuideWay ", sxReport.getStage1GuideWay());
-//            params.put("stage1Summary ", sxReport.getStage1Summary());
-//            params.put("stage1Date", sxReport.getStage1Date());
-//            params.put("stage1Comment ", sxReport.getStage1Comment());
-//            params.put("stage1GradeDate", sxReport.getStage1GradeDate());
-//            params.put("stage1Grade", sxReport.getStage1Grade());
-//            params.put("stage2GuideDate ", sxReport.getStage2GuideDate());
-//            params.put("stage2GuideWay ", sxReport.getStage2GuideWay());
-//            params.put("stage2Summary ", sxReport.getStage2Summary());
-//            params.put("stage2Date", sxReport.getStage2Date());
-//            params.put("stage2Comment ", sxReport.getStage2Comment());
-//            params.put("stage2GradeDate", sxReport.getStage2GradeDate());
-//            params.put("stage2Grade", sxReport.getStage2Grade());
-//            WordUtil.exportWord("word/report.docx", "E:/temp",
-//                    "Report_" + sxStudent.getStuNo() + ".docx", params, request, response);
-//        }
-//    }
+    @ApiOperation(value = "下载学生实习鉴定表", httpMethod = "GET")
+    @GetMapping("/identify/form")
+    @RequiresRoles(RoleCode.STUDENT)
+    public void downloadIdentify(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+            SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
+            if (sxIdentifyForm != null) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("stuName", sxStudent.getName());
+                params.put("stuNo", sxStudent.getStuNo());
+                params.put("college", sxStudent.getCollege());
+                params.put("major", sxStudent.getMajor());
+                params.put("corpName", sxStudent.getCorpName());
+                params.put("content", sxIdentifyForm.getSxContent());
+                params.put("selfSummary ", sxIdentifyForm.getSelfSummary());
+                WordUtil.exportWord("word/identify.docx", "temp/identify",
+                        "Identify_" + sxStudent.getStuNo() + ".docx", params, request, response);
+            }
+        } catch (Exception e) {
+            logger.error(e.toString());
+        }
+    }
+
+
+    @ApiOperation(value = "下载学生实习报告册", httpMethod = "GET")
+    @GetMapping("/report/form")
+    @RequiresRoles(RoleCode.STUDENT)
+    public void downloadReport(HttpServletRequest request, HttpServletResponse response) {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
+        if (sxReport != null) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("stuName", sxStudent.getName());
+            params.put("stuNo", sxStudent.getStuNo());
+            params.put("college", sxStudent.getCollege());
+            params.put("major", sxStudent.getMajor());
+            params.put("corpName", sxStudent.getCorpName());
+            params.put("corpPosition", sxStudent.getCorpPosition());
+            params.put("stage1GuideDate ", sxReport.getStage1GuideDate());
+            params.put("stage1GuideWay ", sxReport.getStage1GuideWay());
+            params.put("stage1Summary ", sxReport.getStage1Summary());
+            params.put("stage1Date", sxReport.getStage1Date());
+            params.put("stage1Comment ", sxReport.getStage1Comment());
+            params.put("stage1GradeDate", sxReport.getStage1GradeDate());
+            params.put("stage1Grade", sxReport.getStage1Grade());
+            params.put("stage2GuideDate ", sxReport.getStage2GuideDate());
+            params.put("stage2GuideWay ", sxReport.getStage2GuideWay());
+            params.put("stage2Summary ", sxReport.getStage2Summary());
+            params.put("stage2Date", sxReport.getStage2Date());
+            params.put("stage2Comment ", sxReport.getStage2Comment());
+            params.put("stage2GradeDate", sxReport.getStage2GradeDate());
+            params.put("stage2Grade", sxReport.getStage2Grade());
+            WordUtil.exportWord("word/report.docx", "temp/report",
+                    "Report_" + sxStudent.getStuNo() + ".docx", params, request, response);
+        }
+    }
 }

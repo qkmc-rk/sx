@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import xyz.ruankun.laughingspork.entity.SxTeacher;
 import xyz.ruankun.laughingspork.service.SxTeacherService;
+import xyz.ruankun.laughingspork.util.constant.RoleCode;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,8 +26,8 @@ public class TeacherRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        if (principals.getRealmNames().toString().contains("Teacher")) {
-            simpleAuthorizationInfo.addRole("Teacher");
+        if (principals.getRealmNames().toString().contains(RoleCode.TEACHER)) {
+            simpleAuthorizationInfo.addRole(RoleCode.TEACHER);
         }
         return simpleAuthorizationInfo;
     }
@@ -47,6 +48,6 @@ public class TeacherRealm extends AuthorizingRealm {
 
     @Override
     public String getName() {
-        return "Teacher";
+        return RoleCode.TEACHER;
     }
 }
