@@ -38,9 +38,12 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         if(sxIdentifyForm == null ){
             return null;
         }else {
-            if(sxIdentifyForm.getCorpTeacherOpinion() == null || sxIdentifyForm.getCorpOpinion() == null || sxIdentifyForm.getCorpTeacherGrade() == null ||
-                    sxIdentifyForm.getTeacherGrade() == null || sxIdentifyForm.getComprehsvGrade() == null ||
-                    sxIdentifyForm.getCollegePrincipalOpinion() == null)
+            if(sxIdentifyForm.getCorpTeacherOpinion() == null || sxIdentifyForm.getCorpTeacherOpinion().equals("")||
+                    sxIdentifyForm.getCorpOpinion() == null || sxIdentifyForm.getCorpOpinion().equals("")||
+                    sxIdentifyForm.getCorpTeacherGrade() == null || sxIdentifyForm.getCorpTeacherGrade().equals("")||
+                    sxIdentifyForm.getTeacherGrade() == null || sxIdentifyForm.getTeacherGrade().equals("")||
+                    sxIdentifyForm.getComprehsvGrade() == null ||sxIdentifyForm.getComprehsvGrade().equals("")||
+                    sxIdentifyForm.getCollegePrincipalOpinion() == null||sxIdentifyForm.getCollegePrincipalOpinion().equals(""))
             {
                 sxStudent.setIdentifyFlag(false);
                 sxStudentRepository.save(sxStudent);
@@ -60,9 +63,12 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         if(sxReport == null){
             return null;
         }else {
-            if(sxReport.getStage1Comment() == null || sxReport.getStage1Grade() == null ||
-                    sxReport.getStage2Comment() == null || sxReport.getStage2Grade() == null ||
-                    sxReport.getTotalGrade() == null || sxReport.getTotalScore() == null){
+            if(sxReport.getStage1Comment() == null ||  sxReport.getStage1Comment().equals("")||
+                    sxReport.getStage1Grade() == null || sxReport.getStage1Grade().equals("") ||
+                    sxReport.getStage2Comment() == null || sxReport.getStage2Comment().equals("")||
+                    sxReport.getStage2Grade() == null ||sxReport.getStage2Grade().equals("")||
+                    sxReport.getTotalGrade() == null || sxReport.getTotalGrade().equals("")||
+                    sxReport.getTotalScore() == null || sxReport.getTotalScore().equals("")){
                 sxStudent.setReportFlag(false);
                 sxStudentRepository.save(sxStudent);
                 return false;
