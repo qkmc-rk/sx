@@ -3,8 +3,10 @@ package xyz.ruankun.laughingspork.service;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxReport;
 import xyz.ruankun.laughingspork.entity.SxStudent;
+import xyz.ruankun.laughingspork.entity.SxTeacher;
 
 
+import java.util.Date;
 import java.util.List;
 
 public interface SxStudentService {
@@ -15,21 +17,37 @@ public interface SxStudentService {
  *
  */
 
-
     /**
-     * 用学号查找学生信息
+     * 学生查看自己信息(SxStudent)
      * @param StuNo :
      * @return: xyz.ruankun.laughingspork.entity.SxStudent
      */
-    SxStudent getByStuNo(String StuNo);
-
+    SxStudent findSelfInfoByStuNo(String StuNo);
 
     /**
-     * 教师通过教师号查找管理学生
-     * @param teacherNo :
-     * @return: java.util.List<xyz.ruankun.laughingspork.entity.SxStudent>
+     * 返回这个学生相应的校内导师信息
+     * @param sxStudent :
+     * @return: xyz.ruankun.laughingspork.entity.SxTeacher
      */
-    List<SxStudent> getByTeacherNo(String teacherNo);
+
+    SxTeacher getTeacherInfo(SxStudent sxStudent);
+
+    /**
+     * 返回这个学生的鉴定表信息
+     * @param sxStudent :
+     * @return: xyz.ruankun.laughingspork.entity.SxIdentifyForm
+     */
+
+    SxIdentifyForm getSelfIdentifyInfo(SxStudent sxStudent);
+
+    /**
+     * 返回这个学生的报告册信息
+     * @param sxStudent :
+     * @return: xyz.ruankun.laughingspork.entity.SxReport
+     */
+
+    SxReport getSelfReportInfo(SxStudent sxStudent);
+
 
 
     /**
@@ -38,7 +56,7 @@ public interface SxStudentService {
      * @param selfSummary :
      * @return: xyz.ruankun.laughingspork.entity.SxStudent
      */
-    SxIdentifyForm saveIndentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary);
+    SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary);
 
     /**
      * 保存实习阶段的实习总结
@@ -46,13 +64,14 @@ public interface SxStudentService {
      * @param stage1_summary :
      * @return: xyz.ruankun.laughingspork.entity.SxReport
      */
-    SxReport stage1_summary(SxStudent sxStudent, String stage1_summary);
+    SxReport stage1_summary(SxStudent sxStudent, String stage1_summary, String stage1GuideWay, String stage1GuideDate);
 
-    SxReport stage2_summary(SxStudent sxStudent,String stage2_summary);
+    SxReport stage2_summary(SxStudent sxStudent,String stage2_summary,String stage2GuideWay,String stage2GuideDate);
 
-    SxReport stage3_summary(SxStudent sxStudent,String stage3_summary);
-
-    SxStudent findById(long id);
-    SxStudent findByStuNo(String StuNo);
     void save(SxStudent sxStudent);
+
+    SxStudent findByStuNo(String StuNo);
+
+    Boolean testAuth(String tNo,String stuNO);
 }
+

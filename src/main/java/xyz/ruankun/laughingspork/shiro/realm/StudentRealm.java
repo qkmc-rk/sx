@@ -1,6 +1,5 @@
 package xyz.ruankun.laughingspork.shiro.realm;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.service.SxStudentService;
+import xyz.ruankun.laughingspork.util.constant.RoleCode;
 
 public class StudentRealm extends AuthorizingRealm {
     Logger logger = LoggerFactory.getLogger(StudentRealm.class);
@@ -23,18 +23,20 @@ public class StudentRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRole("student");
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        if (principals.getRealmNames().toString().contains(RoleCode.STUDENT)) {
+            simpleAuthorizationInfo.addRole(RoleCode.STUDENT);
+        }
         return simpleAuthorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         //  获得当前用户的用户名
-        String stuNo = (String)token.getPrincipal();
+        String stuNo = (String) token.getPrincipal();
         //  根据用户名查询用户
         SxStudent sxStudent = sxStudentService.findByStuNo(stuNo);
-        if(sxStudent == null){
+        if (sxStudent == null) {
             return null;
         }
         //校验用户名密码是否正确
@@ -48,6 +50,6 @@ public class StudentRealm extends AuthorizingRealm {
 
     @Override
     public String getName() {
-        return "Student";
+        return RoleCode.STUDENT;
     }
 }

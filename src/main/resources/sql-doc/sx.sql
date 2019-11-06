@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Localhost
+ Source Server         : 学校34服务器
  Source Server Type    : MySQL
- Source Server Version : 80015
- Source Host           : localhost:3306
+ Source Server Version : 50719
+ Source Host           : 10.255.251.34:3306
  Source Schema         : sx
 
  Target Server Type    : MySQL
- Target Server Version : 80015
+ Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 25/10/2019 10:34:29
+ Date: 01/11/2019 12:17:02
 */
 
 SET NAMES utf8mb4;
@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `hibernate_sequence`;
 CREATE TABLE `hibernate_sequence`  (
   `next_val` bigint(20) NULL DEFAULT NULL
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of hibernate_sequence
@@ -96,7 +96,7 @@ CREATE TABLE `sx_corp_teacher`  (
   `gmt_create` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `gmt_modified` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '校外导师' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '校外导师' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sx_corp_teacher
@@ -133,7 +133,12 @@ CREATE TABLE `sx_identify_form`  (
   `college_principal_opinion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学院实习领导小组意见',
   `c_p_o_date` date NULL DEFAULT NULL COMMENT '学院实习领导小组意见填写日期',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实习鉴定表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实习鉴定表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sx_identify_form
+-- ----------------------------
+INSERT INTO `sx_identify_form` VALUES (1, '2019209007', '2019-10-27 22:04:46', '2019-11-01 10:49:27', NULL, NULL, 'sh', 'test', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '优秀', '2019-10-30', '123', '2019-10-30');
 
 -- ----------------------------
 -- Table structure for sx_report
@@ -163,7 +168,12 @@ CREATE TABLE `sx_report`  (
   `stage2_guide_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第二阶段指导时间',
   `stage2_guide_way` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '第二阶段实习指导方式',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sx_report
+-- ----------------------------
+INSERT INTO `sx_report` VALUES (1, '2019209007', '2019-10-31 23:24:29', '2019-11-01 10:49:56', '2019-11-14', '2019-10-31', '3月份儿', '现场指导', '自我感觉良好', '2019-03-08', '还阔以，值得表扬', '优', '2019-03-08', '阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好阶段二我感觉没做好', '2019-03-08', '做的啥子哦，不得行做的啥子哦，不得行做的啥子哦，不得行做的啥子哦，不得行做的啥子哦，不得行', '差', '2019-04-05', '良好', '85', '2019.4.5', '线上指导');
 
 -- ----------------------------
 -- Table structure for sx_root
@@ -231,14 +241,13 @@ CREATE TABLE `sx_student`  (
   `teacher_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '校内导师工号',
   `corp_teacher_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '校外导师工号',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学生信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学生信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sx_student
 -- ----------------------------
-INSERT INTO `sx_student` VALUES (1, '2019209007', '21232F297A57A5A743894A0E4A801FC3', '阮坤', 24, '男', '18783551223', '314445437', 'ruankun521', '510623199507266911', '信息工程学院', '101', '农业信息工程', '101001', '2019-10-17 20:10:24', '2019-10-17 20:10:54', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (2, '2018209001', '123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-10-24 16:21:20', '2019-10-24 16:21:20', NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (15, '123456', '123', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-10-24 19:10:31', '2019-10-24 19:10:31', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sx_student` VALUES (1, '2019209007', '21232F297A57A5A743894A0E4A801FC3', '阮坤', 24, '男', '18783551223', '314445437', 'ruankun521', '510623199507266911', '信息工程学院', '101', '农业信息工程', '101001', '2019-10-17 20:10:24', '2019-11-01 01:04:03', NULL, NULL, NULL, NULL, '123456', NULL);
+INSERT INTO `sx_student` VALUES (15, '2018000001', '202CB962AC59075B964B07152D234B70', '王二', 20, '男', '17746767829', '479803313', '17746757820', '5000121999023214557', '信息工程学院', '101', '计算机科学与技术', '100001', '2019-10-24 19:10:31', '2019-11-01 08:33:28', NULL, NULL, NULL, NULL, '123456', NULL);
 
 -- ----------------------------
 -- Table structure for sx_teacher
@@ -254,16 +263,26 @@ CREATE TABLE `sx_teacher`  (
   `id_card` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '身份证号码',
   `college` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学院',
   `college_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学院代码',
-  `gmt_create` datetime(0) NOT NULL COMMENT '创建时间',
+  `gmt_create` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `gmt_modified` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '校内导师信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '校内导师信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sx_teacher
 -- ----------------------------
-INSERT INTO `sx_teacher` VALUES (1, '10000', '12345', '张三', 34, '男', '511524196600000000', '信息工程学院', '10001', '2019-10-23 11:16:56', '2019-10-23 23:09:36');
-INSERT INTO `sx_teacher` VALUES (9, '12345', '123', NULL, NULL, NULL, NULL, NULL, NULL, '2019-10-24 17:22:13', '2019-10-24 17:22:13');
-INSERT INTO `sx_teacher` VALUES (10, '123456', '123', NULL, NULL, NULL, NULL, NULL, NULL, '2019-10-24 17:26:39', '2019-10-24 17:26:39');
+INSERT INTO `sx_teacher` VALUES (1, '10000', '202CB962AC59075B964B07152D234B70', '张三', 21, '男', '511524196600000000', '信息工程学院', '10001', '2019-10-23 11:16:56', '2019-10-31 17:54:19');
+INSERT INTO `sx_teacher` VALUES (10, '123456', '202CB962AC59075B964B07152D234B70', '李四', 31, '女', '511512198732322445', '水利水电学院', '10002', '2019-10-24 17:26:39', '2019-10-31 17:54:11');
+INSERT INTO `sx_teacher` VALUES (13, '10001', 'DB399S7DCHSHC8CS89SD', '王大提尔', 32, '男', '29849878f88978943798374', '信息工程学院', '100012', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (14, '10002', 'DB399S7DCHSHC8CS90SD', '王大提尔', 33, '男', '29849878f88978943798374', '信息工程学院', '100013', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (15, '10003', 'DB399S7DCHSHC8CS91SD', '王大提尔', 34, '男', '29849878f88978943798374', '信息工程学院', '100014', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (16, '10004', 'DB399S7DCHSHC8CS92SD', '王大提尔', 35, '男', '29849878f88978943798374', '信息工程学院', '100015', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (17, '10005', 'DB399S7DCHSHC8CS93SD', '王大提尔', 36, '男', '29849878f88978943798374', '信息工程学院', '100016', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (18, '10006', 'DB399S7DCHSHC8CS94SD', '王大提尔', 37, '男', '29849878f88978943798374', '信息工程学院', '100017', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (19, '10007', 'DB399S7DCHSHC8CS95SD', '王大提尔', 38, '男', '29849878f88978943798374', '信息工程学院', '100018', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (20, '10008', 'DB399S7DCHSHC8CS96SD', '王大提尔', 39, '男', '29849878f88978943798374', '信息工程学院', '100019', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (21, '10009', 'DB399S7DCHSHC8CS97SD', '王大提尔', 40, '男', '29849878f88978943798374', '信息工程学院', '100020', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (22, '10010', 'DB399S7DCHSHC8CS98SD', '王大提尔', 41, '男', '29849878f88978943798374', '信息工程学院', '100021', '2019-10-31 18:00:08', '2019-10-31 18:00:08');
+INSERT INTO `sx_teacher` VALUES (32, '2222', '21232F297A57A5A743894A0E4A801FC3', '22', 22, '22', '22', '223', '432', '2019-10-31 18:28:18', '2019-10-31 18:28:18');
 
 SET FOREIGN_KEY_CHECKS = 1;

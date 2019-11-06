@@ -3,6 +3,8 @@ package xyz.ruankun.laughingspork.service;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxStudent;
 
+import javax.swing.text.html.parser.Entity;
+
 public interface SxIdentifyFormService {
     
     
@@ -17,7 +19,8 @@ public interface SxIdentifyFormService {
      * @param stuNo :
      * @return: xyz.ruankun.laughingspork.entity.SxIdentifyForm
      */
-    SxIdentifyForm getIndentifyInfo(String stuNo);
+    SxIdentifyForm getIdentifyInfo(String stuNo);
 
+    void saveIdentifyForm(SxIdentifyForm sxIdentifyForm);
 
 }

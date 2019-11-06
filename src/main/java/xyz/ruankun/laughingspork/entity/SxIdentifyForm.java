@@ -1,11 +1,16 @@
 package xyz.ruankun.laughingspork.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
 /**
  * 实习鉴定表
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "sx_identify_form")
 public class SxIdentifyForm {
 
@@ -52,20 +57,6 @@ public class SxIdentifyForm {
 	 */
 	@Column(name = "self_summary", nullable = true)
 	private String selfSummary;
-
-	/**
-	 * 实习小组小组长意见
-	 * default value: null
-	 */
-	@Column(name = "leader_opinion", nullable = true)
-	private String leaderOpinion;
-
-	/**
-	 * 实习小组小组长意见签署时间
-	 * default value: null
-	 */
-	@Column(name = "l_o_date", nullable = true)
-	private java.sql.Date lODate;
 
 	/**
 	 * 校外导师意见
@@ -190,22 +181,6 @@ public class SxIdentifyForm {
 		this.selfSummary = selfSummary;
 	}
 	
-	public String getLeaderOpinion() {
-		return this.leaderOpinion;
-	}
-	
-	public void setLeaderOpinion(String leaderOpinion) {
-		this.leaderOpinion = leaderOpinion;
-	}
-	
-	public java.sql.Date getLODate() {
-		return this.lODate;
-	}
-	
-	public void setLODate(java.sql.Date lODate) {
-		this.lODate = lODate;
-	}
-	
 	public String getCorpTeacherOpinion() {
 		return this.corpTeacherOpinion;
 	}
@@ -319,8 +294,6 @@ public class SxIdentifyForm {
 				", gmtEnd=" + gmtEnd +
 				", sxContent='" + sxContent + '\'' +
 				", selfSummary='" + selfSummary + '\'' +
-				", leaderOpinion='" + leaderOpinion + '\'' +
-				", lODate=" + lODate +
 				", corpTeacherOpinion='" + corpTeacherOpinion + '\'' +
 				", corpTeacherScore='" + corpTeacherScore + '\'' +
 				", cTODate=" + cTODate +
