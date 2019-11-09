@@ -15,14 +15,18 @@ public class DateUtil {
     }
 
 
+    public static String getCnDateStr() {
+        return DateToCnDateStr(new java.util.Date());
+    }
+
     /**
      * 返回中文日期
      *
      * @return yyyy年MM月dd日
      */
-    public static String getCnDate() {
+    public static String DateToCnDateStr(java.util.Date javaDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
-        String date = dateFormat.format(System.currentTimeMillis());
+        String date = dateFormat.format(javaDate);
         String result = "";
         String[] cnDate = new String[]{"〇", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
         String ten = "十";

@@ -92,7 +92,7 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(stuNo);
         sxReport.setStage1Comment(stage1_comment);
         sxReport.setStage1Grade(stage1_grade);
-        sxReport.setStage1GuideDate(DateUtil.getCnDate());
+        sxReport.setStage1GuideDate(DateUtil.getCnDateStr());
         sxReportRepository.save(sxReport);
         return sxReport;
     }
@@ -102,7 +102,7 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(stuNo);
         sxReport.setStage2Comment(stage2_comment);
         sxReport.setStage2Grade(stage2_grade);
-        sxReport.setStage2GuideDate(DateUtil.getCnDate());
+        sxReport.setStage2GuideDate(DateUtil.getCnDateStr());
         sxReportRepository.save(sxReport);
         return sxReport;
     }

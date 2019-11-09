@@ -1,9 +1,6 @@
 package xyz.ruankun.laughingspork.service;
 
-import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
-import xyz.ruankun.laughingspork.entity.SxReport;
-import xyz.ruankun.laughingspork.entity.SxStudent;
-import xyz.ruankun.laughingspork.entity.SxTeacher;
+import xyz.ruankun.laughingspork.entity.*;
 
 
 import java.util.Date;
@@ -73,5 +70,7 @@ public interface SxStudentService {
     SxStudent findByStuNo(String StuNo);
 
     Boolean testAuth(String tNo,String stuNO);
+
+    SxStagemanage getNowReportStage();
 }
 

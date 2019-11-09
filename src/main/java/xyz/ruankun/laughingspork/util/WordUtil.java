@@ -1,68 +1,215 @@
 package xyz.ruankun.laughingspork.util;
 
-import cn.afterturn.easypoi.word.WordExportUtil;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.shiro.util.Assert;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.*;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+/**
+ * 这是一个用于处理 word docx中<b>表格</b>的工具类，主要提供：
+ * 1.加载word模板
+ * 2.将内容填上word表格内容中
+ * 3.导出word文件
+ * <b style="color:red;">注意：使用该工具类需要明白导入的模板文件需要具备什么样的格式，因为这个实用性
+ * 做的不是很好，所以一定要按照固定套路来。模板注意事项请参照./Readme.java</b>
+ *
+ * @author ruan
+ */
 public class WordUtil {
-    
+
     /**
-     * 导出word
-     * <p>第一步生成替换后的word文件，只支持docx</p>
-     * <p>第二步下载生成的文件</p>
-     * <p>第三步删除生成的临时文件</p>
-     * 模版变量中变量格式：{{foo}}
+     * 通过路径读入word模板文件
      *
-     * @param templatePath word模板地址
-     * @param tempDir       生成临时文件存放地址
-     * @param fileName     文件名
-     * @param params       替换的参数
-     * @param request      HttpServletRequest
-     * @param response     HttpServletResponse
+     * @param path word模板文件存储的位置
+     * @return 返回WXPFDocument对象
+     * @throws IOException 流异常/xwpf异常
      */
-    public static void exportWord(String templatePath, String tempDir, String fileName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-        Assert.notNull(templatePath, "模板路径不能为空");
-        Assert.notNull(tempDir, "临时文件路径不能为空");
-        Assert.notNull(fileName, "导出文件名不能为空");
-        Assert.isTrue(fileName.endsWith(".docx"), "word导出请使用docx格式");
-        if (!tempDir.endsWith("/")) {
-            tempDir = tempDir + File.separator;
+    public XWPFDocument readXWPFDocumentFromFile(String path) throws IOException {
+        Resource resource = new ClassPathResource(path);
+        InputStream inputStream = resource.getInputStream();
+        XWPFDocument xwpfDocument = new XWPFDocument(inputStream);
+        close(inputStream);
+        return xwpfDocument;
+    }
+
+    /**
+     * 替换段落里面的变量 变量形式： ${variable}
+     *
+     * @param para   传入一个段落
+     * @param params 传入变量以及变量的值
+     */
+    private void replaceInPara(XWPFParagraph para, Map<String, String> params) {
+        if (this.matcher(para.getParagraphText()).find()) {
+            // 将paragraph中的变量内容替换成变量的值，然后在换回去
+            Set<String> keys = params.keySet();
+            String content = para.getParagraphText();
+            StringBuilder contentRs;
+            for (String k : keys) {
+                // 包含子串
+                if (para.getParagraphText().indexOf(k) != -1) {
+
+                    // 在删除旧的run之前需要将带有daoler符号的那个run的格式全部记录下来。
+                    List<XWPFRun> runs = para.getRuns();
+
+                    // 初始化需要保存的变量
+                    int textPosition = 0;
+                    int fontSize = 0;
+                    String fontFamily = "";
+                    // 使用会抛出异常
+                    // int    characterSpacing = 0;
+                    String color = "";
+                    int kerning = 0;
+                    UnderlinePatterns underline = null;
+                    VerticalAlign subscript = null;
+
+                    for (XWPFRun run :
+                            runs) {
+                        // $符号是变量起始位置的符号,这个$符的格式就是变量在word中的格式
+                        if (-1 != run.text().indexOf("$")) {
+                            textPosition = run.getTextPosition();
+                            fontSize = run.getFontSize();
+                            fontFamily = run.getFontFamily();
+                            // characterSpacing = run.getCharacterSpacing(); //使用会抛出异常
+                            color = run.getColor();
+                            kerning = run.getKerning();
+                            underline = run.getUnderline();
+                            subscript = run.getSubscript();
+                        }
+                    }
+                    // 设置新的run之前删除旧的run
+                    int size = para.getRuns().size();
+                    while (size > 0) {
+                        para.removeRun(0);
+                        size = para.getRuns().size();
+                    }
+                    para.removeRun(0);  //这一句是多余的吧?既生之,何弃之.
+
+                    // 设置新的run
+                    int start = content.indexOf(k);
+                    int end = start + k.length();
+                    contentRs = new StringBuilder();
+                    contentRs.append(content.substring(0, start));
+                    contentRs.append(params.get(k));
+                    contentRs.append(content.substring(end));
+                    para.insertNewRun(0).setText(contentRs.toString());
+
+                    // 设置para的run的格式等内容
+                    para.getRuns().get(0).setFontFamily(fontFamily);
+                    para.getRuns().get(0).setFontSize(fontSize);
+                    // para.getRuns().get(0).setCharacterSpacing(characterSpacing);//使用会抛出异常
+                    para.getRuns().get(0).setColor(color);
+                    para.getRuns().get(0).setUnderline(underline);
+                    para.getRuns().get(0).setTextPosition(textPosition);
+                    para.getRuns().get(0).setKerning(kerning);
+                    para.getRuns().get(0).setSubscript(subscript);
+                }
+            }
         }
-        File dir = new File(tempDir);
-        if (!dir.exists()) {
-            dir.mkdirs();
+    }
+
+    /**
+     * 替换表格里面的变量 ${variable}
+     *
+     * @param doc
+     * @param params
+     */
+    public void replaceInTable(XWPFDocument doc, Map<String, String> params) {
+        Iterator<XWPFTable> iterator = doc.getTablesIterator();
+        XWPFTable table;
+        List<XWPFTableRow> rows;
+        List<XWPFTableCell> cells;
+        List<XWPFParagraph> paras;
+        while (iterator.hasNext()) {
+            table = iterator.next();
+            rows = table.getRows();
+            for (XWPFTableRow row : rows) {
+                cells = row.getTableCells();
+                for (XWPFTableCell cell : cells) {
+                    paras = cell.getParagraphs();
+                    for (XWPFParagraph para : paras) {
+                        this.replaceInPara(para, params);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 将word docx文件保存到本地文件中
+     *
+     * @param docx     当前编辑的docx文件
+     * @param fileName 要保存的docx文件的名字,不包括后缀<b>.docx</b>
+     * @param path
+     */
+    public void printToFile(XWPFDocument docx, String fileName, String path) {
+        File file = new File(path + fileName + ".docx");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
         }
         try {
-            String userAgent = request.getHeader("user-agent").toLowerCase();
-            if (userAgent.contains("msie") || userAgent.contains("like gecko")) {
-                fileName = URLEncoder.encode(fileName, "UTF-8");
-            } else {
-                fileName = new String(fileName.getBytes("utf-8"), "ISO-8859-1");
-            }
-            XWPFDocument doc = WordExportUtil.exportWord07(templatePath, params);
-            String tmpPath = tempDir + fileName;
-            FileOutputStream fos = new FileOutputStream(tmpPath);
-            doc.write(fos);
-            // 设置强制下载不打开
-            response.setContentType("application/force-download");
-            // 设置文件名
-            response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);
-            OutputStream out = response.getOutputStream();
-            doc.write(out);
-            out.close();
-        } catch (Exception e) {
+            FileOutputStream outputStream = new FileOutputStream(file);
+            docx.write(outputStream);
+            close(outputStream);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } finally {
-//            delAllFile(tempDir);//这一步看具体需求，要不要删
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
+
+    /**
+     * 正则表达式 匹配形如 ${userName} 的表达式
+     *
+     * @param str 字符串
+     * @return 返回 Matcher 对象
+     */
+    private Matcher matcher(String str) {
+        String regStr = "\\$\\{(.+?)\\}";
+        Pattern pattern = Pattern.compile(regStr, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(str);
+        return matcher;
+    }
+
+    /**
+     * 关闭流
+     * 之所以封装 是因为有try catch代码比较乱
+     *
+     * @param inputStream 输入流对象
+     */
+    public void close(InputStream inputStream) {
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 关闭输出流
+     * 之所以封装 是因为有try catch 代码比较乱
+     *
+     * @param outputStream 输出流对象
+     */
+    public void close(OutputStream outputStream) {
+        if (outputStream != null) {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    /* end */
 }

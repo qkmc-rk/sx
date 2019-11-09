@@ -4,6 +4,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 
 @Entity
@@ -154,6 +155,7 @@ public class SxReport {
     @Column(name = "stage2_guide_way", nullable = true)
     private String stage2GuideWay;
 
+
     public Long getId() {
         return this.id;
     }
@@ -296,6 +298,22 @@ public class SxReport {
 
     public void setStage2GuideWay(String stage2GuideWay) {
         this.stage2GuideWay = stage2GuideWay;
+    }
+
+    public Date getGmtStart() {
+        return gmtStart;
+    }
+
+    public void setGmtStart(Date gmtStart) {
+        this.gmtStart = gmtStart;
+    }
+
+    public Date getGmtEnd() {
+        return gmtEnd;
+    }
+
+    public void setGmtEnd(Date gmtEnd) {
+        this.gmtEnd = gmtEnd;
     }
 
     @Override

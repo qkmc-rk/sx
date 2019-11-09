@@ -4,15 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
-import xyz.ruankun.laughingspork.entity.SxReport;
-import xyz.ruankun.laughingspork.entity.SxStudent;
-import xyz.ruankun.laughingspork.entity.SxTeacher;
-import xyz.ruankun.laughingspork.repository.SxIdentifyFormRepository;
-import xyz.ruankun.laughingspork.repository.SxReportRepository;
-import xyz.ruankun.laughingspork.repository.SxTeacherRepository;
+import xyz.ruankun.laughingspork.entity.*;
+import xyz.ruankun.laughingspork.repository.*;
 import xyz.ruankun.laughingspork.service.SxStudentService;
-import xyz.ruankun.laughingspork.repository.SxStudentRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +26,10 @@ public class SxStudentServiceImpl implements SxStudentService {
 
     @Autowired
     private SxTeacherRepository sxTeacherRepository;
+
+    @Autowired
+    private SxStagemanageRepository sxStagemanageRepository;
+
 
 
     @Override
@@ -106,4 +104,11 @@ public class SxStudentServiceImpl implements SxStudentService {
                 return false;
             } else return true;
     }
+
+    @Override
+    public SxStagemanage getNowReportStage() {
+        SxStagemanage sxStagemanage = sxStagemanageRepository.getSxStagemanageById(1);
+        return sxStagemanage;
+    }
+
 }
