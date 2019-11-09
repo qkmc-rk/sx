@@ -70,7 +70,7 @@ public class UserController {
         return ControllerUtil.getSuccessResultBySelf("注销成功");
     }
 
-    @ApiOperation(value = "返回当前填写阶段信息", httpMethod = "GET")
+    @ApiOperation(value = "返回当前阶段信息", httpMethod = "GET")
     @GetMapping("/reportStage")
     @RequiresAuthentication
     public ResponseVO nowReportStage() {
