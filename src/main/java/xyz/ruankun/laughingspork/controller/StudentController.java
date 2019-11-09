@@ -18,14 +18,10 @@ import xyz.ruankun.laughingspork.service.SxTeacherService;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.DateUtil;
 import xyz.ruankun.laughingspork.util.RenderWordUtil;
-import xyz.ruankun.laughingspork.util.WordUtilOld;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 import java.util.*;
 
 

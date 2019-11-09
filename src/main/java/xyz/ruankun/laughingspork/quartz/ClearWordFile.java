@@ -20,13 +20,13 @@ public class ClearWordFile {
     public void ClearFile() {
         try {
             final long interval = 24 * 360000;
-            Resource resource = new ClassPathResource("static\\");
             long now = new Date().getTime();
-            File file = new File(resource.getURL().getPath());
+            File file = new File(System.getProperty("user.dir") + "\\static\\");
             if (file.exists()) {
                 File[] fileList = file.listFiles();
                 for (File f : fileList
                 ) {
+                    logger.info(f.getPath());
                     if ((now - f.lastModified()) / interval > 0) f.delete();
                 }
             }

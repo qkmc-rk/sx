@@ -150,10 +150,11 @@ public class WordUtil {
      * @param path
      */
     public String printToFile(XWPFDocument docx, String fileName, String path) {
-        Resource resource = new ClassPathResource(path);
+        path = System.getProperty("user.dir") + "\\" + path;
         fileName += ".docx";
         try {
-            File file = new File(resource.getURL().getPath() + fileName);
+            logger.info(path + fileName);
+            File file = new File(path + fileName);
             if (!file.exists()) {
                 file.createNewFile();
             }

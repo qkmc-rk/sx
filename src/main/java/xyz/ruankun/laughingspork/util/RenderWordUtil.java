@@ -4,9 +4,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
-import java.util.Date;
 import java.util.Map;
 
 public class RenderWordUtil {
