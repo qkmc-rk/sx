@@ -150,23 +150,38 @@ public class StudentController {
     @ApiOperation(value = "下载学生实习鉴定表", httpMethod = "GET")
     @GetMapping("/identify/form")
     @RequiresRoles(RoleCode.STUDENT)
-    public void downloadIdentify(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseVO downloadIdentify() {
         try {
             SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
             SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
             if (sxIdentifyForm != null) {
-                Map<String, Object> params = new HashMap<>();
-                params.put("${stuName}", sxStudent.getName());
-                params.put("${stuNo}", sxStudent.getStuNo());
+                Map<String, String> params = new HashMap<>();
                 params.put("${college}", sxStudent.getCollege());
                 params.put("${major}", sxStudent.getMajor());
-                params.put("${corpName}", sxStudent.getCorpName());
+                params.put("${stu_name}", sxStudent.getName());
+                params.put("${stu_no}", sxStudent.getStuNo());
+                params.put("${corp_name}", sxStudent.getCorpName());
+                params.put("${gmt_start}", DateUtil.DateToCnDateStr(sxIdentifyForm.getGmtStart()));
+                params.put("${gmt_end}", DateUtil.DateToCnDateStr(sxIdentifyForm.getGmtEnd()));
+                params.put("${fill_date}", DateUtil.getCnDateStr());
                 params.put("${content}", sxIdentifyForm.getSxContent());
-                params.put("${selfSummary}", sxIdentifyForm.getSelfSummary());
+                params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
+                params.put("${corp_tacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
+                params.put("${corp_tacher_score}", sxIdentifyForm.getCorpTeacherScore());
+                params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
+                params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
+                params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
+                params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
+                logger.info(params.toString());
+                String path = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
+                if (path != null) {
+                    return ControllerUtil.getSuccessResultBySelf(path);
+                }
             }
         } catch (Exception e) {
             logger.error(e.toString());
         }
+        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }
 
 

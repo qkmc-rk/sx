@@ -1,6 +1,5 @@
 package xyz.ruankun.laughingspork.quartz;
 
-import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;

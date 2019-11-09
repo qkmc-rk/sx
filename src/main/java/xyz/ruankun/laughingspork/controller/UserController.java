@@ -41,7 +41,7 @@ public class UserController {
             @ApiImplicitParam(name = "password", value = "123", required = true, paramType = "query"),
             @ApiImplicitParam(name = "loginType", value = "Teacher", required = true, paramType = "query")
     })
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public ResponseVO login(String account, String password, String loginType) {
         Subject subject = SecurityUtils.getSubject();
         //  设置Session不过期
