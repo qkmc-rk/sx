@@ -4,10 +4,14 @@ import io.swagger.annotations.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import xyz.ruankun.laughingspork.entity.SxStagemanage;
+import xyz.ruankun.laughingspork.service.SxStudentService;
 import xyz.ruankun.laughingspork.shiro.UserToken;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
@@ -18,11 +22,15 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/user")
-@Api(tags = {"用户登录、注销"})
+@Api(tags = {"用户公用接口"})
 @CrossOrigin
 public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
+
+
+    @Autowired
+    SxStudentService sxStudentService;
 
     @ApiOperation(value = "用户登录接口", notes = "account类型与loginType一一对应,严格区分大小写.\n" +
             "account(loginType):    " +
@@ -56,8 +64,17 @@ public class UserController {
 
     @ApiOperation(value = "用户注销接口")
     @GetMapping("/logout")
+    @RequiresAuthentication
     public ResponseVO logout() {
         SecurityUtils.getSubject().logout();
         return ControllerUtil.getSuccessResultBySelf("注销成功");
+    }
+
+    @ApiOperation(value = "返回当前报告册阶段信息", httpMethod = "GET")
+    @GetMapping("/reportStage")
+    @RequiresAuthentication
+    public ResponseVO nowReportStage() {
+        SxStagemanage sxStagemanage = sxStudentService.getNowReportStage();
+        return ControllerUtil.getSuccessResultBySelf(sxStagemanage);
     }
 }

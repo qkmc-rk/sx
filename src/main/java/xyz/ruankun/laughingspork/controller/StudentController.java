@@ -26,9 +26,7 @@ import xyz.ruankun.laughingspork.vo.ResponseVO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -53,21 +51,11 @@ public class StudentController {
 
     @ApiOperation(value = "返回当前报告册阶段信息", httpMethod = "GET")
     @GetMapping("/reportStage")
-    public ResponseVO nowReportStage(){
+    public ResponseVO nowReportStage() {
         SxStagemanage sxStagemanage = sxStudentService.getNowReportStage();
-        if (sxStagemanage.getIsReportStage1Open()){
-            return ControllerUtil.getDataResult(1);
-        }
-        if (sxStagemanage.getIsReportStage2Open()){
-            return ControllerUtil.getDataResult(2);
-        }
-        if (sxStagemanage.getIsReportStage3Open()){
-            return ControllerUtil.getDataResult(3);
-        }
-        return ControllerUtil.getFalseResultMsgBySelf("没有开启的阶段");
+        return ControllerUtil.getSuccessResultBySelf(sxStagemanage);
+
     }
-
-
 
 
     @ApiOperation(value = "学生查看自己信息", httpMethod = "GET")
