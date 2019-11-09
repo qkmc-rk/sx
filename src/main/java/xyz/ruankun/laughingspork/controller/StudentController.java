@@ -173,7 +173,7 @@ public class StudentController {
     @ApiOperation(value = "下载学生实习报告册", httpMethod = "GET")
     @GetMapping("/report/form")
     @RequiresRoles(RoleCode.STUDENT)
-    public void downloadReport(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseVO downloadReport() {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
         SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
@@ -201,7 +201,11 @@ public class StudentController {
             params.put("${gmt_start}", DateUtil.DateToCnDateStr(sxReport.getGmtStart()));
             params.put("${gmt_end}", DateUtil.DateToCnDateStr(sxReport.getGmtEnd()));
             params.put("${fill_date}", DateUtil.getCnDateStr());
-            RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params, response);
+            String path = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
+            if (path != null) {
+                return ControllerUtil.getSuccessResultBySelf(path);
+            }
         }
+        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }
 }

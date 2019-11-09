@@ -1,7 +1,8 @@
 package xyz.ruankun.laughingspork.util;
 
-import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -21,6 +22,8 @@ import java.util.regex.Pattern;
  * @author ruan
  */
 public class WordUtil {
+
+    public static final Logger logger = LoggerFactory.getLogger(WordUtil.class);
 
     /**
      * 通过路径读入word模板文件
@@ -146,24 +149,22 @@ public class WordUtil {
      * @param fileName 要保存的docx文件的名字,不包括后缀<b>.docx</b>
      * @param path
      */
-    public void printToFile(XWPFDocument docx, String fileName, String path) {
-        File file = new File(path + fileName + ".docx");
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-        }
+    public String printToFile(XWPFDocument docx, String fileName, String path) {
+        Resource resource = new ClassPathResource(path);
+        fileName += ".docx";
         try {
+            File file = new File(resource.getURL().getPath() + fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
             FileOutputStream outputStream = new FileOutputStream(file);
             docx.write(outputStream);
             close(outputStream);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+
+            return fileName;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.toString());
+            return null;
         }
     }
 
