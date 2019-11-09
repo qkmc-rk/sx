@@ -172,7 +172,6 @@ public class StudentController {
                 params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
                 params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
                 params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
-                logger.info(params.toString());
                 String path = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
                 if (path != null) {
                     return ControllerUtil.getSuccessResultBySelf(path);
