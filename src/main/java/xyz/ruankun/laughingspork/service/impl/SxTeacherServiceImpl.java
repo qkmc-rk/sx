@@ -1,7 +1,6 @@
 package xyz.ruankun.laughingspork.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Service;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxReport;
@@ -92,7 +91,7 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(stuNo);
         sxReport.setStage1Comment(stage1_comment);
         sxReport.setStage1Grade(stage1_grade);
-        sxReport.setStage1GuideDate(DateUtil.getCnDateStr());
+        sxReport.setStage1GuideDate(DateUtil.getNowUpperDate());
         sxReportRepository.save(sxReport);
         return sxReport;
     }
@@ -102,7 +101,7 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(stuNo);
         sxReport.setStage2Comment(stage2_comment);
         sxReport.setStage2Grade(stage2_grade);
-        sxReport.setStage2GuideDate(DateUtil.getCnDateStr());
+        sxReport.setStage2GuideDate(DateUtil.getNowUpperDate());
         sxReportRepository.save(sxReport);
         return sxReport;
     }

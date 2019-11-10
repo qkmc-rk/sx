@@ -157,17 +157,18 @@ public class StudentController {
                 params.put("${stu_name}", sxStudent.getName());
                 params.put("${stu_no}", sxStudent.getStuNo());
                 params.put("${corp_name}", sxStudent.getCorpName());
-                params.put("${gmt_start}", DateUtil.DateToCnDateStr(sxIdentifyForm.getGmtStart()));
-                params.put("${gmt_end}", DateUtil.DateToCnDateStr(sxIdentifyForm.getGmtEnd()));
-                params.put("${fill_date}", DateUtil.getCnDateStr());
+                params.put("${gmt_start}", DateUtil.getUpperDate(sxIdentifyForm.getGmtStart()));
+                params.put("${gmt_end}", DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd()));
+                params.put("${fill_date}", DateUtil.getNowUpperDate());
                 params.put("${content}", sxIdentifyForm.getSxContent());
                 params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
-                params.put("${corp_tacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
-                params.put("${corp_tacher_score}", sxIdentifyForm.getCorpTeacherScore());
+                params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
+                params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
                 params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
                 params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
                 params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
                 params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
+                params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
                 String path = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
                 if (path != null) {
                     return ControllerUtil.getSuccessResultBySelf(path);
@@ -208,9 +209,9 @@ public class StudentController {
             params.put("${teacher}", sxTeacher.getName());
             params.put("${total_grade}", sxReport.getTotalGrade());
             params.put("${total_score}", sxReport.getTotalScore());
-            params.put("${gmt_start}", DateUtil.DateToCnDateStr(sxReport.getGmtStart()));
-            params.put("${gmt_end}", DateUtil.DateToCnDateStr(sxReport.getGmtEnd()));
-            params.put("${fill_date}", DateUtil.getCnDateStr());
+            params.put("${gmt_start}", DateUtil.getUpperDate(sxReport.getGmtStart()));
+            params.put("${gmt_end}", DateUtil.getUpperDate(sxReport.getGmtEnd()));
+            params.put("${fill_date}", DateUtil.getNowUpperDate());
             String path = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
             if (path != null) {
                 return ControllerUtil.getSuccessResultBySelf(path);
