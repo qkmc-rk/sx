@@ -153,7 +153,6 @@ public class WordUtil {
         path = System.getProperty("user.dir") + "\\" + path;
         fileName += ".docx";
         try {
-            logger.info(path + fileName);
             File file = new File(path + fileName);
             if (!file.exists()) {
                 file.createNewFile();
