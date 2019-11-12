@@ -28,4 +28,6 @@ public class RespCode {
 
     public static final String MSG_UNKNOWN_ERROR = "未知错误";
 
+    public static final String MSG_STAGE_ERROR = "您选择的阶段状态未开启";
+
 }

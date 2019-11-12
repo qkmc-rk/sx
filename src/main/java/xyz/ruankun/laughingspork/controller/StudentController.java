@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.impl.STCellStyleXfIdImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,7 +124,11 @@ public class StudentController {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
             //保存鉴定表内容到数据库
-            return ControllerUtil.getDataResult(sxStudentService.stage1_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1_summary, stage1GuideWay, stage1GuideDate));
+            SxReport sxReport = sxStudentService.stage1_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1_summary, stage1GuideWay, stage1GuideDate);
+            if (sxReport == null){
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
+            }
+            return ControllerUtil.getDataResult(sxReport);
         }
     }
 
@@ -138,7 +143,11 @@ public class StudentController {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
             //保存鉴定表内容到数据库
-            return ControllerUtil.getDataResult(sxStudentService.stage2_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2_summary, stage2GuideWay, stage2GuideDate));
+            SxReport sxReport = sxStudentService.stage2_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2_summary, stage2GuideWay, stage2GuideDate);
+            if (sxReport == null){
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
+            }
+            return ControllerUtil.getDataResult(sxReport);
         }
     }
 

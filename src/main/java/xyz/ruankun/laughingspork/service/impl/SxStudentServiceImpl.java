@@ -48,6 +48,8 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Override
     public SxReport stage1_summary(SxStudent sxStudent, String stage1_summary, String stage1GuideWay, String stage1GuideDate) {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        SxStagemanage sxStagemanage = sxStagemanageRepository.getSxStagemanageById(1);
+        if (!sxStagemanage.getIsReportStage1Open()){return null;}
         sxReport.setStage1Summary(stage1_summary);
         sxReport.setStage1GuideWay(stage1GuideWay);
         sxReport.setStage1GuideDate(stage1GuideDate);
@@ -68,6 +70,8 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Override
     public SxReport stage2_summary(SxStudent sxStudent, String stage2_summary, String stage2GuideWay, String stage2GuideDate) {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        SxStagemanage sxStagemanage = sxStagemanageRepository.getSxStagemanageById(1);
+        if (!sxStagemanage.getIsReportStage2Open()){return null;}
         sxReport.setStage2Summary(stage2_summary);
         sxReport.setStage2GuideWay(stage2GuideWay);
         sxReport.setStage2GuideDate(stage2GuideDate);
