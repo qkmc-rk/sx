@@ -30,6 +30,9 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Autowired
     private SxStagemanageRepository sxStagemanageRepository;
 
+    @Autowired
+    private SxStudentRepository sxStudentRepository;
+
 
 
     @Override
@@ -113,6 +116,22 @@ public class SxStudentServiceImpl implements SxStudentService {
     public SxStagemanage getNowReportStage() {
         SxStagemanage sxStagemanage = sxStagemanageRepository.getSxStagemanageById(1);
         return sxStagemanage;
+    }
+
+    @Override
+    public List<SxTeacher> collegeTeacher(SxStudent sxStudent) {
+        List<SxTeacher> sxTeacher = sxTeacherRepository.findAllByCollegeCode(sxStudent.getCollegeCode());
+        if (sxTeacher.isEmpty()){
+            return null;
+        }
+        return sxTeacher;
+    }
+
+    @Override
+    public SxStudent choseCollegeTeacher(SxStudent sxStudent, String tNO) {
+        sxStudent.setTeacherNo(tNO);
+        sxStudentRepository.save(sxStudent);
+        return sxStudent;
     }
 
 }
