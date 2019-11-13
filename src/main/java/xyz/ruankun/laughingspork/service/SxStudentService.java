@@ -72,5 +72,9 @@ public interface SxStudentService {
     Boolean testAuth(String tNo,String stuNO);
 
     SxStagemanage getNowReportStage();
+
+    List<SxTeacher> collegeTeacher(SxStudent sxStudent);
+
+    SxStudent choseCollegeTeacher(SxStudent sxStudent, String tNO);
 }
 

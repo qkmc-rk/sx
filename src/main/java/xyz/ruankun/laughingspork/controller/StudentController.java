@@ -228,4 +228,27 @@ public class StudentController {
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }
+
+    @ApiOperation(value = "返回学生所在学院的教师信息", httpMethod = "GET")
+    @GetMapping("/teacher")
+    public ResponseVO getCollegeTeacher(){
+        List<SxTeacher> sxTeachers = sxStudentService.collegeTeacher((SxStudent) SecurityUtils.getSubject().getPrincipal());
+        if (sxTeachers == null){
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
+        }
+        return ControllerUtil.getDataResult(sxTeachers);
+    }
+
+    @ApiOperation(value = "学生选择自己导师信息", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tNo", value = "教师编号", required = true),
+    })
+    @PostMapping("/teacher")
+    public ResponseVO choseTeacher(@RequestParam String tNo){
+        if (tNo==null){
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
+        }
+        SxStudent sxStudent = sxStudentService.choseCollegeTeacher((SxStudent) SecurityUtils.getSubject().getPrincipal(),tNo);
+        return ControllerUtil.getDataResult(sxStudent);
+    }
 }
