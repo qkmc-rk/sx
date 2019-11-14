@@ -19,7 +19,6 @@ public class RespCode {
 
     public static final String MSG_UN_AUTHORIZED = "未经授权";
 
-
     public static final String MSG_NOT_FOUND_DATA = "参数错误或数据不存在";
 
     public static final String MSG_INCOMPLETE_DATA = "参数不完整";
@@ -29,5 +28,4 @@ public class RespCode {
     public static final String MSG_UNKNOWN_ERROR = "未知错误";
 
     public static final String MSG_STAGE_ERROR = "您选择的阶段状态未开启";
-
 }

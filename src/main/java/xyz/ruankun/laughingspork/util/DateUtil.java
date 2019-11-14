@@ -32,6 +32,7 @@ public class DateUtil {
      * @return yyyy年MM月dd日
      */
     public static String getUpperDate(java.util.Date javaDate) {
+        if (javaDate == null) return "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = dateFormat.format(javaDate);
         //支持yyyy-MM-dd、yyyy/MM/dd、yyyyMMdd等格式

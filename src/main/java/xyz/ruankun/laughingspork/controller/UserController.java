@@ -10,7 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
+import xyz.ruankun.laughingspork.entity.SxReport;
 import xyz.ruankun.laughingspork.entity.SxStagemanage;
+import xyz.ruankun.laughingspork.entity.SxStudent;
+import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
+import xyz.ruankun.laughingspork.service.SxReportService;
 import xyz.ruankun.laughingspork.service.SxStudentService;
 import xyz.ruankun.laughingspork.shiro.UserToken;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
@@ -32,6 +37,12 @@ public class UserController {
     @Autowired
     SxStudentService sxStudentService;
 
+    @Autowired
+    SxReportService sxReportService;
+
+    @Autowired
+    SxIdentifyFormService sxIdentifyFormService;
+
     @ApiOperation(value = "用户登录接口", notes = "account类型与loginType一一对应,严格区分大小写.\n" +
             "account(loginType):    " +
             "学生学号(Student)、校内导师编号(Teacher)、",
@@ -51,6 +62,20 @@ public class UserController {
             HashMap<String, Object> data = new HashMap<>();
             //登录成功返回SessionId
             data.put("Authorization", subject.getSession().getId());
+
+            //判断是否有鉴定表和报告册记录 否则创建
+            if (sxReportService.getReportInfo(account) == null){
+                SxReport sxReport = new SxReport();
+                sxReport.setStuNo(account);
+                sxReportService.saveReport(sxReport);
+            }
+            if (sxIdentifyFormService.getIdentifyInfo(account) == null){
+                SxIdentifyForm sxIdentifyForm = new SxIdentifyForm();
+                sxIdentifyForm.setStuNo(account);
+                sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm);
+            }
+
+
             return ControllerUtil.getSuccessResultBySelf(data);
         } catch (IncorrectCredentialsException e) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);

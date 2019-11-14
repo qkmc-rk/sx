@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.impl.STCellStyleXfIdImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import xyz.ruankun.laughingspork.service.SxStudentService;
 import xyz.ruankun.laughingspork.service.SxTeacherService;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.DateUtil;
+import xyz.ruankun.laughingspork.util.EntityUtil;
 import xyz.ruankun.laughingspork.util.RenderWordUtil;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.util.constant.RoleCode;
@@ -125,7 +125,7 @@ public class StudentController {
         } else {
             //保存鉴定表内容到数据库
             SxReport sxReport = sxStudentService.stage1_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1_summary, stage1GuideWay, stage1GuideDate);
-            if (sxReport == null){
+            if (sxReport == null) {
                 return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
             }
             return ControllerUtil.getDataResult(sxReport);
@@ -144,7 +144,7 @@ public class StudentController {
         } else {
             //保存鉴定表内容到数据库
             SxReport sxReport = sxStudentService.stage2_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2_summary, stage2GuideWay, stage2GuideDate);
-            if (sxReport == null){
+            if (sxReport == null) {
                 return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
             }
             return ControllerUtil.getDataResult(sxReport);
@@ -156,35 +156,32 @@ public class StudentController {
     @GetMapping("/identify/form")
     @RequiresRoles(RoleCode.STUDENT)
     public ResponseVO downloadIdentify() {
-        try {
-            SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
-            SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
-            if (sxIdentifyForm != null) {
-                Map<String, String> params = new HashMap<>();
-                params.put("${college}", sxStudent.getCollege());
-                params.put("${major}", sxStudent.getMajor());
-                params.put("${stu_name}", sxStudent.getName());
-                params.put("${stu_no}", sxStudent.getStuNo());
-                params.put("${corp_name}", sxStudent.getCorpName());
-                params.put("${gmt_start}", DateUtil.getUpperDate(sxIdentifyForm.getGmtStart()));
-                params.put("${gmt_end}", DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd()));
-                params.put("${fill_date}", DateUtil.getNowUpperDate());
-                params.put("${content}", sxIdentifyForm.getSxContent());
-                params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
-                params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
-                params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
-                params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
-                params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
-                params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
-                params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
-                params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
-                String path = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
-                if (path != null) {
-                    return ControllerUtil.getSuccessResultBySelf(path);
-                }
-            }
-        } catch (Exception e) {
-            logger.error(e.toString());
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
+
+        EntityUtil.setNullFiledToString(sxStudent);
+        EntityUtil.setNullFiledToString(sxIdentifyForm);
+        Map<String, String> params = new HashMap<>();
+        params.put("${college}", sxStudent.getCollege());
+        params.put("${major}", sxStudent.getMajor());
+        params.put("${stu_name}", sxStudent.getName());
+        params.put("${stu_no}", sxStudent.getStuNo());
+        params.put("${corp_name}", sxStudent.getCorpName());
+        params.put("${gmt_start}", DateUtil.getUpperDate(sxIdentifyForm.getGmtStart()));
+        params.put("${gmt_end}", DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd()));
+        params.put("${fill_date}", DateUtil.getNowUpperDate());
+        params.put("${content}", sxIdentifyForm.getSxContent());
+        params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
+        params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
+        params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
+        params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
+        params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
+        params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
+        params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
+        params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
+        String path = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
+        if (path != null) {
+            return ControllerUtil.getSuccessResultBySelf(path);
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }
@@ -197,43 +194,45 @@ public class StudentController {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
         SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
-        if (sxReport != null) {
-            Map<String, String> params = new HashMap<>();
-            params.put("${stu_name}", sxStudent.getName());
-            params.put("${stu_no}", sxStudent.getStuNo());
-            params.put("${college}", sxStudent.getCollege());
-            params.put("${major}", sxStudent.getMajor());
-            params.put("${corp_name}", sxStudent.getCorpName());
-            params.put("${corp_position}", sxStudent.getCorpPosition());
-            params.put("${stage1_guide_date}", sxReport.getStage1GuideDate());
-            params.put("${stage1_guide_way}", sxReport.getStage1GuideWay());
-            params.put("${stage1_summary}", sxReport.getStage1Summary());
-            params.put("${stage1_comment}", sxReport.getStage1Comment());
-            params.put("${stage1_grade}", sxReport.getStage1Grade());
-            params.put("${stage2_guide_date}", sxReport.getStage2GuideDate());
-            params.put("${stage2_guide_way}", sxReport.getStage2GuideWay());
-            params.put("${stage2_summary}", sxReport.getStage2Summary());
-            params.put("${stage2_comment}", sxReport.getStage2Comment());
-            params.put("${stage2_grade}", sxReport.getStage2Grade());
-            params.put("${teacher}", sxTeacher.getName());
-            params.put("${total_grade}", sxReport.getTotalGrade());
-            params.put("${total_score}", sxReport.getTotalScore());
-            params.put("${gmt_start}", DateUtil.getUpperDate(sxReport.getGmtStart()));
-            params.put("${gmt_end}", DateUtil.getUpperDate(sxReport.getGmtEnd()));
-            params.put("${fill_date}", DateUtil.getNowUpperDate());
-            String path = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
-            if (path != null) {
-                return ControllerUtil.getSuccessResultBySelf(path);
-            }
+
+        EntityUtil.setNullFiledToString(sxStudent);
+        EntityUtil.setNullFiledToString(sxReport);
+        EntityUtil.setNullFiledToString(sxTeacher);
+        Map<String, String> params = new HashMap<>();
+        params.put("${stu_name}", sxStudent.getName());
+        params.put("${stu_no}", sxStudent.getStuNo());
+        params.put("${college}", sxStudent.getCollege());
+        params.put("${major}", sxStudent.getMajor());
+        params.put("${corp_name}", sxStudent.getCorpName());
+        params.put("${corp_position}", sxStudent.getCorpPosition());
+        params.put("${stage1_guide_date}", sxReport.getStage1GuideDate());
+        params.put("${stage1_guide_way}", sxReport.getStage1GuideWay());
+        params.put("${stage1_summary}", sxReport.getStage1Summary());
+        params.put("${stage1_comment}", sxReport.getStage1Comment());
+        params.put("${stage1_grade}", sxReport.getStage1Grade());
+        params.put("${stage2_guide_date}", sxReport.getStage2GuideDate());
+        params.put("${stage2_guide_way}", sxReport.getStage2GuideWay());
+        params.put("${stage2_summary}", sxReport.getStage2Summary());
+        params.put("${stage2_comment}", sxReport.getStage2Comment());
+        params.put("${stage2_grade}", sxReport.getStage2Grade());
+        params.put("${teacher}", sxTeacher.getName());
+        params.put("${total_grade}", sxReport.getTotalGrade());
+        params.put("${total_score}", sxReport.getTotalScore());
+        params.put("${gmt_start}", DateUtil.getUpperDate(sxReport.getGmtStart()));
+        params.put("${gmt_end}", DateUtil.getUpperDate(sxReport.getGmtEnd()));
+        params.put("${fill_date}", DateUtil.getNowUpperDate());
+        String path = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
+        if (path != null) {
+            return ControllerUtil.getSuccessResultBySelf(path);
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }
 
     @ApiOperation(value = "返回学生所在学院的教师信息", httpMethod = "GET")
     @GetMapping("/teacher")
-    public ResponseVO getCollegeTeacher(){
+    public ResponseVO getCollegeTeacher() {
         List<SxTeacher> sxTeachers = sxStudentService.collegeTeacher((SxStudent) SecurityUtils.getSubject().getPrincipal());
-        if (sxTeachers == null){
+        if (sxTeachers == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
         }
         return ControllerUtil.getDataResult(sxTeachers);
@@ -244,11 +243,11 @@ public class StudentController {
             @ApiImplicitParam(name = "tNo", value = "教师编号", required = true),
     })
     @PostMapping("/teacher")
-    public ResponseVO choseTeacher(@RequestParam String tNo){
-        if (tNo==null){
+    public ResponseVO choseTeacher(@RequestParam String tNo) {
+        if (tNo == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         }
-        SxStudent sxStudent = sxStudentService.choseCollegeTeacher((SxStudent) SecurityUtils.getSubject().getPrincipal(),tNo);
+        SxStudent sxStudent = sxStudentService.choseCollegeTeacher((SxStudent) SecurityUtils.getSubject().getPrincipal(), tNo);
         return ControllerUtil.getDataResult(sxStudent);
     }
 }
