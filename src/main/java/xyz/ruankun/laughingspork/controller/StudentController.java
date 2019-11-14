@@ -23,6 +23,7 @@ import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
+import java.sql.Date;
 import java.util.*;
 
 
@@ -115,16 +116,16 @@ public class StudentController {
 
     @ApiOperation(value = "学生填写报告第一阶段信息", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "stage1_summary", value = "自我总结", required = true),
+            @ApiImplicitParam(name = "stage1Summary", value = "自我总结", required = true),
     })
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/report/stage1")
-    public ResponseVO stage1_summary(@RequestParam String stage1_summary, @RequestParam String stage1GuideWay, @RequestParam String stage1GuideDate) {
-        if (stage1_summary == null) {
+    public ResponseVO stage1Summary(Date gmtStart, String stage1Summary, String stage1GuideWay, String stage1GuideDate) {
+        if (stage1Summary == null || gmtStart == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
             //保存鉴定表内容到数据库
-            SxReport sxReport = sxStudentService.stage1_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1_summary, stage1GuideWay, stage1GuideDate);
+            SxReport sxReport = sxStudentService.setStage1Summary(gmtStart, (SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1Summary, stage1GuideWay, stage1GuideDate);
             if (sxReport == null) {
                 return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
             }
@@ -134,16 +135,16 @@ public class StudentController {
 
     @ApiOperation(value = "学生填写报告第二阶段信息", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "stage2_summary", value = "自我总结", required = true),
+            @ApiImplicitParam(name = "stage2Summary", value = "自我总结", required = true),
     })
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/report/stage2")
-    public ResponseVO stage2_summary(String stage2_summary, String stage2GuideWay, String stage2GuideDate) {
-        if (stage2_summary == null) {
+    public ResponseVO stage2Summary(Date gmtEnd, String stage2Summary, String stage2GuideWay, String stage2GuideDate) {
+        if (stage2Summary == null || gmtEnd == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
             //保存鉴定表内容到数据库
-            SxReport sxReport = sxStudentService.stage2_summary((SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2_summary, stage2GuideWay, stage2GuideDate);
+            SxReport sxReport = sxStudentService.setStage2Summary(gmtEnd, (SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2Summary, stage2GuideWay, stage2GuideDate);
             if (sxReport == null) {
                 return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
             }
@@ -250,4 +251,5 @@ public class StudentController {
         SxStudent sxStudent = sxStudentService.choseCollegeTeacher((SxStudent) SecurityUtils.getSubject().getPrincipal(), tNo);
         return ControllerUtil.getDataResult(sxStudent);
     }
+
 }
