@@ -119,7 +119,7 @@ public class StudentController {
             @ApiImplicitParam(name = "gmtStart", value = "实习开始时间", required = true),
             @ApiImplicitParam(name = "stage1Summary", value = "自我总结", required = true),
             @ApiImplicitParam(name = "stage1GuideWay", value = "指导方式", required = true),
-            @ApiImplicitParam(name = "stage1Date", value = "指导时间,为字符串，可能是一个时间段", required = true),
+            @ApiImplicitParam(name = "stage1GuideDate", value = "指导时间,为字符串，可能是一个时间段", required = true),
 
     })
     @RequiresRoles(RoleCode.STUDENT)
@@ -142,7 +142,7 @@ public class StudentController {
             @ApiImplicitParam(name = "gmtEnd", value = "实习结束时间", required = true),
             @ApiImplicitParam(name = "stage2Summary", value = "自我总结", required = true),
             @ApiImplicitParam(name = "stage2GuideWay", value = "指导方式", required = true),
-            @ApiImplicitParam(name = "stage2Date", value = "指导时间,为字符串，可能是一个时间段", required = true),
+            @ApiImplicitParam(name = "stage2GuideDate", value = "指导时间,为字符串，可能是一个时间段", required = true),
 
     })
     @RequiresRoles(RoleCode.STUDENT)
