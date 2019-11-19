@@ -1,5 +1,8 @@
 package xyz.ruankun.laughingspork.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,6 +11,9 @@ import java.lang.reflect.Method;
  * 数据库数据entity更新工具类
  */
 public class EntityUtil {
+
+    public static final Logger logger = LoggerFactory.getLogger(EntityUtil.class);
+
 
     /**
      * @param young 前台所传数据
@@ -39,13 +45,36 @@ public class EntityUtil {
                         setMethod.invoke(young, objects);   //开始更新
                     }
                 }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                logger.error(e.toString());
             }
         }
     }
+
+    public static <T extends Object> void setNullFiledToString(T t) {
+        Class clazz = t.getClass();
+
+        Field[] fields = clazz.getDeclaredFields();
+        //获取该类所有属性集
+        for (Field field : fields) {
+            String fieldName = field.getName();
+            String firstLetter = fieldName.substring(0, 1).toUpperCase();
+            String methodGet = "get" + firstLetter + fieldName.substring(1);    //构造get方法
+            String methodSet = "set" + firstLetter + fieldName.substring(1);    //构造set方法
+            try {
+                Method getMethod = clazz.getDeclaredMethod(methodGet, new Class[]{});
+                Method setMethod = clazz.getDeclaredMethod(methodSet, new Class[]{field.getType()});
+
+                Object object = getMethod.invoke(t, new Object[]{});
+                //若young中某个字段值为null，则与修改其为空字符串
+                if (object == null && field.getType().toString().contains("String")) {
+                    setMethod.invoke(t, "");
+                }
+            } catch (Exception e) {
+                logger.error(e.toString());
+            }
+        }
+
+    }
+
 }

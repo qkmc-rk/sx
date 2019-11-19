@@ -1,9 +1,16 @@
 package xyz.ruankun.laughingspork.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 public class DateUtil {
+
+    public static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
+
+    public final static char[] upper = "〇一二三四五六七八九十".toCharArray();
 
     /**
      * 返回当前日期
@@ -15,156 +22,49 @@ public class DateUtil {
     }
 
 
+    public static String getNowUpperDate() {
+        return getUpperDate(new java.util.Date());
+    }
+
     /**
      * 返回中文日期
      *
      * @return yyyy年MM月dd日
      */
-    public static String getCnDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
-        String date = dateFormat.format(System.currentTimeMillis());
-        String result = "";
-        String[] cnDate = new String[]{"〇", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
-        String ten = "十";
-        String[] dateStr = date.split("-");
-        for (int i = 0; i < dateStr.length; i++) {
-            for (int j = 0; j < dateStr[i].length(); j++) {
-
-                String charStr = dateStr[i];
-                String str = String.valueOf(charStr.charAt(j));
-                if (charStr.length() == 2) {
-                    if ((i == 1) && (charStr.equals("01"))) {
-                        result += cnDate[0] + cnDate[1];
-                        break;
-                    }
-                    if ((i == 1) && (charStr.equals("02"))) {
-                        result += cnDate[0] + cnDate[2];
-                        break;
-                    }
-                    if ((i == 1) && (charStr.equals("10"))) {
-                        result += cnDate[0] + cnDate[1] + ten;
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("01"))) {
-                        result += cnDate[0] + cnDate[1];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("02"))) {
-                        result += cnDate[0] + cnDate[2];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("03"))) {
-                        result += cnDate[0] + cnDate[3];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("04"))) {
-                        result += cnDate[0] + cnDate[4];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("05"))) {
-                        result += cnDate[0] + cnDate[5];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("06"))) {
-                        result += cnDate[0] + cnDate[6];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("07"))) {
-                        result += cnDate[0] + cnDate[7];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("08"))) {
-                        result += cnDate[0] + cnDate[8];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("09"))) {
-                        result += cnDate[0] + cnDate[9];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("10"))) {
-                        result += cnDate[0] + cnDate[1] + ten;
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("20"))) {
-                        result += cnDate[0] + cnDate[2] + ten;
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("30"))) {
-                        result += cnDate[0] + cnDate[3] + ten;
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("11"))) {
-                        result += cnDate[1] + ten + cnDate[1];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("12"))) {
-                        result += cnDate[1] + ten + cnDate[2];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("13"))) {
-                        result += cnDate[1] + ten + cnDate[3];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("14"))) {
-                        result += cnDate[1] + ten + cnDate[4];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("15"))) {
-                        result += cnDate[1] + ten + cnDate[5];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("16"))) {
-                        result += cnDate[1] + ten + cnDate[6];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("17"))) {
-                        result += cnDate[1] + ten + cnDate[7];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("18"))) {
-                        result += cnDate[1] + ten + cnDate[8];
-                        break;
-                    }
-                    if ((i == 2) && (charStr.equals("19"))) {
-                        result += cnDate[1] + ten + cnDate[9];
-                        break;
-                    }
-                    if (charStr.equals("10")) {
-                        result += ten;
-                        break;
-                    } else {
-                        if (j == 0) {
-                            if (charStr.charAt(j) == '1')
-                                result += ten;
-                            else if (charStr.charAt(j) == '0')
-                                result += "";
-                            else
-                                result += cnDate[Integer.parseInt(str)] + ten;
-                        }
-                        if (j == 1) {
-                            if (charStr.charAt(j) == '0')
-                                result += "";
-                            else
-                                result += cnDate[Integer.parseInt(str)];
-                        }
-                    }
-                } else {
-                    result += cnDate[Integer.parseInt(str)];
-                }
-            }
-            if (i == 0) {
-                result += "年";
-                continue;
-            }
-            if (i == 1) {
-                result += "月";
-                continue;
-            }
-            if (i == 2) {
-                result += "日";
-                continue;
-            }
+    public static String getUpperDate(java.util.Date javaDate) {
+        if (javaDate == null) return "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = dateFormat.format(javaDate);
+        //支持yyyy-MM-dd、yyyy/MM/dd、yyyyMMdd等格式
+        if (date == null) return null;
+        //非数字的都去掉
+        date = date.replaceAll("\\D", "");
+        if (date.length() != 8) return null;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 4; i++) {//年
+            sb.append(upper[Integer.parseInt(date.substring(i, i + 1))]);
         }
-        return result;
+        sb.append("年");//拼接年
+        int month = Integer.parseInt(date.substring(4, 6));
+        if (month <= 10) {
+            sb.append(upper[month]);
+        } else {
+            sb.append("十").append(upper[month % 10]);
+        }
+        sb.append("月");//拼接月
+
+        int day = Integer.parseInt(date.substring(6));
+        if (day <= 10) {
+            sb.append(upper[day]);
+        } else if (day < 20) {
+            sb.append("十").append(upper[day % 10]);
+        } else {
+            sb.append(upper[day / 10]).append("十");
+            int tmp = day % 10;
+            if (tmp != 0) sb.append(upper[tmp]);
+        }
+        sb.append("日");//拼接日
+        return sb.toString();
     }
+
 }
