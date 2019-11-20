@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxReport;
 import xyz.ruankun.laughingspork.entity.SxStagemanage;
-import xyz.ruankun.laughingspork.entity.SxStudent;
 import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
 import xyz.ruankun.laughingspork.service.SxReportService;
 import xyz.ruankun.laughingspork.service.SxStudentService;
