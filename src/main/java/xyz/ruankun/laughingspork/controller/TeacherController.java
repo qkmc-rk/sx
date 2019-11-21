@@ -108,7 +108,7 @@ public class TeacherController {
     })
     @RequiresRoles(RoleCode.TEACHER)
     @GetMapping("/student/identify/{stuNo}")
-    public ResponseVO getIdentifyInfo(String stuNo) {
+    public ResponseVO getIdentifyInfo(@PathVariable String stuNo) {
         SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
         String tNo = sxTeacher.getTeacherNo();
         if (!sxStudentService.testAuth(tNo, stuNo)) {
