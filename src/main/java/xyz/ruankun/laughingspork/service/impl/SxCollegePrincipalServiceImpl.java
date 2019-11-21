@@ -33,11 +33,10 @@ public class SxCollegePrincipalServiceImpl implements SxCollegePrincipalService 
     }
 
     @Override
-    public SxIdentifyForm operateIdentifyForm(String stuNo, String collegePrincipalOpinion, String comprehsvGrade) {
+    public SxIdentifyForm operateIdentifyForm(String stuNo, String collegePrincipalOpinion) {
         SxIdentifyForm oldForm = sxIdentifyFormRepository.findByStuNo(stuNo);
         oldForm.setCollegePrincipalOpinion(collegePrincipalOpinion);
         oldForm.setCPODate(DateUtil.getSqlDate());
-        oldForm.setComprehsvGrade(comprehsvGrade);
         oldForm.setCGDate(DateUtil.getSqlDate());
         sxIdentifyFormRepository.save(oldForm);
         return sxIdentifyFormRepository.findByStuNo(stuNo);

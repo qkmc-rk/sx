@@ -32,10 +32,9 @@ public interface SxCollegePrincipalService {
      * 操作鉴定表
      *
      * @param collegePrincipalOpinion
-     * @param comprehsvGrade
      * @return
      */
-    public SxIdentifyForm operateIdentifyForm(String stuNo, String collegePrincipalOpinion, String comprehsvGrade);
+    public SxIdentifyForm operateIdentifyForm(String stuNo, String collegePrincipalOpinion);
 
     /**
      * 根据账号查找学院负责人

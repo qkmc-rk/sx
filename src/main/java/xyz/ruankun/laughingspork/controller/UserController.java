@@ -54,8 +54,8 @@ public class UserController {
     @PostMapping("/login")
     public ResponseVO login(String account, String password, String loginType) {
         Subject subject = SecurityUtils.getSubject();
-        //  设置Session不过期
-        subject.getSession().setTimeout(-1000L);
+        //  设置Session30分钟过期 30分钟没有交互 Seeion将被删除
+        subject.getSession().setTimeout(1800000);
         try {
             subject.login(new UserToken(account, password, loginType));
             HashMap<String, Object> data = new HashMap<>();
@@ -81,6 +81,7 @@ public class UserController {
         } catch (UnknownAccountException e) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
         } catch (Exception e) {
+            logger.error(e.toString());
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_UNKNOWN_ERROR);
         }
     }

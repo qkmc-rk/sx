@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
 import xyz.ruankun.laughingspork.util.EntityUtil;
+import xyz.ruankun.laughingspork.util.constant.Rating;
 
 import java.util.IdentityHashMap;
 
@@ -18,8 +19,6 @@ import java.util.IdentityHashMap;
 public class LaughingSporkApplicationTests {
     public static final Logger logger = LoggerFactory.getLogger(LaughingSporkApplication.class);
 
-    @Autowired
-    SxIdentifyFormService sxIdentifyFormService;
 
     @Test
     public void contextLoads() {

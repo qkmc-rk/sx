@@ -19,6 +19,7 @@ import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.DateUtil;
 import xyz.ruankun.laughingspork.util.EntityUtil;
 import xyz.ruankun.laughingspork.util.RenderWordUtil;
+import xyz.ruankun.laughingspork.util.constant.Rating;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
@@ -182,7 +183,6 @@ public class StudentController {
         params.put("${content}", sxIdentifyForm.getSxContent());
         params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
         params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
-        params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
         params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
         params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
         params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
