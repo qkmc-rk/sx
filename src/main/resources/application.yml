@@ -22,5 +22,3 @@ spring:
   # 允许同名bean覆盖注册
   main:
     allow-bean-definition-overriding: true
-
-debug: false

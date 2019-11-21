@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface SxStagemanageRepository extends JpaRepository<SxStagemanage, Long>{
 
+    SxStagemanage getSxStagemanageById(long i);
 }

@@ -4,17 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
-import xyz.ruankun.laughingspork.entity.SxReport;
-import xyz.ruankun.laughingspork.entity.SxStudent;
-import xyz.ruankun.laughingspork.entity.SxTeacher;
-import xyz.ruankun.laughingspork.repository.SxIdentifyFormRepository;
-import xyz.ruankun.laughingspork.repository.SxReportRepository;
-import xyz.ruankun.laughingspork.repository.SxTeacherRepository;
+import xyz.ruankun.laughingspork.entity.*;
+import xyz.ruankun.laughingspork.repository.*;
 import xyz.ruankun.laughingspork.service.SxStudentService;
-import xyz.ruankun.laughingspork.repository.SxStudentRepository;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +27,12 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Autowired
     private SxTeacherRepository sxTeacherRepository;
 
+    @Autowired
+    private SxStagemanageRepository sxStagemanageRepository;
+
+    @Autowired
+    private SxStudentRepository sxStudentRepository;
+
 
     @Override
     public SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary) {
@@ -48,9 +48,14 @@ public class SxStudentServiceImpl implements SxStudentService {
     }
 
     @Override
-    public SxReport stage1_summary(SxStudent sxStudent, String stage1_summary, String stage1GuideWay, String stage1GuideDate) {
+    public SxReport setStage1Summary(Date gmtStart, SxStudent sxStudent, String stage1Summary, String stage1GuideWay, String stage1GuideDate) {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
-        sxReport.setStage1Summary(stage1_summary);
+        SxStagemanage sxStagemanage = sxStagemanageRepository.getSxStagemanageById(1);
+        if (!sxStagemanage.getIsReportStage1Open()) {
+            return null;
+        }
+        sxReport.setGmtStart(gmtStart);
+        sxReport.setStage1Summary(stage1Summary);
         sxReport.setStage1GuideWay(stage1GuideWay);
         sxReport.setStage1GuideDate(stage1GuideDate);
         sxReportRepository.save(sxReport);
@@ -68,9 +73,14 @@ public class SxStudentServiceImpl implements SxStudentService {
     }
 
     @Override
-    public SxReport stage2_summary(SxStudent sxStudent, String stage2_summary, String stage2GuideWay, String stage2GuideDate) {
+    public SxReport setStage2Summary(Date gmtEnd, SxStudent sxStudent, String stage2Summary, String stage2GuideWay, String stage2GuideDate) {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
-        sxReport.setStage2Summary(stage2_summary);
+        SxStagemanage sxStagemanage = sxStagemanageRepository.getSxStagemanageById(1);
+        if (!sxStagemanage.getIsReportStage2Open()) {
+            return null;
+        }
+        sxReport.setGmtEnd(gmtEnd);
+        sxReport.setStage2Summary(stage2Summary);
         sxReport.setStage2GuideWay(stage2GuideWay);
         sxReport.setStage2GuideDate(stage2GuideDate);
         sxReportRepository.save(sxReport);
@@ -102,8 +112,31 @@ public class SxStudentServiceImpl implements SxStudentService {
 
     @Override
     public Boolean testAuth(String tNo, String stuNO) {
-            if (resp.findByStuNoAndTeacherNo(stuNO, tNo) == null) {
-                return false;
-            } else return true;
+        if (resp.findByStuNoAndTeacherNo(stuNO, tNo) == null) {
+            return false;
+        } else return true;
     }
+
+    @Override
+    public SxStagemanage getNowReportStage() {
+        SxStagemanage sxStagemanage = sxStagemanageRepository.getSxStagemanageById(1);
+        return sxStagemanage;
+    }
+
+    @Override
+    public List<SxTeacher> collegeTeacher(SxStudent sxStudent) {
+        List<SxTeacher> sxTeacher = sxTeacherRepository.findAllByCollegeCode(sxStudent.getCollegeCode());
+        if (sxTeacher.isEmpty()) {
+            return null;
+        }
+        return sxTeacher;
+    }
+
+    @Override
+    public SxStudent choseCollegeTeacher(SxStudent sxStudent, String tNO) {
+        sxStudent.setTeacherNo(tNO);
+        sxStudentRepository.save(sxStudent);
+        return sxStudent;
+    }
+
 }

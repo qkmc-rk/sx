@@ -4,6 +4,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 /**
  * 实习鉴定表
@@ -282,6 +283,70 @@ public class SxIdentifyForm {
 	}
 	
 	public void setCPODate(java.sql.Date cPODate) {
+		this.cPODate = cPODate;
+	}
+
+	public Date getGmtStart() {
+		return gmtStart;
+	}
+
+	public void setGmtStart(Date gmtStart) {
+		this.gmtStart = gmtStart;
+	}
+
+	public Date getGmtEnd() {
+		return gmtEnd;
+	}
+
+	public void setGmtEnd(Date gmtEnd) {
+		this.gmtEnd = gmtEnd;
+	}
+
+	public Date getcTODate() {
+		return cTODate;
+	}
+
+	public void setcTODate(Date cTODate) {
+		this.cTODate = cTODate;
+	}
+
+	public Date getcODate() {
+		return cODate;
+	}
+
+	public void setcODate(Date cODate) {
+		this.cODate = cODate;
+	}
+
+	public Date getcTGDate() {
+		return cTGDate;
+	}
+
+	public void setcTGDate(Date cTGDate) {
+		this.cTGDate = cTGDate;
+	}
+
+	public Date gettGDate() {
+		return tGDate;
+	}
+
+	public void settGDate(Date tGDate) {
+		this.tGDate = tGDate;
+	}
+
+	public Date getcGDate() {
+		return cGDate;
+	}
+
+	public void setcGDate(Date cGDate) {
+		this.cGDate = cGDate;
+	}
+
+	public Date getcPODate() {
+		return cPODate;
+	}
+
+	public void setcPODate(Date cPODate) {
 		this.cPODate = cPODate;
 	}
 
