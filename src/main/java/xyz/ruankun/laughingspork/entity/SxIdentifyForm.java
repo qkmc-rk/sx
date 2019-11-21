@@ -256,8 +256,12 @@ public class SxIdentifyForm {
     }
 
     public String getComprehsvGrade() {
-        return Rating.getEnum(this.corpTeacherScore).compareTo(
-                Rating.getEnum(this.teacherGrade)) > 0 ? this.corpTeacherScore : this.teacherGrade;
+        try {
+            return Rating.getEnum(this.corpTeacherScore).compareTo(
+                    Rating.getEnum(this.teacherGrade)) > 0 ? this.corpTeacherScore : this.teacherGrade;
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public void setComprehsvGrade(String comprehsvGrade) {
