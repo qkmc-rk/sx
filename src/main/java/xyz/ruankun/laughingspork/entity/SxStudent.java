@@ -151,11 +151,59 @@ public class SxStudent {
     @Column(name = "corp_teacher_no", nullable = true)
     private String corpTeacherNo;
 
+    /**
+     * 教师填写鉴定表状态码
+     * 0    不可用
+     * 1    未评价完
+     * 2    评价完全
+     */
 	@Column(name = "identify_flag", nullable = true)
     private Integer identifyFlag;
 
+    /**
+     * 教师填写报告册状态码
+     * 0    不可用
+     * 1    未评价完
+     * 2    评价完全
+     */
     @Column(name = "report_flag", nullable = true)
     private Integer reportFlag;
+
+    /**
+     * 学生填写鉴定表状态码
+     * 0    无表
+     * 1    空表（包括填写后删除内容）
+     * 2    未填写完全
+     * 3    填写完全
+     */
+    @Column(name = "identifyFilled_flag",nullable = true)
+    private Integer identifyFilledFlag;
+
+    /**
+     * 学生填写报告册状态码
+     * 0    无表
+     * 1    空表（包括填写后删除内容）
+     * 2    未填写完全
+     * 3    填写完全
+     */
+    @Column(name = "reportFilled_flag",nullable = true)
+    private Integer reportFilledFlag;
+
+    public Integer getIdentifyFilledFlag() {
+        return identifyFilledFlag;
+    }
+
+    public void setIdentifyFilledFlag(Integer identifyFilledFlag) {
+        this.identifyFilledFlag = identifyFilledFlag;
+    }
+
+    public Integer getReportFilledFlag() {
+        return reportFilledFlag;
+    }
+
+    public void setReportFilledFlag(Integer reportFilledFlag) {
+        this.reportFilledFlag = reportFilledFlag;
+    }
 
     public Integer getIdentifyFlag() {
         return identifyFlag;
@@ -358,6 +406,8 @@ public class SxStudent {
                 ", corpTeacherNo='" + corpTeacherNo + '\'' +
                 ", identifyFlag=" + identifyFlag +
                 ", reportFlag=" + reportFlag +
+                ", identifyFilledFlag=" + identifyFilledFlag +
+                ", reportFilledFlag=" + reportFilledFlag +
                 '}';
     }
 }
