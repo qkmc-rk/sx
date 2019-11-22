@@ -151,27 +151,27 @@ public class SxStudent {
     @Column(name = "corp_teacher_no", nullable = true)
     private String corpTeacherNo;
 
-	public Boolean getIdentifyFlag() {
-		return identifyFlag;
-	}
-
-	public void setIdentifyFlag(Boolean identifyFlag) {
-		this.identifyFlag = identifyFlag;
-	}
-
-	public Boolean getReportFlag() {
-		return reportFlag;
-	}
-
-	public void setReportFlag(Boolean reportFlag) {
-		this.reportFlag = reportFlag;
-	}
-
 	@Column(name = "identify_flag", nullable = true)
-    private Boolean identifyFlag;
+    private Integer identifyFlag;
 
     @Column(name = "report_flag", nullable = true)
-    private Boolean reportFlag;
+    private Integer reportFlag;
+
+    public Integer getIdentifyFlag() {
+        return identifyFlag;
+    }
+
+    public void setIdentifyFlag(Integer identifyFlag) {
+        this.identifyFlag = identifyFlag;
+    }
+
+    public Integer getReportFlag() {
+        return reportFlag;
+    }
+
+    public void setReportFlag(Integer reportFlag) {
+        this.reportFlag = reportFlag;
+    }
 
     public Long getId() {
         return this.id;
@@ -333,31 +333,31 @@ public class SxStudent {
         this.corpTeacherNo = corpTeacherNo;
     }
 
-	@Override
-	public String toString() {
-		return "SxStudent{" +
-				"id=" + id +
-				", stuNo='" + stuNo + '\'' +
-				", password='" + password + '\'' +
-				", name='" + name + '\'' +
-				", age=" + age +
-				", sex='" + sex + '\'' +
-				", phone='" + phone + '\'' +
-				", qq='" + qq + '\'' +
-				", wechat='" + wechat + '\'' +
-				", idCard='" + idCard + '\'' +
-				", college='" + college + '\'' +
-				", collegeCode='" + collegeCode + '\'' +
-				", major='" + major + '\'' +
-				", majorCode='" + majorCode + '\'' +
-				", corpTaxcode='" + corpTaxcode + '\'' +
-				", corpName='" + corpName + '\'' +
-				", corpRegCode='" + corpRegCode + '\'' +
-				", corpPosition='" + corpPosition + '\'' +
-				", teacherNo='" + teacherNo + '\'' +
-				", corpTeacherNo='" + corpTeacherNo + '\'' +
-				", identifyFlag=" + identifyFlag +
-				", reportFlag=" + reportFlag +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "SxStudent{" +
+                "id=" + id +
+                ", stuNo='" + stuNo + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", phone='" + phone + '\'' +
+                ", qq='" + qq + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", idCard='" + idCard + '\'' +
+                ", college='" + college + '\'' +
+                ", collegeCode='" + collegeCode + '\'' +
+                ", major='" + major + '\'' +
+                ", majorCode='" + majorCode + '\'' +
+                ", corpTaxcode='" + corpTaxcode + '\'' +
+                ", corpName='" + corpName + '\'' +
+                ", corpRegCode='" + corpRegCode + '\'' +
+                ", corpPosition='" + corpPosition + '\'' +
+                ", teacherNo='" + teacherNo + '\'' +
+                ", corpTeacherNo='" + corpTeacherNo + '\'' +
+                ", identifyFlag=" + identifyFlag +
+                ", reportFlag=" + reportFlag +
+                '}';
+    }
 }
