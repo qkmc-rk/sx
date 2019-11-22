@@ -155,7 +155,6 @@ public class SxReport {
     @Column(name = "stage2_guide_way", nullable = true)
     private String stage2GuideWay;
 
-
     public Long getId() {
         return this.id;
     }
