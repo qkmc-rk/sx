@@ -183,5 +183,27 @@ public class TeacherController {
         }
     }
 
+    @ApiOperation(value = "查看学生填写状态", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true),
+            @ApiImplicitParam(name = "formType", value = "'report' or 'identify'", required = true)
+    })
+    @RequiresRoles(RoleCode.TEACHER)
+    @GetMapping("/student/{formType}/fillState/{stuNo}/")
+    public ResponseVO getStudentFillState(@PathVariable String stuNo, @PathVariable String formType) {
+        SxTeacher sxTeacher = (SxTeacher) SecurityUtils.getSubject().getPrincipal();
+        String tNo = sxTeacher.getTeacherNo();
+        if (sxStudentService.testAuth(tNo, stuNo)) {
+            SxStudent sxStudent = sxStudentService.findByStuNo(stuNo);
+            if (formType.equals("report")) {
+                return ControllerUtil.getSuccessResultBySelf(sxStudent.getReportFlag());
+            } else if (formType.equals("identify")) {
+                return ControllerUtil.getSuccessResultBySelf(sxStudent.getIdentifyFlag());
+            } else {
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
+            }
+        }
+        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
+    }
 }
 
