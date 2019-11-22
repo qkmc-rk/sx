@@ -26,13 +26,13 @@ public interface SxTeacherService {
      * 判断学生鉴定表状态
      * @return Boolean
      */
-    Boolean isIdentifyFlag(SxStudent sxStudent);
+    Integer isIdentifyFlag(SxStudent sxStudent);
 
     /**
      * 判断学生报告状态
      * @return Boolean
      */
-    Boolean isReportFlag(SxStudent sxStudent);
+    Integer isReportFlag(SxStudent sxStudent);
 
     /**
      * findByTeacherNo
