@@ -33,6 +33,7 @@ dependencies {
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
     implementation 'org.apache.poi:poi-ooxml:4.0.1'
     implementation 'org.apache.poi:poi-ooxml-schemas:4.0.1'
+    implementation 'org.jodconverter:jodconverter-spring-boot-starter:4.1.1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

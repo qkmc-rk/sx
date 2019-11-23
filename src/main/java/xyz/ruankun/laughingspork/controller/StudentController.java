@@ -6,8 +6,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.hibernate.annotations.GeneratorType;
+import org.jodconverter.DocumentConverter;
+import org.jodconverter.office.LocalOfficeManager;
+import org.jodconverter.office.OfficeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
+import java.io.File;
+import java.io.OutputStream;
 import java.sql.Date;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -50,6 +53,9 @@ public class StudentController {
 
     @Autowired
     SxCorporationService sxCorporationService;
+
+    @Autowired
+    DocumentConverter documentConverter;
 
 
     @ApiOperation(value = "返回当前报告册阶段信息", httpMethod = "GET")
@@ -179,7 +185,7 @@ public class StudentController {
     @ApiOperation(value = "下载学生实习鉴定表", httpMethod = "GET")
     @GetMapping("/identify/form")
     @RequiresRoles(RoleCode.STUDENT)
-    public ResponseVO downloadIdentify() {
+    public ResponseVO downloadIdentify() throws OfficeException {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
 
@@ -202,9 +208,22 @@ public class StudentController {
         params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
         params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
         params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
-        String path = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
-        if (path != null) {
-            return ControllerUtil.getSuccessResultBySelf(path);
+        String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
+        if (wordFileName != null) {
+            String path = System.getProperty("user.dir") + "\\static\\";
+            String pdfFileName = wordFileName.replace("docx", "pdf");
+            // 源文件 （office）
+            File source = new File(path + wordFileName);
+            // 目标文件 （pdf）
+
+            File target = new File(path + pdfFileName);
+            // 转换文件
+            if (!target.exists()) {
+                documentConverter.convert(source).to(target).execute();
+                //删除word
+                source.delete();
+            }
+            return ControllerUtil.getSuccessResultBySelf(pdfFileName);
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }
@@ -213,7 +232,7 @@ public class StudentController {
     @ApiOperation(value = "下载学生实习报告册", httpMethod = "GET")
     @GetMapping("/report/form")
     @RequiresRoles(RoleCode.STUDENT)
-    public ResponseVO downloadReport() {
+    public ResponseVO downloadReport() throws OfficeException {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
         SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
@@ -244,9 +263,22 @@ public class StudentController {
         params.put("${gmt_start}", DateUtil.getUpperDate(sxReport.getGmtStart()));
         params.put("${gmt_end}", DateUtil.getUpperDate(sxReport.getGmtEnd()));
         params.put("${fill_date}", DateUtil.getNowUpperDate());
-        String path = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
-        if (path != null) {
-            return ControllerUtil.getSuccessResultBySelf(path);
+        String wordFileName = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
+        if (wordFileName != null) {
+            String path = System.getProperty("user.dir") + "\\static\\";
+            String pdfFileName = wordFileName.replace("docx", "pdf");
+            // 源文件 （office）
+            File source = new File(path + wordFileName);
+            // 目标文件 （pdf）
+
+            File target = new File(path + pdfFileName);
+            // 转换文件
+            if (!target.exists()) {
+                documentConverter.convert(source).to(target).execute();
+                //删除word
+                source.delete();
+            }
+            return ControllerUtil.getSuccessResultBySelf(pdfFileName);
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }

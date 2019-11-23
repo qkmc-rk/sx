@@ -1,8 +1,11 @@
 package xyz.ruankun.laughingspork.util;
 
 import org.apache.poi.xwpf.usermodel.*;
+import org.jodconverter.DocumentConverter;
+import org.jodconverter.office.OfficeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -24,6 +27,9 @@ import java.util.regex.Pattern;
 public class WordUtil {
 
     public static final Logger logger = LoggerFactory.getLogger(WordUtil.class);
+
+    @Autowired
+    DocumentConverter documentConverter;
 
     /**
      * 通过路径读入word模板文件
@@ -160,10 +166,9 @@ public class WordUtil {
             FileOutputStream outputStream = new FileOutputStream(file);
             docx.write(outputStream);
             close(outputStream);
-
             return fileName;
-        } catch (IOException e) {
-            logger.error(e.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

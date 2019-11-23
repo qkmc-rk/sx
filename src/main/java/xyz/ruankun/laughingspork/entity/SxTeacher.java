@@ -74,13 +74,6 @@ public class SxTeacher {
     @Column(name = "college_code", nullable = true)
     private String collegeCode;
 
-    /**
-     * 创建时间
-     * default value: null
-     */
-    @Column(name = "gmt_create", nullable = false)
-    private java.util.Date gmtCreate;
-
     public Long getId() {
         return this.id;
     }
@@ -165,7 +158,6 @@ public class SxTeacher {
                 ", idCard='" + idCard + '\'' +
                 ", college='" + college + '\'' +
                 ", collegeCode='" + collegeCode + '\'' +
-                ", gmtCreate=" + gmtCreate +
                 '}';
     }
 }
