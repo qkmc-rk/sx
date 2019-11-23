@@ -151,27 +151,75 @@ public class SxStudent {
     @Column(name = "corp_teacher_no", nullable = true)
     private String corpTeacherNo;
 
-	public Boolean getIdentifyFlag() {
-		return identifyFlag;
-	}
-
-	public void setIdentifyFlag(Boolean identifyFlag) {
-		this.identifyFlag = identifyFlag;
-	}
-
-	public Boolean getReportFlag() {
-		return reportFlag;
-	}
-
-	public void setReportFlag(Boolean reportFlag) {
-		this.reportFlag = reportFlag;
-	}
-
+    /**
+     * 教师填写鉴定表状态码
+     * 0    不可用
+     * 1    未评价完
+     * 2    评价完全
+     */
 	@Column(name = "identify_flag", nullable = true)
-    private Boolean identifyFlag;
+    private Integer identifyFlag;
 
+    /**
+     * 教师填写报告册状态码
+     * 0    不可用
+     * 1    未评价完
+     * 2    评价完全
+     */
     @Column(name = "report_flag", nullable = true)
-    private Boolean reportFlag;
+    private Integer reportFlag;
+
+    /**
+     * 学生填写鉴定表状态码
+     * 0    无表
+     * 1    空表（包括填写后删除内容）
+     * 2    未填写完全
+     * 3    填写完全
+     */
+    @Column(name = "identifyFilled_flag",nullable = true)
+    private Integer identifyFilledFlag;
+
+    /**
+     * 学生填写报告册状态码
+     * 0    无表
+     * 1    空表（包括填写后删除内容）
+     * 2    未填写完全
+     * 3    填写完全
+     */
+    @Column(name = "reportFilled_flag",nullable = true)
+    private Integer reportFilledFlag;
+
+    public Integer getIdentifyFilledFlag() {
+        return identifyFilledFlag;
+    }
+
+    public void setIdentifyFilledFlag(Integer identifyFilledFlag) {
+        this.identifyFilledFlag = identifyFilledFlag;
+    }
+
+    public Integer getReportFilledFlag() {
+        return reportFilledFlag;
+    }
+
+    public void setReportFilledFlag(Integer reportFilledFlag) {
+        this.reportFilledFlag = reportFilledFlag;
+    }
+
+    public Integer getIdentifyFlag() {
+        return identifyFlag;
+    }
+
+    public void setIdentifyFlag(Integer identifyFlag) {
+        this.identifyFlag = identifyFlag;
+    }
+
+    public Integer getReportFlag() {
+        return reportFlag;
+    }
+
+    public void setReportFlag(Integer reportFlag) {
+        this.reportFlag = reportFlag;
+    }
 
     public Long getId() {
         return this.id;
@@ -333,31 +381,33 @@ public class SxStudent {
         this.corpTeacherNo = corpTeacherNo;
     }
 
-	@Override
-	public String toString() {
-		return "SxStudent{" +
-				"id=" + id +
-				", stuNo='" + stuNo + '\'' +
-				", password='" + password + '\'' +
-				", name='" + name + '\'' +
-				", age=" + age +
-				", sex='" + sex + '\'' +
-				", phone='" + phone + '\'' +
-				", qq='" + qq + '\'' +
-				", wechat='" + wechat + '\'' +
-				", idCard='" + idCard + '\'' +
-				", college='" + college + '\'' +
-				", collegeCode='" + collegeCode + '\'' +
-				", major='" + major + '\'' +
-				", majorCode='" + majorCode + '\'' +
-				", corpTaxcode='" + corpTaxcode + '\'' +
-				", corpName='" + corpName + '\'' +
-				", corpRegCode='" + corpRegCode + '\'' +
-				", corpPosition='" + corpPosition + '\'' +
-				", teacherNo='" + teacherNo + '\'' +
-				", corpTeacherNo='" + corpTeacherNo + '\'' +
-				", identifyFlag=" + identifyFlag +
-				", reportFlag=" + reportFlag +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "SxStudent{" +
+                "id=" + id +
+                ", stuNo='" + stuNo + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", phone='" + phone + '\'' +
+                ", qq='" + qq + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", idCard='" + idCard + '\'' +
+                ", college='" + college + '\'' +
+                ", collegeCode='" + collegeCode + '\'' +
+                ", major='" + major + '\'' +
+                ", majorCode='" + majorCode + '\'' +
+                ", corpTaxcode='" + corpTaxcode + '\'' +
+                ", corpName='" + corpName + '\'' +
+                ", corpRegCode='" + corpRegCode + '\'' +
+                ", corpPosition='" + corpPosition + '\'' +
+                ", teacherNo='" + teacherNo + '\'' +
+                ", corpTeacherNo='" + corpTeacherNo + '\'' +
+                ", identifyFlag=" + identifyFlag +
+                ", reportFlag=" + reportFlag +
+                ", identifyFilledFlag=" + identifyFilledFlag +
+                ", reportFilledFlag=" + reportFilledFlag +
+                '}';
+    }
 }

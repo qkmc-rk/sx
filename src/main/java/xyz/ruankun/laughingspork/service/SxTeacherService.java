@@ -1,5 +1,6 @@
 package xyz.ruankun.laughingspork.service;
 
+import io.swagger.models.auth.In;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxReport;
 import xyz.ruankun.laughingspork.entity.SxStudent;
@@ -23,16 +24,30 @@ public interface SxTeacherService {
     List<SxStudent> getStudentListByTeacherNo(SxTeacher sxTeacher);
 
     /**
-     * 判断学生鉴定表状态
+     * 判断教师填写鉴定表状态
      * @return Boolean
      */
-    Boolean isIdentifyFlag(SxStudent sxStudent);
+    Integer isIdentifyFlag(SxStudent sxStudent);
 
     /**
-     * 判断学生报告状态
+     * 判断教师填写报告状态
      * @return Boolean
      */
-    Boolean isReportFlag(SxStudent sxStudent);
+    Integer isReportFlag(SxStudent sxStudent);
+
+    /**
+     * 学生填写鉴定表状态
+     * @param sxStudent
+     * @return
+     */
+    Integer isIdentifyFilledFlag(SxStudent sxStudent);
+
+    /**
+     * 学生填写报告状态
+     * @param sxStudent
+     * @return
+     */
+    Integer isReportFilledFlag(SxStudent sxStudent);
 
     /**
      * findByTeacherNo

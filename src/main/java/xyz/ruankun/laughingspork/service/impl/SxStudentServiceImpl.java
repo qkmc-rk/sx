@@ -38,12 +38,15 @@ public class SxStudentServiceImpl implements SxStudentService {
     public SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary) {
         //实习内容，自我总结
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+        sxStudent = sxStudentRepository.findByStuNo(sxStudent.getStuNo());
+        sxStudent.setIdentifyFlag(2);
         if (sxIdentifyForm == null) {
             return null;
         }
         sxIdentifyForm.setSxContent(practiceContent);
         sxIdentifyForm.setSelfSummary(selfSummary);
         sxIdentifyFormRepository.save(sxIdentifyForm);
+        sxStudentRepository.save(sxStudent);
         return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
     }
 
@@ -75,6 +78,7 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Override
     public SxReport setStage2Summary(Date gmtEnd, SxStudent sxStudent, String stage2Summary, String stage2GuideWay, String stage2GuideDate) {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        sxStudent = sxStudentRepository.findByStuNo(sxStudent.getStuNo());
         SxStagemanage sxStagemanage = sxStagemanageRepository.getSxStagemanageById(1);
         if (!sxStagemanage.getIsReportStage2Open()) {
             return null;
@@ -84,6 +88,7 @@ public class SxStudentServiceImpl implements SxStudentService {
         sxReport.setStage2GuideWay(stage2GuideWay);
         sxReport.setStage2GuideDate(stage2GuideDate);
         sxReportRepository.save(sxReport);
+        sxStudentRepository.save(sxStudent);
         return sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
     }
 

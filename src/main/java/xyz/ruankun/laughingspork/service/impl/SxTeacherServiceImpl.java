@@ -31,53 +31,109 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         return sxStudentRepository.findByTeacherNo(sxTeacher.getTeacherNo());
     }
 
+    /**
+     *
+     * @param sxStudent
+     * @return
+     */
     @Override
-    public Boolean isIdentifyFlag(SxStudent sxStudent) {
-        SxIdentifyForm sxIdentifyForm=sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
-        if(sxIdentifyForm == null ){
-            return null;
-        }else {
-            if(sxIdentifyForm.getCorpTeacherOpinion() == null || sxIdentifyForm.getCorpTeacherOpinion().equals("")||
-                    sxIdentifyForm.getCorpOpinion() == null || sxIdentifyForm.getCorpOpinion().equals("")||
-                    sxIdentifyForm.getCorpTeacherGrade() == null || sxIdentifyForm.getCorpTeacherGrade().equals("")||
-                    sxIdentifyForm.getTeacherGrade() == null || sxIdentifyForm.getTeacherGrade().equals("")||
-                    sxIdentifyForm.getComprehsvGrade() == null ||sxIdentifyForm.getComprehsvGrade().equals("")||
-                    sxIdentifyForm.getCollegePrincipalOpinion() == null||sxIdentifyForm.getCollegePrincipalOpinion().equals(""))
-            {
-                sxStudent.setIdentifyFlag(false);
-                sxStudentRepository.save(sxStudent);
-                return false;
-            }else {
-                sxStudent.setIdentifyFlag(true);
-                sxStudentRepository.save(sxStudent);
-                return true;
-            }
+    public Integer isIdentifyFlag(SxStudent sxStudent) {
+        SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+        if (isIdentifyFilledFlag(sxStudent)== 0 ||isIdentifyFilledFlag(sxStudent)== 1)
+         {
+            sxStudent.setIdentifyFlag(0);
+            sxStudentRepository.save(sxStudent);
+            return 0;
+        } else if (
+            (sxIdentifyForm.getCorpTeacherOpinion() == null || sxIdentifyForm.getCorpTeacherOpinion().equals("")) ||
+            (sxIdentifyForm.getCorpOpinion() == null || sxIdentifyForm.getCorpOpinion().equals("")) ||
+            (sxIdentifyForm.getCorpTeacherGrade() == null || sxIdentifyForm.getCorpTeacherGrade().equals("")) ||
+            (sxIdentifyForm.getTeacherGrade() == null || sxIdentifyForm.getTeacherGrade().equals("")) ||
+            (sxIdentifyForm.getCollegePrincipalOpinion() == null || sxIdentifyForm.getCollegePrincipalOpinion().equals(""))
+        ) {
+            sxStudent.setIdentifyFlag(1);
+            sxStudentRepository.save(sxStudent);
+            return 1;
+        } else {
+            sxStudent.setIdentifyFlag(2);
+            sxStudentRepository.save(sxStudent);
+            return 2;
         }
 
     }
 
     @Override
-    public Boolean isReportFlag(SxStudent sxStudent) {
-        SxReport sxReport=sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
-        if(sxReport == null){
-            return null;
-        }else {
-            if(sxReport.getStage1Comment() == null ||  sxReport.getStage1Comment().equals("")||
-                    sxReport.getStage1Grade() == null || sxReport.getStage1Grade().equals("") ||
-                    sxReport.getStage2Comment() == null || sxReport.getStage2Comment().equals("")||
-                    sxReport.getStage2Grade() == null ||sxReport.getStage2Grade().equals("")||
-                    sxReport.getTotalGrade() == null || sxReport.getTotalGrade().equals("")||
-                    sxReport.getTotalScore() == null || sxReport.getTotalScore().equals("")){
-                sxStudent.setReportFlag(false);
-                sxStudentRepository.save(sxStudent);
-                return false;
-            }else {
-                sxStudent.setReportFlag(true);
-                sxStudentRepository.save(sxStudent);
-                return true;
-            }
+    public Integer isReportFlag(SxStudent sxStudent) {
+        SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        if (isReportFilledFlag(sxStudent)==0|| isReportFilledFlag(sxStudent)==1) {
+            sxStudent.setReportFlag(0);
+            sxStudentRepository.save(sxStudent);
+            return 0;
+        } else if (sxReport.getStage1Comment() == null || sxReport.getStage1Comment().equals("") ||
+                sxReport.getStage1Grade() == null || sxReport.getStage1Grade().equals("") ||
+                sxReport.getStage2Comment() == null || sxReport.getStage2Comment().equals("") ||
+                sxReport.getStage2Grade() == null || sxReport.getStage2Grade().equals("") ||
+                sxReport.getTotalGrade() == null || sxReport.getTotalGrade().equals("") ||
+                sxReport.getTotalScore() == null || sxReport.getTotalScore().equals("")) {
+            sxStudent.setReportFlag(1);
+            sxStudentRepository.save(sxStudent);
+            return 1;
+        } else {
+            sxStudent.setReportFlag(2);
+            sxStudentRepository.save(sxStudent);
+            return 2;
         }
 
+    }
+
+    @Override
+    public Integer isIdentifyFilledFlag(SxStudent sxStudent) {
+        SxIdentifyForm sxIdentifyForm=sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
+        if(sxIdentifyForm== null)
+        {
+            sxStudent.setIdentifyFilledFlag(0);
+            sxStudentRepository.save(sxStudent);
+            return 0;
+        }
+        if((sxIdentifyForm.getSxContent()==null||sxIdentifyForm.getSxContent().equals("")) &&
+                (sxIdentifyForm.getSelfSummary()==null||sxIdentifyForm.getSelfSummary().equals(""))){
+            sxStudent.setIdentifyFilledFlag(1);
+            sxStudentRepository.save(sxStudent);
+            return 1;
+        }
+        if((sxIdentifyForm.getSxContent()==null||sxIdentifyForm.getSxContent().equals("")) ||
+                (sxIdentifyForm.getSelfSummary()==null||sxIdentifyForm.getSelfSummary().equals("")))
+        {
+            sxStudent.setIdentifyFilledFlag(2);
+            sxStudentRepository.save(sxStudent);
+            return 2;
+        }
+        return 3;
+    }
+
+    @Override
+    public Integer isReportFilledFlag(SxStudent sxStudent) {
+        SxReport sxReport=sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        if(sxReport== null)
+        {
+            sxStudent.setReportFilledFlag(0);
+            sxStudentRepository.save(sxStudent);
+            return 0;
+        }
+        if((sxReport.getStage1Summary()==null||sxReport.getStage1Summary().equals("")) &&
+                (sxReport.getStage2Summary()==null||sxReport.getStage2Summary().equals(""))){
+            sxStudent.setReportFilledFlag(1);
+            sxStudentRepository.save(sxStudent);
+            return 1;
+        }
+        if((sxReport.getStage1Summary()==null||sxReport.getStage1Summary().equals("")) ||
+                (sxReport.getStage2Summary()==null||sxReport.getStage2Summary().equals("")))
+        {
+            sxStudent.setIdentifyFilledFlag(2);
+            sxStudentRepository.save(sxStudent);
+            return 2;
+        }
+        return 3;
     }
 
 

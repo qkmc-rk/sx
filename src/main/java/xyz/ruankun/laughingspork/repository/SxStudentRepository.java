@@ -1,5 +1,7 @@
 package xyz.ruankun.laughingspork.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxStudent;
 import org.springframework.stereotype.Repository;
@@ -20,5 +22,9 @@ public interface SxStudentRepository extends JpaRepository<SxStudent, Long> {
 
     SxStudent findByStuNo(String stuNo);
 
-    SxStudent findByStuNoAndTeacherNo(String stuNo,String teacherNo);
+    SxStudent findByStuNoAndTeacherNo(String stuNo, String teacherNo);
+
+//    @Query("update sx_student set  corp_name = :corpName, corp_reg_code = :corpRegCode,corp_taxcode = :corpTaxcoe" where )
+//    void updateCorpInfo(@Param("corpName") String corpName, @Param("corpRegCode") String corpRegCode,
+//                        @Param("corpTaxCode") String corpTaxCode);
 }
