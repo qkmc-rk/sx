@@ -6,15 +6,13 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.hibernate.annotations.GeneratorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.*;
-import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
-import xyz.ruankun.laughingspork.service.SxReportService;
-import xyz.ruankun.laughingspork.service.SxStudentService;
-import xyz.ruankun.laughingspork.service.SxTeacherService;
+import xyz.ruankun.laughingspork.service.*;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.DateUtil;
 import xyz.ruankun.laughingspork.util.EntityUtil;
@@ -46,6 +44,9 @@ public class StudentController {
 
     @Autowired
     SxTeacherService sxTeacherService;
+
+    @Autowired
+    SxCorporationService sxCorporationService;
 
 
     @ApiOperation(value = "返回当前报告册阶段信息", httpMethod = "GET")
@@ -110,8 +111,13 @@ public class StudentController {
         if (practiceContent == null || selfSummary == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
+            SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+            sxTeacherService.isIdentifyFilledFlag(sxStudent);
+            sxTeacherService.isReportFilledFlag(sxStudent);
+            sxTeacherService.isIdentifyFlag(sxStudent);
+            sxTeacherService.isReportFlag(sxStudent);
             //保存鉴定表内容到数据库
-            return ControllerUtil.getDataResult(sxStudentService.saveIdentifyForm((SxStudent) SecurityUtils.getSubject().getPrincipal(), practiceContent, selfSummary));
+            return ControllerUtil.getDataResult(sxStudentService.saveIdentifyForm(sxStudent, practiceContent, selfSummary));
         }
     }
 
@@ -152,8 +158,13 @@ public class StudentController {
         if (stage2Summary == null || gmtEnd == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
+            SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+            sxTeacherService.isIdentifyFilledFlag(sxStudent);
+            sxTeacherService.isReportFilledFlag(sxStudent);
+            sxTeacherService.isIdentifyFlag(sxStudent);
+            sxTeacherService.isReportFlag(sxStudent);
             //保存鉴定表内容到数据库
-            SxReport sxReport = sxStudentService.setStage2Summary(gmtEnd, (SxStudent) SecurityUtils.getSubject().getPrincipal(), stage2Summary, stage2GuideWay, stage2GuideDate);
+            SxReport sxReport = sxStudentService.setStage2Summary(gmtEnd, sxStudent, stage2Summary, stage2GuideWay, stage2GuideDate);
             if (sxReport == null) {
                 return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
             }
@@ -258,6 +269,13 @@ public class StudentController {
         }
         SxStudent sxStudent = sxStudentService.choseCollegeTeacher((SxStudent) SecurityUtils.getSubject().getPrincipal(), tNo);
         return ControllerUtil.getDataResult(sxStudent);
+    }
+
+    @ApiOperation(value = "学生添加企业信息", httpMethod = "POST")
+    @RequiresRoles(RoleCode.STUDENT)
+    @PostMapping("/student/corp")
+    public void addCorpInfo(SxCorporation sxCorporation) {
+        sxCorporationService.save(sxCorporation);
     }
 
 }

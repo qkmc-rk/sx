@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 22/11/2019 19:09:10
+ Date: 23/11/2019 13:46:45
 */
 
 SET NAMES utf8mb4;
@@ -28,15 +28,15 @@ CREATE TABLE `hibernate_sequence`  (
 -- ----------------------------
 -- Records of hibernate_sequence
 -- ----------------------------
-INSERT INTO `hibernate_sequence` VALUES (46);
-INSERT INTO `hibernate_sequence` VALUES (46);
-INSERT INTO `hibernate_sequence` VALUES (46);
-INSERT INTO `hibernate_sequence` VALUES (46);
-INSERT INTO `hibernate_sequence` VALUES (46);
-INSERT INTO `hibernate_sequence` VALUES (46);
-INSERT INTO `hibernate_sequence` VALUES (46);
-INSERT INTO `hibernate_sequence` VALUES (46);
-INSERT INTO `hibernate_sequence` VALUES (46);
+INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (48);
 
 -- ----------------------------
 -- Table structure for sx_college_principal
@@ -109,26 +109,26 @@ INSERT INTO `sx_corp_teacher` VALUES (16, 'test', '123', NULL, NULL, NULL, NULL,
 -- ----------------------------
 DROP TABLE IF EXISTS `sx_corporation`;
 CREATE TABLE `sx_corporation`  (
-  `id` bigint(20) NOT NULL,
-  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `approval_date` datetime(0) NULL DEFAULT NULL,
-  `business_scope` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `corp_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_date` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `credit_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `end_business` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `gmt_create` datetime(0) NULL DEFAULT NULL,
-  `gmt_modified` datetime(0) NULL DEFAULT NULL,
-  `is_corp_checked` bit(1) NULL DEFAULT NULL,
-  `legal_person` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `reg_authority` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `reg_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `register_capita` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `start_business` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `stu_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL COMMENT ' 主键',
+  `stu_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT ' 学号,表示这条记录由某个学生填写',
+  `credit_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '统一社会信用代码',
+  `corp_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT ' 企业名称',
+  `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '类型 (如：有限责任公司)',
+  `legal_person` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '法人',
+  `register_capita` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT ' 注册资本',
+  `create_date` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT ' 创建日期',
+  `start_business` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '开始营业日期',
+  `end_business` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT ' 营业期限截止日期',
+  `reg_authority` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '工商信息登记机关',
+  `approval_date` datetime(0) NULL DEFAULT NULL COMMENT '核准日期',
+  `reg_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT ' 登记状态',
+  `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '住所地址',
+  `business_scope` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '经营范围',
+  `is_corp_checked` bit(1) NULL DEFAULT b'0' COMMENT ' 表示该公司信息后台管理员是否已经核实,默\r\n认未核实',
+  `gmt_create` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT ' 数据库记录创建日期',
+  `gmt_modified` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT ' 数据库记录修改日期',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公司信息表\r\n' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sx_identify_form
@@ -159,7 +159,7 @@ CREATE TABLE `sx_identify_form`  (
   `l_o_date` date NULL DEFAULT NULL,
   `leader_opinion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实习鉴定表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实习鉴定表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sx_identify_form
@@ -167,17 +167,18 @@ CREATE TABLE `sx_identify_form`  (
 INSERT INTO `sx_identify_form` VALUES (19, '201513015114', '2019-11-14 11:40:17', '2019-11-14 11:40:17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (21, '201513015310', '2019-11-14 13:53:10', '2019-11-22 18:24:20', NULL, NULL, '搬砖', '良好', '', '优秀', '2019-11-08', '1111', '2019-11-01', '优秀', NULL, '优秀', '2019-11-09', NULL, '2019-11-23', 'aaa', '2019-11-09', NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (23, '2016010302', '2019-11-14 14:04:34', '2019-11-14 14:04:34', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sx_identify_form` VALUES (25, '201512045141', '2019-11-14 14:16:37', '2019-11-21 14:00:41', NULL, NULL, '搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖搬砖', '搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得什么意思搬砖没得', 'hghghhghhgfdv d dsfdsfdsfewfwefwvvdvdsdssd sdcsdcvdsgssdf', '优秀', '2019-11-17', '这个瓜娃子实习很努力，值得表扬!!!这个瓜娃子实习很努力，值得表扬!!!这个瓜娃子实习很努力，值得表扬!!!这个瓜娃子实习很努力，值得表扬!!!', '2019-11-17', '优秀', NULL, '及格', '2019-11-17', '', '2019-11-17', '这个瓜娃子实习很努力，值得表扬!!!这个瓜娃子实习很努力，值得表扬!!!', '2019-11-17', NULL, NULL);
+INSERT INTO `sx_identify_form` VALUES (25, '201512045141', '2019-11-14 14:16:37', '2019-11-22 21:08:47', NULL, NULL, '是打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎', '杀了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲', 'hghghhghhgfdv d dsfdsfdsfewfwefwvvdvdsdssd sdcsdcvdsgssdf', '优秀', '2019-11-17', '这个瓜娃子实习很努力，值得表扬!!!这个瓜娃子实习很努力，值得表扬!!!这个瓜娃子实习很努力，值得表扬!!!这个瓜娃子实习很努力，值得表扬!!!', '2019-11-17', '优秀', NULL, '及格', '2019-11-17', '', '2019-11-17', '这个瓜娃子实习很努力，值得表扬!!!这个瓜娃子实习很努力，值得表扬!!!', '2019-11-17', NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (27, '2016010374', '2019-11-14 14:19:32', '2019-11-14 14:19:32', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (29, '2016010303', '2019-11-14 14:33:22', '2019-11-14 14:33:22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (31, '201513015252', '2019-11-14 14:52:29', '2019-11-14 15:22:00', NULL, NULL, '111', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sx_identify_form` VALUES (33, '201512025142', '2019-11-14 15:42:32', '2019-11-14 15:42:32', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sx_identify_form` VALUES (33, '201512025142', '2019-11-14 15:42:32', '2019-11-22 21:08:35', NULL, NULL, '是打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎打开链接撒谎', '杀了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲了的骄傲', '不好哟', '优秀', NULL, '优秀', NULL, '优秀', NULL, '优秀', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (35, '201530015331', '2019-11-14 15:44:08', '2019-11-21 13:13:22', NULL, NULL, '11', '22', '344676543', '良好', NULL, '2', NULL, NULL, NULL, '', NULL, '', NULL, '', NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (37, '2016010377', '2019-11-20 22:36:48', '2019-11-20 22:36:48', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (39, '2016010242', '2019-11-20 22:37:28', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (41, '2016010304', '2019-11-21 19:09:53', '2019-11-21 19:09:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (43, '2016010307', '2019-11-21 19:10:05', '2019-11-21 19:10:05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (45, '2016010243', '2019-11-21 19:10:17', '2019-11-21 19:10:17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sx_identify_form` VALUES (47, '201530015340', '2019-11-22 19:59:02', '2019-11-22 20:05:37', NULL, NULL, '11', '', '1', NULL, NULL, '', NULL, '优秀', NULL, '', NULL, NULL, NULL, '', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sx_report
@@ -207,7 +208,7 @@ CREATE TABLE `sx_report`  (
   `total_grade` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '学院实习指导老师总评',
   `total_score` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学院实习指导老师总评成绩ABCDE',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sx_report
@@ -226,6 +227,7 @@ INSERT INTO `sx_report` VALUES (38, '2016010242', '2019-11-20 22:37:28', '2019-1
 INSERT INTO `sx_report` VALUES (40, '2016010304', '2019-11-21 19:09:53', '2019-11-21 19:09:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_report` VALUES (42, '2016010307', '2019-11-21 19:10:05', '2019-11-21 19:10:05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_report` VALUES (44, '2016010243', '2019-11-21 19:10:17', '2019-11-21 19:10:17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sx_report` VALUES (46, '201530015340', '2019-11-22 19:59:02', '2019-11-22 19:59:02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sx_root
@@ -294,27 +296,29 @@ CREATE TABLE `sx_student`  (
   `corp_teacher_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '校外导师工号',
   `identify_flag` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否填写鉴定表',
   `report_flag` tinyint(1) UNSIGNED NULL DEFAULT 0 COMMENT '是否填写报告册\r\n',
+  `identify_filled_flag` int(11) NULL DEFAULT NULL,
+  `report_filled_flag` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 151 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '学生信息' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sx_student
 -- ----------------------------
-INSERT INTO `sx_student` VALUES (136, '201512045141', 'E10ADC3949BA59ABBE56E057F20F883E', '泽仁拉姆', 22, '女', '1878322', '2324', '23434dv', '513229199612160724', '文法', '12', '法学', '030101', '2019-11-14 10:15:39', '2019-11-22 15:22:07', '3454645', 'dfdg', '34546', 'bdfbfgb', '2016010374', NULL, 1, 1);
-INSERT INTO `sx_student` VALUES (137, '201513015114', 'E10ADC3949BA59ABBE56E057F20F883E', '胡伟', 23, '女', NULL, NULL, NULL, '513125199610152244', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, '2016010242', NULL, 0, 0);
-INSERT INTO `sx_student` VALUES (138, '201513015252', 'E10ADC3949BA59ABBE56E057F20F883E', '杨永红', 22, '女', NULL, NULL, NULL, '513227199705102424', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, '2016010242', NULL, 0, 0);
-INSERT INTO `sx_student` VALUES (139, '201513015310', 'E10ADC3949BA59ABBE56E057F20F883E', '康珠拥措', 22, '女', NULL, NULL, NULL, '513334199701100025', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-22 18:24:22', NULL, NULL, NULL, NULL, '2016010302', NULL, 0, 1);
-INSERT INTO `sx_student` VALUES (140, '201530015340', 'E10ADC3949BA59ABBE56E057F20F883E', '鲁桑杜基', 26, '男', NULL, NULL, NULL, '513422199307032917', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-22 15:25:27', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (141, '201512025101', 'E10ADC3949BA59ABBE56E057F20F883E', '安莎', 22, '女', NULL, NULL, NULL, '522424199705104641', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-22 15:25:27', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (142, '201512025409', 'E10ADC3949BA59ABBE56E057F20F883E', '加里准', 24, '女', NULL, NULL, NULL, '513229199510081048', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-22 15:25:28', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (143, '201512025142', 'E10ADC3949BA59ABBE56E057F20F883E', '余小花', 23, '女', NULL, NULL, NULL, '513425199611185028', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-22 15:25:39', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0);
-INSERT INTO `sx_student` VALUES (144, '201530015323', 'E10ADC3949BA59ABBE56E057F20F883E', '洛松', 22, '男', NULL, NULL, NULL, '513333199703080017', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-22 15:25:29', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (145, '201530015331', 'E10ADC3949BA59ABBE56E057F20F883E', '宋杨', 23, '女', NULL, NULL, NULL, '513128199608260042', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-21 13:12:55', NULL, NULL, NULL, NULL, '2016010303', NULL, 0, 0);
-INSERT INTO `sx_student` VALUES (146, '201530015548', 'E10ADC3949BA59ABBE56E057F20F883E', '余烽荣', 24, '男', NULL, NULL, NULL, '513401199506273033', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-22 15:25:30', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (147, '201530015622', 'E10ADC3949BA59ABBE56E057F20F883E', '李维莲', 22, '女', NULL, NULL, NULL, '513227199703151628', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-22 15:25:31', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (148, '201530015745', 'E10ADC3949BA59ABBE56E057F20F883E', '叶茂皓', 24, '男', NULL, NULL, NULL, '513422199510250012', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-22 15:25:31', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (149, '201530095124', 'E10ADC3949BA59ABBE56E057F20F883E', '于天宇', 23, '女', NULL, NULL, NULL, '13022419960415154X', '会计', '30', '会计学(ACCA)', '120203', '2019-11-14 10:15:40', '2019-11-22 15:25:32', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
-INSERT INTO `sx_student` VALUES (150, '201529055119', 'E10ADC3949BA59ABBE56E057F20F883E', '孔紫菡', 22, '女', NULL, NULL, NULL, '513128199708145324', '经济管理', '29', '旅游管理', '120901', '2019-11-14 10:15:40', '2019-11-22 15:25:33', NULL, NULL, NULL, NULL, '2016010374', NULL, NULL, NULL);
+INSERT INTO `sx_student` VALUES (136, '201512045141', 'E10ADC3949BA59ABBE56E057F20F883E', '泽仁拉姆', 22, '女', '1878322', '2324', '23434dv', '513229199612160724', '文法', '12', '法学', '030101', '2019-11-14 10:15:39', '2019-11-22 19:51:14', '3454645', 'dfdg', '34546', 'bdfbfgb', '2016010374', NULL, 2, 2, NULL, NULL);
+INSERT INTO `sx_student` VALUES (137, '201513015114', 'E10ADC3949BA59ABBE56E057F20F883E', '胡伟', 23, '女', NULL, NULL, NULL, '513125199610152244', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, '2016010242', NULL, 0, 0, NULL, NULL);
+INSERT INTO `sx_student` VALUES (138, '201513015252', 'E10ADC3949BA59ABBE56E057F20F883E', '杨永红', 22, '女', NULL, NULL, NULL, '513227199705102424', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, '2016010242', NULL, 0, 0, NULL, NULL);
+INSERT INTO `sx_student` VALUES (139, '201513015310', 'E10ADC3949BA59ABBE56E057F20F883E', '康珠拥措', 22, '女', NULL, NULL, NULL, '513334199701100025', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-22 19:48:54', NULL, NULL, NULL, NULL, '2016010302', NULL, 1, 2, NULL, NULL);
+INSERT INTO `sx_student` VALUES (140, '201530015340', 'E10ADC3949BA59ABBE56E057F20F883E', '鲁桑杜基', 26, '男', NULL, NULL, NULL, '513422199307032917', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 1, 0, 2, 1);
+INSERT INTO `sx_student` VALUES (141, '201512025101', 'E10ADC3949BA59ABBE56E057F20F883E', '安莎', 22, '女', NULL, NULL, NULL, '522424199705104641', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
+INSERT INTO `sx_student` VALUES (142, '201512025409', 'E10ADC3949BA59ABBE56E057F20F883E', '加里准', 24, '女', NULL, NULL, NULL, '513229199510081048', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
+INSERT INTO `sx_student` VALUES (143, '201512025142', 'E10ADC3949BA59ABBE56E057F20F883E', '余小花', 23, '女', NULL, NULL, NULL, '513425199611185028', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 1, 1, NULL, NULL);
+INSERT INTO `sx_student` VALUES (144, '201530015323', 'E10ADC3949BA59ABBE56E057F20F883E', '洛松', 22, '男', NULL, NULL, NULL, '513333199703080017', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
+INSERT INTO `sx_student` VALUES (145, '201530015331', 'E10ADC3949BA59ABBE56E057F20F883E', '宋杨', 23, '女', NULL, NULL, NULL, '513128199608260042', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-21 13:12:55', NULL, NULL, NULL, NULL, '2016010303', NULL, 0, 0, NULL, NULL);
+INSERT INTO `sx_student` VALUES (146, '201530015548', 'E10ADC3949BA59ABBE56E057F20F883E', '余烽荣', 24, '男', NULL, NULL, NULL, '513401199506273033', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
+INSERT INTO `sx_student` VALUES (147, '201530015622', 'E10ADC3949BA59ABBE56E057F20F883E', '李维莲', 22, '女', NULL, NULL, NULL, '513227199703151628', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
+INSERT INTO `sx_student` VALUES (148, '201530015745', 'E10ADC3949BA59ABBE56E057F20F883E', '叶茂皓', 24, '男', NULL, NULL, NULL, '513422199510250012', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
+INSERT INTO `sx_student` VALUES (149, '201530095124', 'E10ADC3949BA59ABBE56E057F20F883E', '于天宇', 23, '女', NULL, NULL, NULL, '13022419960415154X', '会计', '30', '会计学(ACCA)', '120203', '2019-11-14 10:15:40', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
+INSERT INTO `sx_student` VALUES (150, '201529055119', 'E10ADC3949BA59ABBE56E057F20F883E', '孔紫菡', 22, '女', NULL, NULL, NULL, '513128199708145324', '经济管理', '29', '旅游管理', '120901', '2019-11-14 10:15:40', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for sx_teacher
