@@ -136,19 +136,7 @@ public class SxCorporation {
 	@Column(name = "is_corp_checked", nullable = true)
 	private Boolean isCorpChecked;
 
-	/**
-	 *  数据库记录创建日期
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_create", nullable = true)
-	private java.util.Date gmtCreate;
 
-	/**
-	 *  数据库记录修改日期
-	 * default value: null
-	 */
-	@Column(name = "gmt_modified", nullable = true)
-	private java.util.Date gmtModified;
 	
 	public Long getId() {
 		return this.id;
@@ -306,8 +294,8 @@ public class SxCorporation {
 				", address='" + address + '\'' +
 				", businessScope='" + businessScope + '\'' +
 				", isCorpChecked=" + isCorpChecked +
-				", gmtCreate=" + gmtCreate +
-				", gmtModified=" + gmtModified +
+//				", gmtCreate=" + gmtCreate +
+//				", gmtModified=" + gmtModified +
 				'}';
 	}
 }

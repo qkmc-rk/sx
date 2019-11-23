@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.hibernate.annotations.GeneratorType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,8 @@ import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 import java.sql.Date;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @RestController
@@ -278,9 +281,17 @@ public class StudentController {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxCorporation oldCorp = sxCorporationService.findByStuNo(sxStudent.getStuNo());
         if (oldCorp != null) {
+            if (sxCorporation.getId() == null || sxCorporation.getId().equals("")) {
+                return ControllerUtil.getFalseResultMsgBySelf("修改企业信息缺少ID");
+            }
+            if (oldCorp.getId() != sxCorporation.getId()) {
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
+            }
             EntityUtil.update(oldCorp, sxCorporation);
         }
+
         sxCorporation.setStuNo(sxStudent.getStuNo());
+        sxCorporation.setIsCorpChecked(false);
         sxCorporationService.save(sxCorporation);
         return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
     }
@@ -292,6 +303,36 @@ public class StudentController {
     public ResponseVO addCorpInfo() {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
+    }
+
+
+    @ApiOperation(value = "学生设置/修改职位", httpMethod = "POST")
+    @RequiresRoles(RoleCode.STUDENT)
+    @PostMapping("/student/position")
+    public ResponseVO setPosition(String position) {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        sxStudentService.updatePosition(sxStudent.getStuNo(), position);
+        return ControllerUtil.getSuccessResultBySelf(sxStudentService.findByStuNo(sxStudent.getStuNo()));
+    }
+
+    @ApiOperation(value = "学生修改密码", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "oldPassword", value = "旧密码", required = true),
+            @ApiImplicitParam(name = "newPassword", value = "新密码", required = true)
+    })
+    @RequiresRoles(RoleCode.STUDENT)
+    @PostMapping("/student/password")
+    public ResponseVO setPassword(String oldPassword, String newPassword) {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+
+        boolean flag = sxStudentService.updatePassword(sxStudent.getStuNo(), oldPassword, newPassword);
+        if (flag) {
+            return ControllerUtil.getSuccessResultBySelf("修改成功");
+        } else {
+            return ControllerUtil.getFalseResultMsgBySelf("原密码错误");
+
+        }
+
     }
 
 

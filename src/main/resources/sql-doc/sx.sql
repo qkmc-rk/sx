@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 23/11/2019 15:17:36
+ Date: 23/11/2019 16:24:52
 */
 
 SET NAMES utf8mb4;
@@ -28,15 +28,15 @@ CREATE TABLE `hibernate_sequence`  (
 -- ----------------------------
 -- Records of hibernate_sequence
 -- ----------------------------
-INSERT INTO `hibernate_sequence` VALUES (50);
-INSERT INTO `hibernate_sequence` VALUES (50);
-INSERT INTO `hibernate_sequence` VALUES (50);
-INSERT INTO `hibernate_sequence` VALUES (50);
-INSERT INTO `hibernate_sequence` VALUES (50);
-INSERT INTO `hibernate_sequence` VALUES (50);
-INSERT INTO `hibernate_sequence` VALUES (50);
-INSERT INTO `hibernate_sequence` VALUES (50);
-INSERT INTO `hibernate_sequence` VALUES (50);
+INSERT INTO `hibernate_sequence` VALUES (53);
+INSERT INTO `hibernate_sequence` VALUES (53);
+INSERT INTO `hibernate_sequence` VALUES (53);
+INSERT INTO `hibernate_sequence` VALUES (53);
+INSERT INTO `hibernate_sequence` VALUES (53);
+INSERT INTO `hibernate_sequence` VALUES (53);
+INSERT INTO `hibernate_sequence` VALUES (53);
+INSERT INTO `hibernate_sequence` VALUES (53);
+INSERT INTO `hibernate_sequence` VALUES (53);
 
 -- ----------------------------
 -- Table structure for sx_college_principal
@@ -127,9 +127,14 @@ CREATE TABLE `sx_corporation`  (
   `business_scope` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '经营范围',
   `is_corp_checked` bit(1) NULL DEFAULT b'0' COMMENT ' 表示该公司信息后台管理员是否已经核实,默\r\n认未核实',
   `gmt_create` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT ' 数据库记录创建日期',
-  `gmt_modified` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT ' 数据库记录修改日期',
-  PRIMARY KEY (`id`) USING BTREE
+  `gmt_modified` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT ' 数据库记录修改日期',
+  PRIMARY KEY (`id`, `stu_no`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公司信息表\r\n' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sx_corporation
+-- ----------------------------
+INSERT INTO `sx_corporation` VALUES (52, '201513015114', '91510107785429391T', '成都腾讯商贸有限责任公司', '510107000384470', '有限责任公司', '何敏', '5万元人民币', '2006-03-23', '2006-03-23', '3999-01-01', '武侯区市场和质量监督管理局', '2019-11-23 00:00:00', '存续（在营、开业、在册）', '四川雅安某个卡卡', '销售:办公用品、日用百货、建辅建材(不含油漆)、五金交电、机电产品(不含汽车)(依法须经批准的项目,经相关部门批准后方可开展经营活动)。', b'0', '2019-11-23 16:21:59', '2019-11-23 16:21:59');
 
 -- ----------------------------
 -- Table structure for sx_identify_form
@@ -179,7 +184,7 @@ INSERT INTO `sx_identify_form` VALUES (39, '2016010242', '2019-11-20 22:37:28', 
 INSERT INTO `sx_identify_form` VALUES (41, '2016010304', '2019-11-21 19:09:53', '2019-11-21 19:09:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (43, '2016010307', '2019-11-21 19:10:05', '2019-11-21 19:10:05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (45, '2016010243', '2019-11-21 19:10:17', '2019-11-21 19:10:17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sx_identify_form` VALUES (47, '201530015340', '2019-11-22 19:59:02', '2019-11-22 20:05:37', NULL, NULL, '11', '', '1', NULL, NULL, '', NULL, '优秀', NULL, '', NULL, NULL, NULL, '', NULL, NULL, NULL);
+INSERT INTO `sx_identify_form` VALUES (47, '201530015340', '2019-11-22 19:59:02', '2019-11-23 16:12:21', NULL, NULL, '11', '', '', NULL, NULL, '', NULL, '优秀', NULL, '', NULL, NULL, NULL, '', NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (49, '201512025101', '2019-11-23 14:34:58', '2019-11-23 14:36:36', NULL, NULL, '111', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
@@ -308,7 +313,7 @@ CREATE TABLE `sx_student`  (
 -- Records of sx_student
 -- ----------------------------
 INSERT INTO `sx_student` VALUES (136, '201512045141', 'E10ADC3949BA59ABBE56E057F20F883E', '泽仁拉姆', 22, '女', '1878322', '2324', '23434dv', '513229199612160724', '文法', '12', '法学', '030101', '2019-11-14 10:15:39', '2019-11-23 14:01:51', '3454645', 'dfdg', '34546', 'bdfbfgb', '2016010374', NULL, 2, 2, NULL, NULL);
-INSERT INTO `sx_student` VALUES (137, '201513015114', 'E10ADC3949BA59ABBE56E057F20F883E', '胡伟', 23, '女', NULL, NULL, NULL, '513125199610152244', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, '2016010242', NULL, 0, 0, NULL, NULL);
+INSERT INTO `sx_student` VALUES (137, '201513015114', 'E10ADC3949BA59ABBE56E057F20F883E', '胡伟', 23, '女', NULL, NULL, NULL, '513125199610152244', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-23 15:56:24', '91510107785429391T', '成都腾讯商贸有限责任公司', '510107000384470', NULL, '2016010242', NULL, 0, 0, NULL, NULL);
 INSERT INTO `sx_student` VALUES (138, '201513015252', 'E10ADC3949BA59ABBE56E057F20F883E', '杨永红', 22, '女', NULL, NULL, NULL, '513227199705102424', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, '2016010242', NULL, 0, 0, NULL, NULL);
 INSERT INTO `sx_student` VALUES (139, '201513015310', 'E10ADC3949BA59ABBE56E057F20F883E', '康珠拥措', 22, '女', NULL, NULL, NULL, '513334199701100025', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-22 19:48:54', NULL, NULL, NULL, NULL, '2016010302', NULL, 1, 2, NULL, NULL);
 INSERT INTO `sx_student` VALUES (140, '201530015340', 'E10ADC3949BA59ABBE56E057F20F883E', '鲁桑杜基', 26, '男', NULL, NULL, NULL, '513422199307032917', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 1, 0, 2, 1);

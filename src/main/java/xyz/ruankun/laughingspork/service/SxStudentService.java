@@ -81,5 +81,9 @@ public interface SxStudentService {
     List<SxTeacher> collegeTeacher(SxStudent sxStudent);
 
     SxStudent choseCollegeTeacher(SxStudent sxStudent, String tNO);
+
+    void updatePosition(String stuNo, String position);
+
+    boolean updatePassword(String inputOldPassword, String oldPassword, String newPassword);
 }
 
