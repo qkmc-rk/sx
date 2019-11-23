@@ -271,11 +271,28 @@ public class StudentController {
         return ControllerUtil.getDataResult(sxStudent);
     }
 
-    @ApiOperation(value = "学生添加企业信息", httpMethod = "POST")
+    @ApiOperation(value = "学生添加/修改企业信息", httpMethod = "POST")
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/student/corp")
-    public void addCorpInfo(SxCorporation sxCorporation) {
+    public ResponseVO addCorpInfo(SxCorporation sxCorporation) {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        SxCorporation oldCorp = sxCorporationService.findByStuNo(sxStudent.getStuNo());
+        if (oldCorp != null) {
+            EntityUtil.update(oldCorp, sxCorporation);
+        }
+        sxCorporation.setStuNo(sxStudent.getStuNo());
         sxCorporationService.save(sxCorporation);
+        return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
     }
+
+
+    @ApiOperation(value = "学生查看企业信息", httpMethod = "GET")
+    @RequiresRoles(RoleCode.STUDENT)
+    @GetMapping("/student/corp")
+    public ResponseVO addCorpInfo() {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
+    }
+
 
 }

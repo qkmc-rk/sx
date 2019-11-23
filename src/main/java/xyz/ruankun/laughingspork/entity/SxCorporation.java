@@ -5,12 +5,13 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 /**
- * null
+ * 公司信息表
+
  */
 @Entity
 @DynamicUpdate
 @DynamicInsert
-@Table(name = " sx_corporation")
+@Table(name = "sx_corporation")
 public class SxCorporation {
 
 	/**
@@ -37,11 +38,18 @@ public class SxCorporation {
 	private String creditCode;
 
 	/**
-	 *  企业名称
+	 * 企业名称
 	 * default value: null
 	 */
 	@Column(name = "corp_name", nullable = false)
 	private String corpName;
+
+	/**
+	 * 企业注册号
+	 * default value: null
+	 */
+	@Column(name = "reg_code", nullable = false)
+	private String regCode;
 
 	/**
 	 * 类型 (如：有限责任公司)
@@ -97,7 +105,7 @@ public class SxCorporation {
 	 * default value: null
 	 */
 	@Column(name = "approval_date", nullable = true)
-	private java.util.Date approvalDate;
+	private String approvalDate;
 
 	/**
 	 *  登记状态
@@ -174,6 +182,14 @@ public class SxCorporation {
 		this.corpName = corpName;
 	}
 	
+	public String getRegCode() {
+		return this.regCode;
+	}
+	
+	public void setRegCode(String regCode) {
+		this.regCode = regCode;
+	}
+	
 	public String getType() {
 		return this.type;
 	}
@@ -230,11 +246,11 @@ public class SxCorporation {
 		this.regAuthority = regAuthority;
 	}
 	
-	public java.util.Date getApprovalDate() {
+	public String getApprovalDate() {
 		return this.approvalDate;
 	}
 	
-	public void setApprovalDate(java.util.Date approvalDate) {
+	public void setApprovalDate(String approvalDate) {
 		this.approvalDate = approvalDate;
 	}
 	
@@ -268,5 +284,30 @@ public class SxCorporation {
 	
 	public void setIsCorpChecked(Boolean isCorpChecked) {
 		this.isCorpChecked = isCorpChecked;
+	}
+
+	@Override
+	public String toString() {
+		return "SxCorporation{" +
+				"id=" + id +
+				", stuNo='" + stuNo + '\'' +
+				", creditCode='" + creditCode + '\'' +
+				", corpName='" + corpName + '\'' +
+				", regCode='" + regCode + '\'' +
+				", type='" + type + '\'' +
+				", legalPerson='" + legalPerson + '\'' +
+				", registerCapita='" + registerCapita + '\'' +
+				", createDate='" + createDate + '\'' +
+				", startBusiness='" + startBusiness + '\'' +
+				", endBusiness='" + endBusiness + '\'' +
+				", regAuthority='" + regAuthority + '\'' +
+				", approvalDate=" + approvalDate +
+				", regStatus='" + regStatus + '\'' +
+				", address='" + address + '\'' +
+				", businessScope='" + businessScope + '\'' +
+				", isCorpChecked=" + isCorpChecked +
+				", gmtCreate=" + gmtCreate +
+				", gmtModified=" + gmtModified +
+				'}';
 	}
 }
