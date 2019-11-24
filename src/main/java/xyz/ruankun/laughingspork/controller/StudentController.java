@@ -383,6 +383,7 @@ public class StudentController {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
         }
         SxStudent sxStudent = sxStudentService.findSelfInfoByStuNo(stdNo);
+        if(sxStudent==null){return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);}
         SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
         SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
         EntityUtil.setNullFiledToString(sxStudent);
@@ -442,6 +443,7 @@ public class StudentController {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
         }
         SxStudent sxStudent = sxStudentService.findSelfInfoByStuNo(stdNo);
+        if(sxStudent==null){return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);}
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
         EntityUtil.setNullFiledToString(sxStudent);
         EntityUtil.setNullFiledToString(sxIdentifyForm);
