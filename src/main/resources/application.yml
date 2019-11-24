@@ -28,7 +28,7 @@ spring:
 jodconverter:
   enabled: true
   # open office 安装路径
-  office-home: D:\softwares\OpenOffice1
+  office-home: C:\Program Files (x86)\OpenOffice 4
   max-tasks-per-process: 10
   port-numbers: 8100
   kill-existing-process: true

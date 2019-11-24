@@ -9,6 +9,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxReport;
@@ -22,6 +23,7 @@ import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 @RestController
@@ -63,12 +65,12 @@ public class UserController {
             data.put("Authorization", subject.getSession().getId());
 
             //判断是否有鉴定表和报告册记录 否则创建
-            if (sxReportService.getReportInfo(account) == null){
+            if (sxReportService.getReportInfo(account) == null) {
                 SxReport sxReport = new SxReport();
                 sxReport.setStuNo(account);
                 sxReportService.saveReport(sxReport);
             }
-            if (sxIdentifyFormService.getIdentifyInfo(account) == null){
+            if (sxIdentifyFormService.getIdentifyInfo(account) == null) {
                 SxIdentifyForm sxIdentifyForm = new SxIdentifyForm();
                 sxIdentifyForm.setStuNo(account);
                 sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm);
