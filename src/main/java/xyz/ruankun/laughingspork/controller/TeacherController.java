@@ -52,8 +52,8 @@ public class TeacherController {
         } else {
             for (SxStudent s : sxStudents
             ) {
-                sxTeacherService.isIdentifyFilledFlag(s);
-                sxTeacherService.isReportFilledFlag(s);
+                s.setIdentifyFilledFlag(sxTeacherService.isIdentifyFilledFlag(s));
+                s.setReportFilledFlag(sxTeacherService.isReportFilledFlag(s));
                 sxTeacherService.isIdentifyFlag(s);
                 sxTeacherService.isReportFlag(s);
                 s.setPassword(null);

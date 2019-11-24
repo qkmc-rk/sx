@@ -5,12 +5,13 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 /**
- * null
+ * 公司信息表
+
  */
 @Entity
 @DynamicUpdate
 @DynamicInsert
-@Table(name = " sx_corporation")
+@Table(name = "sx_corporation")
 public class SxCorporation {
 
 	/**
@@ -37,11 +38,18 @@ public class SxCorporation {
 	private String creditCode;
 
 	/**
-	 *  企业名称
+	 * 企业名称
 	 * default value: null
 	 */
 	@Column(name = "corp_name", nullable = false)
 	private String corpName;
+
+	/**
+	 * 企业注册号
+	 * default value: null
+	 */
+	@Column(name = "reg_code", nullable = false)
+	private String regCode;
 
 	/**
 	 * 类型 (如：有限责任公司)
@@ -97,7 +105,7 @@ public class SxCorporation {
 	 * default value: null
 	 */
 	@Column(name = "approval_date", nullable = true)
-	private java.util.Date approvalDate;
+	private String approvalDate;
 
 	/**
 	 *  登记状态
@@ -128,19 +136,7 @@ public class SxCorporation {
 	@Column(name = "is_corp_checked", nullable = true)
 	private Boolean isCorpChecked;
 
-	/**
-	 *  数据库记录创建日期
-	 * default value: CURRENT_TIMESTAMP
-	 */
-	@Column(name = "gmt_create", nullable = true)
-	private java.util.Date gmtCreate;
 
-	/**
-	 *  数据库记录修改日期
-	 * default value: null
-	 */
-	@Column(name = "gmt_modified", nullable = true)
-	private java.util.Date gmtModified;
 	
 	public Long getId() {
 		return this.id;
@@ -172,6 +168,14 @@ public class SxCorporation {
 	
 	public void setCorpName(String corpName) {
 		this.corpName = corpName;
+	}
+	
+	public String getRegCode() {
+		return this.regCode;
+	}
+	
+	public void setRegCode(String regCode) {
+		this.regCode = regCode;
 	}
 	
 	public String getType() {
@@ -230,11 +234,11 @@ public class SxCorporation {
 		this.regAuthority = regAuthority;
 	}
 	
-	public java.util.Date getApprovalDate() {
+	public String getApprovalDate() {
 		return this.approvalDate;
 	}
 	
-	public void setApprovalDate(java.util.Date approvalDate) {
+	public void setApprovalDate(String approvalDate) {
 		this.approvalDate = approvalDate;
 	}
 	
@@ -268,5 +272,30 @@ public class SxCorporation {
 	
 	public void setIsCorpChecked(Boolean isCorpChecked) {
 		this.isCorpChecked = isCorpChecked;
+	}
+
+	@Override
+	public String toString() {
+		return "SxCorporation{" +
+				"id=" + id +
+				", stuNo='" + stuNo + '\'' +
+				", creditCode='" + creditCode + '\'' +
+				", corpName='" + corpName + '\'' +
+				", regCode='" + regCode + '\'' +
+				", type='" + type + '\'' +
+				", legalPerson='" + legalPerson + '\'' +
+				", registerCapita='" + registerCapita + '\'' +
+				", createDate='" + createDate + '\'' +
+				", startBusiness='" + startBusiness + '\'' +
+				", endBusiness='" + endBusiness + '\'' +
+				", regAuthority='" + regAuthority + '\'' +
+				", approvalDate=" + approvalDate +
+				", regStatus='" + regStatus + '\'' +
+				", address='" + address + '\'' +
+				", businessScope='" + businessScope + '\'' +
+				", isCorpChecked=" + isCorpChecked +
+//				", gmtCreate=" + gmtCreate +
+//				", gmtModified=" + gmtModified +
+				'}';
 	}
 }

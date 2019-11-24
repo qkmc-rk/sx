@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface SxCorporationRepository extends JpaRepository<SxCorporation, Long>{
+public interface SxCorporationRepository extends JpaRepository<SxCorporation, Long> {
 
+    SxCorporation findByStuNo(String stuNo);
 }

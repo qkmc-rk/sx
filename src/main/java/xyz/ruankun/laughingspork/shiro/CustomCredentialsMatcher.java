@@ -27,7 +27,7 @@ public class CustomCredentialsMatcher extends SimpleCredentialsMatcher {
     /**
      * 密码加密
      *
-     * @param data : 传进来的明文密码
+            * @param data : 传进来的明文密码
      * @return: java.lang.String
      */
     private String encrypt(String data) {
