@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 23/11/2019 13:46:45
+ Date: 24/11/2019 14:18:33
 */
 
 SET NAMES utf8mb4;
@@ -28,15 +28,15 @@ CREATE TABLE `hibernate_sequence`  (
 -- ----------------------------
 -- Records of hibernate_sequence
 -- ----------------------------
-INSERT INTO `hibernate_sequence` VALUES (48);
-INSERT INTO `hibernate_sequence` VALUES (48);
-INSERT INTO `hibernate_sequence` VALUES (48);
-INSERT INTO `hibernate_sequence` VALUES (48);
-INSERT INTO `hibernate_sequence` VALUES (48);
-INSERT INTO `hibernate_sequence` VALUES (48);
-INSERT INTO `hibernate_sequence` VALUES (48);
-INSERT INTO `hibernate_sequence` VALUES (48);
-INSERT INTO `hibernate_sequence` VALUES (48);
+INSERT INTO `hibernate_sequence` VALUES (58);
+INSERT INTO `hibernate_sequence` VALUES (58);
+INSERT INTO `hibernate_sequence` VALUES (58);
+INSERT INTO `hibernate_sequence` VALUES (58);
+INSERT INTO `hibernate_sequence` VALUES (58);
+INSERT INTO `hibernate_sequence` VALUES (58);
+INSERT INTO `hibernate_sequence` VALUES (58);
+INSERT INTO `hibernate_sequence` VALUES (58);
+INSERT INTO `hibernate_sequence` VALUES (58);
 
 -- ----------------------------
 -- Table structure for sx_college_principal
@@ -112,7 +112,8 @@ CREATE TABLE `sx_corporation`  (
   `id` bigint(20) UNSIGNED NOT NULL COMMENT ' 主键',
   `stu_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT ' 学号,表示这条记录由某个学生填写',
   `credit_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '统一社会信用代码',
-  `corp_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT ' 企业名称',
+  `corp_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '企业名称',
+  `reg_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '企业注册号',
   `type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '类型 (如：有限责任公司)',
   `legal_person` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '法人',
   `register_capita` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT ' 注册资本',
@@ -120,15 +121,20 @@ CREATE TABLE `sx_corporation`  (
   `start_business` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '开始营业日期',
   `end_business` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT ' 营业期限截止日期',
   `reg_authority` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '工商信息登记机关',
-  `approval_date` datetime(0) NULL DEFAULT NULL COMMENT '核准日期',
+  `approval_date` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '核准日期',
   `reg_status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT ' 登记状态',
   `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '住所地址',
   `business_scope` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '经营范围',
   `is_corp_checked` bit(1) NULL DEFAULT b'0' COMMENT ' 表示该公司信息后台管理员是否已经核实,默\r\n认未核实',
   `gmt_create` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT ' 数据库记录创建日期',
-  `gmt_modified` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT ' 数据库记录修改日期',
+  `gmt_modified` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT ' 数据库记录修改日期',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '公司信息表\r\n' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sx_corporation
+-- ----------------------------
+INSERT INTO `sx_corporation` VALUES (52, '201513015114', '91510107785429391T', '成都腾讯商贸有限责任公司', '510107000384470', '有限责任公司', '何敏', '5万元人民币', '2006-03-23', '2006-03-23', '3999-01-01', '武侯区市场和质量监督管理局', '2019-11-23 00:00:00', '存续（在营、开业、在册）', '四川雅安某个卡卡', '销售:办公用品、日用百货、建辅建材(不含油漆)、五金交电、机电产品(不含汽车)(依法须经批准的项目,经相关部门批准后方可开展经营活动)。', b'0', '2019-11-23 16:21:59', '2019-11-23 16:21:59');
 
 -- ----------------------------
 -- Table structure for sx_identify_form
@@ -159,7 +165,7 @@ CREATE TABLE `sx_identify_form`  (
   `l_o_date` date NULL DEFAULT NULL,
   `leader_opinion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实习鉴定表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '实习鉴定表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sx_identify_form
@@ -178,7 +184,9 @@ INSERT INTO `sx_identify_form` VALUES (39, '2016010242', '2019-11-20 22:37:28', 
 INSERT INTO `sx_identify_form` VALUES (41, '2016010304', '2019-11-21 19:09:53', '2019-11-21 19:09:53', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (43, '2016010307', '2019-11-21 19:10:05', '2019-11-21 19:10:05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_identify_form` VALUES (45, '2016010243', '2019-11-21 19:10:17', '2019-11-21 19:10:17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sx_identify_form` VALUES (47, '201530015340', '2019-11-22 19:59:02', '2019-11-22 20:05:37', NULL, NULL, '11', '', '1', NULL, NULL, '', NULL, '优秀', NULL, '', NULL, NULL, NULL, '', NULL, NULL, NULL);
+INSERT INTO `sx_identify_form` VALUES (47, '201530015340', '2019-11-22 19:59:02', '2019-11-23 16:12:21', NULL, NULL, '11', '', '', NULL, NULL, '', NULL, '优秀', NULL, '', NULL, NULL, NULL, '', NULL, NULL, NULL);
+INSERT INTO `sx_identify_form` VALUES (49, '201512025101', '2019-11-23 14:34:58', '2019-11-23 14:36:36', NULL, NULL, '111', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sx_identify_form` VALUES (57, '201512025409', '2019-11-24 14:17:42', '2019-11-24 14:17:42', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sx_report
@@ -208,7 +216,7 @@ CREATE TABLE `sx_report`  (
   `total_grade` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '学院实习指导老师总评',
   `total_score` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学院实习指导老师总评成绩ABCDE',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 47 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sx_report
@@ -216,7 +224,7 @@ CREATE TABLE `sx_report`  (
 INSERT INTO `sx_report` VALUES (18, '201513015114', '2019-11-14 11:40:17', '2019-11-14 11:40:17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_report` VALUES (20, '201513015310', '2019-11-14 13:53:10', '2019-11-20 21:45:39', '2019-03-14', '2019-11-20', '3月份吧', '远程指导', '挺好的vddvdvdvd', '2019-11-19', 'tgrtgtrgrt', '43', '2019-11-19', '忘了', '线上指导', '可以', NULL, 'trgtrgrtg', '22', '2019-11-19', 'defc', '43');
 INSERT INTO `sx_report` VALUES (22, '2016010302', '2019-11-14 14:04:34', '2019-11-14 14:04:34', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `sx_report` VALUES (24, '201512045141', '2019-11-14 14:16:37', '2019-11-22 15:21:48', '2019-11-01', '2019-11-01', '2019-11-15', '面对面指导', '面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导', '2019-11-17', '可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！', '优秀', '2019-11-17', '2019-11-17', '微信', '微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导信指导信指导指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导信指导信指导指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指', '2019-11-17', '可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！', '优秀', '2019-11-17', '希望在今后的道路上继续努力加油！', '良好');
+INSERT INTO `sx_report` VALUES (24, '201512045141', '2019-11-14 14:16:37', '2019-11-23 14:01:50', '2019-11-01', '2019-11-01', '2019-11-15', '面对面指导', '面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导面对面指导', '2019-11-17', '可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！', '优秀', '2019-11-17', '2019-11-17', '微信', '微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导信指导信指导指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导信指导信指导指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指导微信指', '2019-11-17', '可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！可以嘛，实习很给力！', '11', '2019-11-17', '希望在今后的道路上继续努力加油！', '良好');
 INSERT INTO `sx_report` VALUES (26, '2016010374', '2019-11-14 14:19:32', '2019-11-14 14:19:32', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_report` VALUES (28, '2016010303', '2019-11-14 14:33:22', '2019-11-14 14:33:22', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_report` VALUES (30, '201513015252', '2019-11-14 14:52:29', '2019-11-14 15:43:49', NULL, '2019-11-21', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019-11-07', '微信', '学到了很多', NULL, NULL, NULL, NULL, NULL, NULL);
@@ -228,6 +236,8 @@ INSERT INTO `sx_report` VALUES (40, '2016010304', '2019-11-21 19:09:53', '2019-1
 INSERT INTO `sx_report` VALUES (42, '2016010307', '2019-11-21 19:10:05', '2019-11-21 19:10:05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_report` VALUES (44, '2016010243', '2019-11-21 19:10:17', '2019-11-21 19:10:17', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `sx_report` VALUES (46, '201530015340', '2019-11-22 19:59:02', '2019-11-22 19:59:02', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sx_report` VALUES (48, '201512025101', '2019-11-23 14:34:58', '2019-11-23 14:34:58', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sx_report` VALUES (56, '201512025409', '2019-11-24 14:17:42', '2019-11-24 14:17:42', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sx_root
@@ -304,14 +314,14 @@ CREATE TABLE `sx_student`  (
 -- ----------------------------
 -- Records of sx_student
 -- ----------------------------
-INSERT INTO `sx_student` VALUES (136, '201512045141', 'E10ADC3949BA59ABBE56E057F20F883E', '泽仁拉姆', 22, '女', '1878322', '2324', '23434dv', '513229199612160724', '文法', '12', '法学', '030101', '2019-11-14 10:15:39', '2019-11-22 19:51:14', '3454645', 'dfdg', '34546', 'bdfbfgb', '2016010374', NULL, 2, 2, NULL, NULL);
-INSERT INTO `sx_student` VALUES (137, '201513015114', 'E10ADC3949BA59ABBE56E057F20F883E', '胡伟', 23, '女', NULL, NULL, NULL, '513125199610152244', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, '2016010242', NULL, 0, 0, NULL, NULL);
+INSERT INTO `sx_student` VALUES (136, '201512045141', 'E10ADC3949BA59ABBE56E057F20F883E', '泽仁拉姆', 22, '女', '1878322', '2324', '23434dv', '513229199612160724', '文法', '12', '法学', '030101', '2019-11-14 10:15:39', '2019-11-24 13:34:40', '3454645', 'dfdg', '34546', 'bdfbfgb', '2016010374', NULL, 2, 2, 3, 3);
+INSERT INTO `sx_student` VALUES (137, '201513015114', 'E10ADC3949BA59ABBE56E057F20F883E', '胡伟', 23, '女', NULL, NULL, NULL, '513125199610152244', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-23 18:12:44', '91510107785429391T', '成都腾讯商贸有限责任公司', '510107000384470', 'PPT架构师啊', '2016010242', NULL, 0, 0, NULL, NULL);
 INSERT INTO `sx_student` VALUES (138, '201513015252', 'E10ADC3949BA59ABBE56E057F20F883E', '杨永红', 22, '女', NULL, NULL, NULL, '513227199705102424', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-20 22:37:28', NULL, NULL, NULL, NULL, '2016010242', NULL, 0, 0, NULL, NULL);
-INSERT INTO `sx_student` VALUES (139, '201513015310', 'E10ADC3949BA59ABBE56E057F20F883E', '康珠拥措', 22, '女', NULL, NULL, NULL, '513334199701100025', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-22 19:48:54', NULL, NULL, NULL, NULL, '2016010302', NULL, 1, 2, NULL, NULL);
+INSERT INTO `sx_student` VALUES (139, '201513015310', 'E10ADC3949BA59ABBE56E057F20F883E', '康珠拥措', 22, '女', NULL, NULL, NULL, '513334199701100025', '文法', '13', '法学', '030101', '2019-11-14 10:15:39', '2019-11-24 13:34:21', NULL, NULL, NULL, NULL, '2016010302', NULL, 1, 2, 3, 3);
 INSERT INTO `sx_student` VALUES (140, '201530015340', 'E10ADC3949BA59ABBE56E057F20F883E', '鲁桑杜基', 26, '男', NULL, NULL, NULL, '513422199307032917', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 1, 0, 2, 1);
-INSERT INTO `sx_student` VALUES (141, '201512025101', 'E10ADC3949BA59ABBE56E057F20F883E', '安莎', 22, '女', NULL, NULL, NULL, '522424199705104641', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
+INSERT INTO `sx_student` VALUES (141, '201512025101', 'E10ADC3949BA59ABBE56E057F20F883E', '安莎', 22, '女', NULL, NULL, NULL, '522424199705104641', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-23 14:36:39', NULL, NULL, NULL, NULL, '2016010374', NULL, 1, 0, 2, 1);
 INSERT INTO `sx_student` VALUES (142, '201512025409', 'E10ADC3949BA59ABBE56E057F20F883E', '加里准', 24, '女', NULL, NULL, NULL, '513229199510081048', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
-INSERT INTO `sx_student` VALUES (143, '201512025142', 'E10ADC3949BA59ABBE56E057F20F883E', '余小花', 23, '女', NULL, NULL, NULL, '513425199611185028', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 1, 1, NULL, NULL);
+INSERT INTO `sx_student` VALUES (143, '201512025142', 'E10ADC3949BA59ABBE56E057F20F883E', '余小花', 23, '女', NULL, NULL, NULL, '513425199611185028', '经济管理', '12', '工商管理', '120201', '2019-11-14 10:15:39', '2019-11-24 13:34:41', NULL, NULL, NULL, NULL, '2016010374', NULL, 1, 1, 3, 3);
 INSERT INTO `sx_student` VALUES (144, '201530015323', 'E10ADC3949BA59ABBE56E057F20F883E', '洛松', 22, '男', NULL, NULL, NULL, '513333199703080017', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);
 INSERT INTO `sx_student` VALUES (145, '201530015331', 'E10ADC3949BA59ABBE56E057F20F883E', '宋杨', 23, '女', NULL, NULL, NULL, '513128199608260042', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-21 13:12:55', NULL, NULL, NULL, NULL, '2016010303', NULL, 0, 0, NULL, NULL);
 INSERT INTO `sx_student` VALUES (146, '201530015548', 'E10ADC3949BA59ABBE56E057F20F883E', '余烽荣', 24, '男', NULL, NULL, NULL, '513401199506273033', '会计', '30', '会计学', '120203', '2019-11-14 10:15:39', '2019-11-23 11:35:12', NULL, NULL, NULL, NULL, '2016010374', NULL, 0, 0, 0, 0);

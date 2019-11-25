@@ -2,8 +2,6 @@ package xyz.ruankun.laughingspork.quartz;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +13,7 @@ import java.util.Date;
 public class ClearWordFile {
     public static final Logger logger = LoggerFactory.getLogger(ClearWordFile.class);
 
-    //    每天五点删除一天前的文章
+    //    每天五点删除一天前的文件
     @Scheduled(cron = "0 0 5 * * ?")
     public void ClearFile() {
         try {

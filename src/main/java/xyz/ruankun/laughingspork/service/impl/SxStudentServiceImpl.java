@@ -1,5 +1,6 @@
 package xyz.ruankun.laughingspork.service.impl;
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,6 +143,29 @@ public class SxStudentServiceImpl implements SxStudentService {
         sxStudent.setTeacherNo(tNO);
         sxStudentRepository.save(sxStudent);
         return sxStudent;
+    }
+
+    @Override
+    public void updatePosition(String stuNo, String position) {
+        SxStudent sxStudent = resp.findByStuNo(stuNo);
+        if (sxStudent != null) {
+            sxStudent.setCorpPosition(position);
+            resp.save(sxStudent);
+        }
+    }
+
+    @Override
+    public boolean updatePassword(String stuNo, String oldPassword, String newPassword) {
+        newPassword = newPassword.trim();
+        SxStudent sxStudent = sxStudentRepository.findByStuNo(stuNo);
+        oldPassword = new Md5Hash(oldPassword).toString().toUpperCase();
+        if (oldPassword.equals(sxStudent.getPassword())) {
+            sxStudent.setPassword(new Md5Hash(newPassword).toString().toUpperCase());
+            resp.save(sxStudent);
+        } else {
+            return false;
+        }
+        return true;
     }
 
 }

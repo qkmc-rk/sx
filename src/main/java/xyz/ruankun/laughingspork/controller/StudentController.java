@@ -6,10 +6,13 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.hibernate.annotations.GeneratorType;
+import org.jodconverter.DocumentConverter;
+import org.jodconverter.office.LocalOfficeManager;
+import org.jodconverter.office.OfficeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.*;
 import xyz.ruankun.laughingspork.service.*;
@@ -22,8 +25,12 @@ import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
+import java.io.File;
+import java.io.OutputStream;
 import java.sql.Date;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @RestController
@@ -47,6 +54,13 @@ public class StudentController {
 
     @Autowired
     SxCorporationService sxCorporationService;
+
+    @Autowired
+    DocumentConverter documentConverter;
+
+
+    @Value(value = "${user.password}")
+    private String psd;
 
 
     @ApiOperation(value = "返回当前报告册阶段信息", httpMethod = "GET")
@@ -176,7 +190,7 @@ public class StudentController {
     @ApiOperation(value = "下载学生实习鉴定表", httpMethod = "GET")
     @GetMapping("/identify/form")
     @RequiresRoles(RoleCode.STUDENT)
-    public ResponseVO downloadIdentify() {
+    public ResponseVO downloadIdentify() throws OfficeException {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
 
@@ -199,9 +213,22 @@ public class StudentController {
         params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
         params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
         params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
-        String path = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
-        if (path != null) {
-            return ControllerUtil.getSuccessResultBySelf(path);
+        String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
+        if (wordFileName != null) {
+            String path = System.getProperty("user.dir") + "\\static\\";
+            String pdfFileName = wordFileName.replace("docx", "pdf");
+            // 源文件 （office）
+            File source = new File(path + wordFileName);
+            // 目标文件 （pdf）
+
+            File target = new File(path + pdfFileName);
+            // 转换文件
+            if (!target.exists()) {
+                documentConverter.convert(source).to(target).execute();
+                //删除word
+                source.delete();
+            }
+            return ControllerUtil.getSuccessResultBySelf(pdfFileName);
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }
@@ -210,7 +237,7 @@ public class StudentController {
     @ApiOperation(value = "下载学生实习报告册", httpMethod = "GET")
     @GetMapping("/report/form")
     @RequiresRoles(RoleCode.STUDENT)
-    public ResponseVO downloadReport() {
+    public ResponseVO downloadReport() throws OfficeException {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
         SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
@@ -241,9 +268,22 @@ public class StudentController {
         params.put("${gmt_start}", DateUtil.getUpperDate(sxReport.getGmtStart()));
         params.put("${gmt_end}", DateUtil.getUpperDate(sxReport.getGmtEnd()));
         params.put("${fill_date}", DateUtil.getNowUpperDate());
-        String path = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
-        if (path != null) {
-            return ControllerUtil.getSuccessResultBySelf(path);
+        String wordFileName = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
+        if (wordFileName != null) {
+            String path = System.getProperty("user.dir") + "\\static\\";
+            String pdfFileName = wordFileName.replace("docx", "pdf");
+            // 源文件 （office）
+            File source = new File(path + wordFileName);
+            // 目标文件 （pdf）
+
+            File target = new File(path + pdfFileName);
+            // 转换文件
+            if (!target.exists()) {
+                documentConverter.convert(source).to(target).execute();
+                //删除word
+                source.delete();
+            }
+            return ControllerUtil.getSuccessResultBySelf(pdfFileName);
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
     }
@@ -271,11 +311,287 @@ public class StudentController {
         return ControllerUtil.getDataResult(sxStudent);
     }
 
-    @ApiOperation(value = "学生添加企业信息", httpMethod = "POST")
+    @ApiOperation(value = "学生添加/修改企业信息", httpMethod = "POST")
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/student/corp")
-    public void addCorpInfo(SxCorporation sxCorporation) {
+    public ResponseVO addCorpInfo(SxCorporation sxCorporation) {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        SxCorporation oldCorp = sxCorporationService.findByStuNo(sxStudent.getStuNo());
+        if (oldCorp != null) {
+            if (sxCorporation.getId() == null || sxCorporation.getId().equals("")) {
+                return ControllerUtil.getFalseResultMsgBySelf("修改企业信息缺少ID");
+            }
+            if (oldCorp.getId() != sxCorporation.getId()) {
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
+            }
+            EntityUtil.update(oldCorp, sxCorporation);
+        }
+
+        sxCorporation.setStuNo(sxStudent.getStuNo());
+        sxCorporation.setIsCorpChecked(false);
         sxCorporationService.save(sxCorporation);
+        return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
     }
 
+
+    @ApiOperation(value = "学生查看企业信息", httpMethod = "GET")
+    @RequiresRoles(RoleCode.STUDENT)
+    @GetMapping("/student/corp")
+    public ResponseVO addCorpInfo() {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
+    }
+
+
+    @ApiOperation(value = "学生设置/修改职位", httpMethod = "POST")
+    @RequiresRoles(RoleCode.STUDENT)
+    @PostMapping("/student/position")
+    public ResponseVO setPosition(String position) {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        sxStudentService.updatePosition(sxStudent.getStuNo(), position);
+        return ControllerUtil.getSuccessResultBySelf(sxStudentService.findByStuNo(sxStudent.getStuNo()));
+    }
+
+    @ApiOperation(value = "学生修改密码", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "oldPassword", value = "旧密码", required = true),
+            @ApiImplicitParam(name = "newPassword", value = "新密码", required = true)
+    })
+    @RequiresRoles(RoleCode.STUDENT)
+    @PostMapping("/student/password")
+    public ResponseVO setPassword(String oldPassword, String newPassword) {
+        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+
+        boolean flag = sxStudentService.updatePassword(sxStudent.getStuNo(), oldPassword, newPassword);
+        if (flag) {
+            return ControllerUtil.getSuccessResultBySelf("修改成功");
+        } else {
+            return ControllerUtil.getFalseResultMsgBySelf("原密码错误");
+
+        }
+
+    }
+
+    @ApiOperation(value = "通过学号下载报告册PDF", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "stdNo", value = "学生学号", required = true),
+            @ApiImplicitParam(name = "password", value = "密码123456", required = true),
+    })
+    @PostMapping("/report/pdf")
+    public ResponseVO getReportPdf(@RequestParam String stdNo, @RequestParam String password) throws OfficeException {
+        if (!password.equals(psd)) {
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
+        }
+        SxStudent sxStudent = sxStudentService.findSelfInfoByStuNo(stdNo);
+        if(sxStudent==null){return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);}
+        SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
+        SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
+        EntityUtil.setNullFiledToString(sxStudent);
+        EntityUtil.setNullFiledToString(sxReport);
+        EntityUtil.setNullFiledToString(sxTeacher);
+        Map<String, String> params = new HashMap<>();
+        params.put("${stu_name}", sxStudent.getName());
+        params.put("${stu_no}", sxStudent.getStuNo());
+        params.put("${college}", sxStudent.getCollege());
+        params.put("${major}", sxStudent.getMajor());
+        params.put("${corp_name}", sxStudent.getCorpName());
+        params.put("${corp_position}", sxStudent.getCorpPosition());
+        params.put("${stage1_guide_date}", sxReport.getStage1GuideDate());
+        params.put("${stage1_guide_way}", sxReport.getStage1GuideWay());
+        params.put("${stage1_summary}", sxReport.getStage1Summary());
+        params.put("${stage1_comment}", sxReport.getStage1Comment());
+        params.put("${stage1_grade}", sxReport.getStage1Grade());
+        params.put("${stage2_guide_date}", sxReport.getStage2GuideDate());
+        params.put("${stage2_guide_way}", sxReport.getStage2GuideWay());
+        params.put("${stage2_summary}", sxReport.getStage2Summary());
+        params.put("${stage2_comment}", sxReport.getStage2Comment());
+        params.put("${stage2_grade}", sxReport.getStage2Grade());
+        params.put("${teacher}", sxTeacher.getName());
+        params.put("${total_grade}", sxReport.getTotalGrade());
+        params.put("${total_score}", sxReport.getTotalScore());
+        params.put("${gmt_start}", DateUtil.getUpperDate(sxReport.getGmtStart()));
+        params.put("${gmt_end}", DateUtil.getUpperDate(sxReport.getGmtEnd()));
+        params.put("${fill_date}", DateUtil.getNowUpperDate());
+        String wordFileName = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
+        if (wordFileName != null) {
+            String path = System.getProperty("user.dir") + "\\static\\";
+            String pdfFileName = wordFileName.replace("docx", "pdf");
+            // 源文件 （office）
+            File source = new File(path + wordFileName);
+            // 目标文件 （pdf）
+            File target = new File(path + pdfFileName);
+            // 转换文件
+            if (!target.exists()) {
+                documentConverter.convert(source).to(target).execute();
+                //删除word
+                source.delete();
+            }
+            return ControllerUtil.getSuccessResultBySelf(pdfFileName);
+        }
+        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
+    }
+
+
+    @ApiOperation(value = "通过学号下载鉴定表PDF", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "stdNo", value = "学生学号", required = true),
+            @ApiImplicitParam(name = "password", value = "密码123456", required = true),
+    })
+    @PostMapping("/identify/pdf")
+    public ResponseVO getIdentifyPdf(@RequestParam String stdNo, @RequestParam String password) throws OfficeException {
+        if (!password.equals(psd)) {
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
+        }
+        SxStudent sxStudent = sxStudentService.findSelfInfoByStuNo(stdNo);
+        if(sxStudent==null){return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);}
+        SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
+        EntityUtil.setNullFiledToString(sxStudent);
+        EntityUtil.setNullFiledToString(sxIdentifyForm);
+        Map<String, String> params = new HashMap<>();
+        params.put("${college}", sxStudent.getCollege());
+        params.put("${major}", sxStudent.getMajor());
+        params.put("${stu_name}", sxStudent.getName());
+        params.put("${stu_no}", sxStudent.getStuNo());
+        params.put("${corp_name}", sxStudent.getCorpName());
+        params.put("${gmt_start}", DateUtil.getUpperDate(sxIdentifyForm.getGmtStart()));
+        params.put("${gmt_end}", DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd()));
+        params.put("${fill_date}", DateUtil.getNowUpperDate());
+        params.put("${content}", sxIdentifyForm.getSxContent());
+        params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
+        params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
+        params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
+        params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
+        params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
+        params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
+        params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
+        String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
+        if (wordFileName != null) {
+            String path = System.getProperty("user.dir") + "\\static\\";
+            String pdfFileName = wordFileName.replace("docx", "pdf");
+            // 源文件 （office）
+            File source = new File(path + wordFileName);
+            // 目标文件 （pdf）
+            File target = new File(path + pdfFileName);
+            // 转换文件
+            if (!target.exists()) {
+                documentConverter.convert(source).to(target).execute();
+                //删除word
+                source.delete();
+            }
+            return ControllerUtil.getSuccessResultBySelf(pdfFileName);
+        }
+        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
+    }
+
+    @ApiOperation(value = "通过学号列表下载鉴定表PDF", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "password", value = "密码123456", required = true),
+    })
+    @PostMapping("/identifys/pdf")
+    public ResponseVO getidentifysPdf(@RequestParam List<String> stuNoLists,@RequestParam String password) throws OfficeException {
+        if (!password.equals(psd)) {
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
+        }
+        for (String stuNoList:stuNoLists){
+            logger.info("--------当前打印学生--------------");
+            logger.info(stuNoList);
+            SxStudent sxStudent = sxStudentService.findSelfInfoByStuNo(stuNoList);
+            SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
+            EntityUtil.setNullFiledToString(sxStudent);
+            EntityUtil.setNullFiledToString(sxIdentifyForm);
+            Map<String, String> params = new HashMap<>();
+            params.put("${college}", sxStudent.getCollege());
+            params.put("${major}", sxStudent.getMajor());
+            params.put("${stu_name}", sxStudent.getName());
+            params.put("${stu_no}", sxStudent.getStuNo());
+            params.put("${corp_name}", sxStudent.getCorpName());
+            params.put("${gmt_start}", DateUtil.getUpperDate(sxIdentifyForm.getGmtStart()));
+            params.put("${gmt_end}", DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd()));
+            params.put("${fill_date}", DateUtil.getNowUpperDate());
+            params.put("${content}", sxIdentifyForm.getSxContent());
+            params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
+            params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
+            params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
+            params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
+            params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
+            params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
+            params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
+            String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
+            if (wordFileName != null) {
+                String path = System.getProperty("user.dir") + "\\static\\";
+                String pdfFileName = wordFileName.replace("docx", "pdf");
+                // 源文件 （office）
+                File source = new File(path + wordFileName);
+                // 目标文件 （pdf）
+                File target = new File(path + pdfFileName);
+                // 转换文件
+                if (!target.exists()) {
+                    documentConverter.convert(source).to(target).execute();
+                    //删除word
+                    source.delete();
+                }
+            }
+        }
+        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SUCCESS);
+    }
+
+    @ApiOperation(value = "通过学号列表下载报告册PDF", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "password", value = "密码123456", required = true),
+    })
+    @PostMapping("/reports/pdf")
+    public ResponseVO getReportsPdf(@RequestParam List<String> stuNoLists,@RequestParam String password) throws OfficeException {
+        if (!password.equals(psd)) {
+            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
+        }
+        for (String stuNoList:stuNoLists){
+            logger.info("--------当前打印学生--------------");
+            logger.info(stuNoList);
+            SxStudent sxStudent = sxStudentService.findSelfInfoByStuNo(stuNoList);
+            SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
+            SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
+            EntityUtil.setNullFiledToString(sxStudent);
+            EntityUtil.setNullFiledToString(sxReport);
+            EntityUtil.setNullFiledToString(sxTeacher);
+            Map<String, String> params = new HashMap<>();
+            params.put("${stu_name}", sxStudent.getName());
+            params.put("${stu_no}", sxStudent.getStuNo());
+            params.put("${college}", sxStudent.getCollege());
+            params.put("${major}", sxStudent.getMajor());
+            params.put("${corp_name}", sxStudent.getCorpName());
+            params.put("${corp_position}", sxStudent.getCorpPosition());
+            params.put("${stage1_guide_date}", sxReport.getStage1GuideDate());
+            params.put("${stage1_guide_way}", sxReport.getStage1GuideWay());
+            params.put("${stage1_summary}", sxReport.getStage1Summary());
+            params.put("${stage1_comment}", sxReport.getStage1Comment());
+            params.put("${stage1_grade}", sxReport.getStage1Grade());
+            params.put("${stage2_guide_date}", sxReport.getStage2GuideDate());
+            params.put("${stage2_guide_way}", sxReport.getStage2GuideWay());
+            params.put("${stage2_summary}", sxReport.getStage2Summary());
+            params.put("${stage2_comment}", sxReport.getStage2Comment());
+            params.put("${stage2_grade}", sxReport.getStage2Grade());
+            params.put("${teacher}", sxTeacher.getName());
+            params.put("${total_grade}", sxReport.getTotalGrade());
+            params.put("${total_score}", sxReport.getTotalScore());
+            params.put("${gmt_start}", DateUtil.getUpperDate(sxReport.getGmtStart()));
+            params.put("${gmt_end}", DateUtil.getUpperDate(sxReport.getGmtEnd()));
+            params.put("${fill_date}", DateUtil.getNowUpperDate());
+            String wordFileName = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
+            if (wordFileName != null) {
+                String path = System.getProperty("user.dir") + "\\static\\";
+                String pdfFileName = wordFileName.replace("docx", "pdf");
+                // 源文件 （office）
+                File source = new File(path + wordFileName);
+                // 目标文件 （pdf）
+                File target = new File(path + pdfFileName);
+                // 转换文件
+                if (!target.exists()) {
+                    documentConverter.convert(source).to(target).execute();
+                    //删除word
+                    source.delete();
+                }
+            }
+        }
+        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SUCCESS);
+    }
 }
