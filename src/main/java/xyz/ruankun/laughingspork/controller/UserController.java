@@ -104,4 +104,5 @@ public class UserController {
         SxStagemanage sxStagemanage = sxStudentService.getNowReportStage();
         return ControllerUtil.getSuccessResultBySelf(sxStagemanage);
     }
+
 }

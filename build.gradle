@@ -34,6 +34,8 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:4.0.1'
     implementation 'org.apache.poi:poi-ooxml-schemas:4.0.1'
     implementation 'org.jodconverter:jodconverter-spring-boot-starter:4.1.1'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.1'
+    implementation 'org.json:json:20180813'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
