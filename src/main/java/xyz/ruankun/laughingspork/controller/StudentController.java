@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.jodconverter.DocumentConverter;
-import org.jodconverter.office.LocalOfficeManager;
 import org.jodconverter.office.OfficeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +19,13 @@ import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.DateUtil;
 import xyz.ruankun.laughingspork.util.EntityUtil;
 import xyz.ruankun.laughingspork.util.RenderWordUtil;
-import xyz.ruankun.laughingspork.util.constant.Rating;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 import java.io.File;
-import java.io.OutputStream;
 import java.sql.Date;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 @RestController
 @CrossOrigin
@@ -65,6 +59,7 @@ public class StudentController {
 
     @ApiOperation(value = "返回当前报告册阶段信息", httpMethod = "GET")
     @GetMapping("/reportStage")
+    @RequiresRoles(RoleCode.STUDENT)
     public ResponseVO nowReportStage() {
         SxStagemanage sxStagemanage = sxStudentService.getNowReportStage();
         return ControllerUtil.getSuccessResultBySelf(sxStagemanage);
@@ -303,6 +298,7 @@ public class StudentController {
             @ApiImplicitParam(name = "tNo", value = "教师编号", required = true),
     })
     @PostMapping("/teacher")
+    @RequiresRoles(RoleCode.STUDENT)
     public ResponseVO choseTeacher(@RequestParam String tNo) {
         if (tNo == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
@@ -378,6 +374,7 @@ public class StudentController {
             @ApiImplicitParam(name = "password", value = "密码123456", required = true),
     })
     @PostMapping("/report/pdf")
+    @RequiresRoles(RoleCode.STUDENT)
     public ResponseVO getReportPdf(@RequestParam String stdNo, @RequestParam String password) throws OfficeException {
         if (!password.equals(psd)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
@@ -438,6 +435,7 @@ public class StudentController {
             @ApiImplicitParam(name = "password", value = "密码123456", required = true),
     })
     @PostMapping("/identify/pdf")
+    @RequiresRoles(RoleCode.STUDENT)
     public ResponseVO getIdentifyPdf(@RequestParam String stdNo, @RequestParam String password) throws OfficeException {
         if (!password.equals(psd)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
@@ -488,6 +486,7 @@ public class StudentController {
             @ApiImplicitParam(name = "password", value = "密码123456", required = true),
     })
     @PostMapping("/identifys/pdf")
+    @RequiresRoles(RoleCode.STUDENT)
     public ResponseVO getidentifysPdf(@RequestParam List<String> stuNoLists,@RequestParam String password) throws OfficeException {
         if (!password.equals(psd)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
@@ -540,6 +539,7 @@ public class StudentController {
             @ApiImplicitParam(name = "password", value = "密码123456", required = true),
     })
     @PostMapping("/reports/pdf")
+    @RequiresRoles(RoleCode.STUDENT)
     public ResponseVO getReportsPdf(@RequestParam List<String> stuNoLists,@RequestParam String password) throws OfficeException {
         if (!password.equals(psd)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
