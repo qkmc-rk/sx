@@ -3,8 +3,8 @@ server:
 
 # 企查查
 qichacha:
-  appkey: 82c1901c0b8711ea89b97cd30aeb1e8c
-  seckey: E569IGHQYAAADQ7M5LBKIL4K9ADRDDEO
+  appkey: 282c1901c0b8711ea89b97cd30aeb1e8c3
+  seckey: 2E569IGHQYAAADQ7M5LBKIL4K9ADRDDEO3
   apiurl: https://pro.qichacha.com/api/yj/ECIMatch/CompanyVerify
 
 user:
