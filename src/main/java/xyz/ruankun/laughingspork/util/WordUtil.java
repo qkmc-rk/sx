@@ -156,7 +156,12 @@ public class WordUtil {
      * @param path
      */
     public String printToFile(XWPFDocument docx, String fileName, String path) {
-        path = System.getProperty("user.dir") + "\\" + path;
+        if(SystemUtil.isWindows()){
+            path = System.getProperty("user.dir") + "\\" + path;
+        }else {
+            path = System.getProperty("user.dir") + "/" + path;
+        }
+
         fileName += ".docx";
         try {
             File file = new File(path + fileName);

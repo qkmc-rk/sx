@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import xyz.ruankun.laughingspork.util.SystemUtil;
 
 import java.io.File;
 import java.util.Date;
@@ -19,7 +20,12 @@ public class ClearWordFile {
         try {
             final long interval = 24 * 360000;
             long now = new Date().getTime();
-            File file = new File(System.getProperty("user.dir") + "\\static\\");
+            File file;
+            if(SystemUtil.isWindows()){
+                file = new File(System.getProperty("user.dir") + "\\static\\");
+            }else {
+                file = new File(System.getProperty("user.dir") + "/static/");
+            }
             if (file.exists()) {
                 File[] fileList = file.listFiles();
                 for (File f : fileList
