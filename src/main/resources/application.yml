@@ -1,14 +1,26 @@
 server:
   port: 8080
 
+<<<<<<< HEAD
 user:
   password: 123456
+=======
+# 企查查
+qichacha:
+  appkey: 282c1901c0b8711ea89b97cd30aeb1e8c3
+  seckey: 2E569IGHQYAAADQ7M5LBKIL4K9ADRDDEO3
+  apiurl: https://pro.qichacha.com/api/yj/ECIMatch/CompanyVerify
+
+user:
+  password: 123456
+
+>>>>>>> 70a98439035e1529662a8535f4a1e6153e1c5044
 spring:
   # 数据源
   datasource:
     username: root
-    password: 1314
-    url: jdbc:mysql://10.255.251.34:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai
+    password: 479803313
+    url: jdbc:mysql://127.0.0.1:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     open-in-view: false
