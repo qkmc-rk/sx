@@ -9,6 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * 暂时未实现，存在问题，读不进去
+ * 2019-21-21
+ */
 @Aspect
 @Component
 public class JodConverterOfficeHomePropertyAspect {
