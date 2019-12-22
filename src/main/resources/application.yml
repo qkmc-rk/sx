@@ -1,5 +1,7 @@
 server:
   port: 8080
+  tomcat:
+    uri-encoding: UTF-8
 
 # 企查查
 qichacha:
@@ -14,14 +16,20 @@ spring:
   # 数据源
   datasource:
     username: root
-    password: 479803313
-    url: jdbc:mysql://127.0.0.1:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai
+    password: '@Sicau211'
+    url: jdbc:mysql://ruankun.xyz:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     open-in-view: false
     show-sql: false
     hibernate:
       ddl-auto: update
+    #--------------------------charset--------------------------
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
   # 热重启
   devtools:
@@ -39,4 +47,3 @@ jodconverter:
   max-tasks-per-process: 10
   port-numbers: 8100
   kill-existing-process: true
-

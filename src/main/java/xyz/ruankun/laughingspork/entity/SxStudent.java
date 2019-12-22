@@ -1,6 +1,7 @@
 package xyz.ruankun.laughingspork.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 学生信息
@@ -188,6 +189,28 @@ public class SxStudent {
      */
     @Column(name = "reportFilled_flag",nullable = true)
     private Integer reportFilledFlag;
+
+    // 实习开始和结束的日期
+    @Transient
+    private Date gmtStart;
+    @Transient
+    private Date gmtEnd;
+
+    public Date getGmtStart() {
+        return gmtStart;
+    }
+
+    public void setGmtStart(Date gmtStart) {
+        this.gmtStart = gmtStart;
+    }
+
+    public Date getGmtEnd() {
+        return gmtEnd;
+    }
+
+    public void setGmtEnd(Date gmtEnd) {
+        this.gmtEnd = gmtEnd;
+    }
 
     public Integer getIdentifyFilledFlag() {
         return identifyFilledFlag;
