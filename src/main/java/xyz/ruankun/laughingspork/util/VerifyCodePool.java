@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 全局只有一个 所有验证码存到这里
  *
  */
-public class VerifyCodePool {
+public abstract class VerifyCodePool {
 
     private static final Logger logger = LoggerFactory.getLogger(VerifyCodePool.class);
 

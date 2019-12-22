@@ -42,11 +42,11 @@ public class VerifyCodeUtil {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
             'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
     // 字符数量
-    private static final int SIZE = 4;
+    private static final int SIZE = 7;
     // 干扰线数量
     private static final int LINES = 5;
     // 宽度
-    private static final int WIDTH = 80;
+    private static final int WIDTH = 140;
     // 高度
     private static final int HEIGHT = 40;
     // 字体大小
