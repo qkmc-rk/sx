@@ -12,16 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
-import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
-import xyz.ruankun.laughingspork.entity.SxReport;
-import xyz.ruankun.laughingspork.entity.SxStagemanage;
+import xyz.ruankun.laughingspork.entity.*;
 import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
 import xyz.ruankun.laughingspork.service.SxReportService;
 import xyz.ruankun.laughingspork.service.SxStudentService;
+import xyz.ruankun.laughingspork.service.SxTeacherService;
 import xyz.ruankun.laughingspork.shiro.UserToken;
-import xyz.ruankun.laughingspork.util.ControllerUtil;
-import xyz.ruankun.laughingspork.util.VerifyCodePool;
-import xyz.ruankun.laughingspork.util.VerifyCodeUtil;
+import xyz.ruankun.laughingspork.util.*;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
@@ -55,6 +52,9 @@ public class UserController {
 
     @Autowired
     SxIdentifyFormService sxIdentifyFormService;
+
+    @Autowired
+    SxTeacherService sxTeacherService;
 
     @ApiOperation(value = "用户登录接口", notes = "account类型与loginType一一对应,严格区分大小写.\n" +
             "account(loginType):    " +
@@ -128,7 +128,7 @@ public class UserController {
 
     @ApiOperation("生成验证码")
     @GetMapping("/verifycode")
-    public void getCode(HttpServletResponse response) throws Exception{
+    public void getCode(HttpServletResponse response) throws Exception {
         //利用图片工具生成图片
         //第一个参数是生成的验证码，第二个参数是生成的图片
         Object[] objs = VerifyCodeUtil.createImage();
@@ -139,6 +139,90 @@ public class UserController {
         response.setContentType("image/png");
         OutputStream os = response.getOutputStream();
         ImageIO.write(image, "png", os);
+    }
+    /**
+     *  是否是第一次登录, 按照官方要求，第一次登录需要设置一个复杂的密码
+     * @param account
+     * @return
+     */
+    @ApiOperation(value = "输入学号或者工号，返回是否是第一次登录", httpMethod = "GET")
+    @GetMapping("/loginstatus")
+    public ResponseVO isFirstLogin(@RequestParam String account){
+        SxStudent sxStudent = sxStudentService.findByStuNo(account);
+        if (null == sxStudent){
+            SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
+            if(null == sxTeacher){
+                return ControllerUtil.getFalseResultMsgBySelf("teacher and student not exist");
+            }else{
+                //老师不为空
+                if (sxTeacher.getFirstLogin()){
+                    return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
+                }
+                return ControllerUtil.getDataResult("{\"isFirstLogin\":false}");
+            }
+        }else{
+            //学生不为空
+            if (sxStudent.getFirstLogin()){
+                return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
+            }
+            return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
+        }
+
+    }
+
+    @ApiOperation(value = "注册,只有第一次登录才具有注册功能", httpMethod = "GET")
+    @PostMapping("/register")
+    public ResponseVO register(@RequestParam String account
+            , @RequestParam String password
+            , @RequestParam String idcard
+            , @RequestParam String loginType){
+        //先对密码进行校验,不合法的弱密码无法通过注册
+        Map<Boolean, String> rs = StrongPwdValidator.validate(password);
+        if (null != rs.get(false)){
+            return ControllerUtil.getFalseResultMsgBySelf(rs.get(false));
+        }
+
+        if (loginType.equals("Student")){
+            // student
+            SxStudent sxStudent = sxStudentService.findByStuNo(account);
+            if (null != sxStudent){
+                if (sxStudent.getFirstLogin()){
+                    return ControllerUtil.getFalseResultMsgBySelf("student already registered");
+                }else {
+                    // 注册
+                    if(idcard.equals(sxStudent.getIdCard())){
+                        //注册
+                        sxStudent.setPassword(MD5Util.md5(password).toUpperCase());
+                        sxStudentService.save(sxStudent);
+                        return ControllerUtil.getSuccessResultBySelf("register success");
+                    }else {
+                        // 身份证信息有误
+                        return ControllerUtil.getFalseResultMsgBySelf("idcard num is wrong");
+                    }
+                }
+            }else {
+                return ControllerUtil.getFalseResultMsgBySelf("no this student");
+            }
+        }else if(loginType.equals("Teacher")){
+            // teacher
+            SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
+            if (sxTeacher.getFirstLogin()){
+                return ControllerUtil.getFalseResultMsgBySelf("teacher already registered");
+            }else {
+                // 注册
+                if(idcard.equals(sxTeacher.getIdCard())){
+                    // 注册
+                    sxTeacher.setPassword(MD5Util.md5(password).toUpperCase());
+                    sxTeacherService.save(sxTeacher);
+                    return ControllerUtil.getSuccessResultBySelf("register success");
+                }else {
+                    // 身份证信息有误
+                    return ControllerUtil.getFalseResultMsgBySelf("idcard num is wrong");
+                }
+            }
+        }else {
+            return ControllerUtil.getFalseResultMsgBySelf("register type error");
+        }
     }
 
 }

@@ -74,6 +74,22 @@ public class SxTeacher {
     @Column(name = "college_code", nullable = true)
     private String collegeCode;
 
+    /**
+     *  是否是第一次登录
+     *  true  是第一次登录(默认值)
+     *  false 不是第一次登录
+     */
+    @Column(name = "is_first_login")
+    private Boolean firstLogin;
+
+    public Boolean getFirstLogin() {
+        return firstLogin;
+    }
+
+    public void setFirstLogin(Boolean firstLogin) {
+        this.firstLogin = firstLogin;
+    }
+
     public Long getId() {
         return this.id;
     }

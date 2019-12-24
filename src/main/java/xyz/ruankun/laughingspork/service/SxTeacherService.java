@@ -55,6 +55,7 @@ public interface SxTeacherService {
      * @return: xyz.ruankun.laughingspork.entity.SxTeacher
      */
     SxTeacher findByTeacherNo(String teacherNo);
+    void save(SxTeacher sxTeacher);
 
     SxReport saveReport1(String stuNo, String stage1_comment, String stage1_grade);
 

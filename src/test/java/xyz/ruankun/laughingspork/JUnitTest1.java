@@ -21,6 +21,7 @@ package xyz.ruankun.laughingspork;
 //                      Buddha Bless, No Bug !
 
 import org.junit.Test;
+import xyz.ruankun.laughingspork.util.StrongPwdValidator;
 import xyz.ruankun.laughingspork.util.VerifyCodePool;
 import xyz.ruankun.laughingspork.util.VerifyCodeUtil;
 
@@ -40,5 +41,16 @@ public class JUnitTest1 {
         }
         Object[] code =  VerifyCodeUtil.createImage();
         System.out.println(code[0].toString());
+    }
+    @Test
+    public void m2(){
+        String pwd1 = "ruankun521";
+        String pwd2 = "@Sicau.edu.cn1";
+        String pwd3 = "ruanqiongQdd122~";
+        String pwd4 = "Rqx3-1=2df23";
+        System.out.println(StrongPwdValidator.validate(pwd1));
+        System.out.println(StrongPwdValidator.validate(pwd2));
+        System.out.println(StrongPwdValidator.validate(pwd3));
+        System.out.println(StrongPwdValidator.validate(pwd4));
     }
 }

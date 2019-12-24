@@ -161,4 +161,9 @@ public class SxTeacherServiceImpl implements SxTeacherService {
         sxReportRepository.save(sxReport);
         return sxReport;
     }
+
+    @Override
+    public void save(SxTeacher sxTeacher) {
+        resp.save(sxTeacher);
+    }
 }

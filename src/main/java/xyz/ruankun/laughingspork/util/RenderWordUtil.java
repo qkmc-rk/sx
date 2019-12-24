@@ -8,12 +8,25 @@ import java.util.Map;
 
 public class RenderWordUtil {
 
-    //实习报告册模板路径
-    public static final String REPORT_PATH = "word\\report.docx";
-    //实习鉴定表模板路径
-    public static final String IDENTIFY_PATH = "word\\identify.docx";
+    private static Logger logger = LoggerFactory.getLogger(RenderWordUtil.class);
 
-    public static final String BASE_SAVE_PATH = "static\\";
+    // windows下的路径
+    // 实习报告册模板路径
+    public static String REPORT_PATH = "word\\report.docx";
+    // 实习鉴定表模板路径
+    public static String IDENTIFY_PATH = "word\\identify.docx";
+
+    public static String BASE_SAVE_PATH = "static\\";
+
+    // linux下需要重新初始化路径
+    static{
+        if (!SystemUtil.isWindows()){
+            logger.info("this platform is unix based system..");
+            REPORT_PATH = "word/report.docx";
+            IDENTIFY_PATH = "word/identify.docx";
+            BASE_SAVE_PATH = "static/";
+        }
+    }
 
     /**
      * 渲染并导出word文档, 返回输出路径.

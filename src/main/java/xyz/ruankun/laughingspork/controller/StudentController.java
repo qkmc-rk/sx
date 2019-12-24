@@ -7,10 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.jodconverter.DocumentConverter;
-<<<<<<< HEAD
 import org.jodconverter.office.LocalOfficeManager;
-=======
->>>>>>> 70a98439035e1529662a8535f4a1e6153e1c5044
 import org.jodconverter.office.OfficeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +25,7 @@ import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
 
 import java.io.File;
-<<<<<<< HEAD
 import java.io.OutputStream;
-=======
->>>>>>> 70a98439035e1529662a8535f4a1e6153e1c5044
 import java.sql.Date;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -273,7 +267,6 @@ public class StudentController {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
         SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
-
         EntityUtil.setNullFiledToString(sxStudent);
         EntityUtil.setNullFiledToString(sxReport);
         EntityUtil.setNullFiledToString(sxTeacher);
@@ -377,7 +370,6 @@ public class StudentController {
     public ResponseVO addCorpInfo() {
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
-<<<<<<< HEAD
     }
 
 
@@ -470,111 +462,13 @@ public class StudentController {
     }
 
 
-=======
-    }
-
-
-    @ApiOperation(value = "学生设置/修改职位", httpMethod = "POST")
-    @RequiresRoles(RoleCode.STUDENT)
-    @PostMapping("/student/position")
-    public ResponseVO setPosition(String position) {
-        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
-        sxStudentService.updatePosition(sxStudent.getStuNo(), position);
-        return ControllerUtil.getSuccessResultBySelf(sxStudentService.findByStuNo(sxStudent.getStuNo()));
-    }
-
-    @ApiOperation(value = "学生修改密码", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "oldPassword", value = "旧密码", required = true),
-            @ApiImplicitParam(name = "newPassword", value = "新密码", required = true)
-    })
-    @RequiresRoles(RoleCode.STUDENT)
-    @PostMapping("/student/password")
-    public ResponseVO setPassword(String oldPassword, String newPassword) {
-        SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
-
-        boolean flag = sxStudentService.updatePassword(sxStudent.getStuNo(), oldPassword, newPassword);
-        if (flag) {
-            return ControllerUtil.getSuccessResultBySelf("修改成功");
-        } else {
-            return ControllerUtil.getFalseResultMsgBySelf("原密码错误");
-
-        }
-
-    }
-
-    @ApiOperation(value = "通过学号下载报告册PDF", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "stdNo", value = "学生学号", required = true),
-            @ApiImplicitParam(name = "password", value = "密码123456", required = true),
-    })
-    @PostMapping("/report/pdf")
-    @RequiresRoles(RoleCode.STUDENT)
-    public ResponseVO getReportPdf(@RequestParam String stdNo, @RequestParam String password) throws OfficeException {
-        if (!password.equals(psd)) {
-            return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
-        }
-        SxStudent sxStudent = sxStudentService.findSelfInfoByStuNo(stdNo);
-        if(sxStudent==null){return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);}
-        SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
-        SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(sxStudent.getTeacherNo());
-        EntityUtil.setNullFiledToString(sxStudent);
-        EntityUtil.setNullFiledToString(sxReport);
-        EntityUtil.setNullFiledToString(sxTeacher);
-        Map<String, String> params = new HashMap<>();
-        params.put("${stu_name}", sxStudent.getName());
-        params.put("${stu_no}", sxStudent.getStuNo());
-        params.put("${college}", sxStudent.getCollege());
-        params.put("${major}", sxStudent.getMajor());
-        params.put("${corp_name}", sxStudent.getCorpName());
-        params.put("${corp_position}", sxStudent.getCorpPosition());
-        params.put("${stage1_guide_date}", sxReport.getStage1GuideDate());
-        params.put("${stage1_guide_way}", sxReport.getStage1GuideWay());
-        params.put("${stage1_summary}", sxReport.getStage1Summary());
-        params.put("${stage1_comment}", sxReport.getStage1Comment());
-        params.put("${stage1_grade}", sxReport.getStage1Grade());
-        params.put("${stage2_guide_date}", sxReport.getStage2GuideDate());
-        params.put("${stage2_guide_way}", sxReport.getStage2GuideWay());
-        params.put("${stage2_summary}", sxReport.getStage2Summary());
-        params.put("${stage2_comment}", sxReport.getStage2Comment());
-        params.put("${stage2_grade}", sxReport.getStage2Grade());
-        params.put("${teacher}", sxTeacher.getName());
-        params.put("${total_grade}", sxReport.getTotalGrade());
-        params.put("${total_score}", sxReport.getTotalScore());
-        params.put("${gmt_start}", DateUtil.getUpperDate(sxReport.getGmtStart()));
-        params.put("${gmt_end}", DateUtil.getUpperDate(sxReport.getGmtEnd()));
-        params.put("${fill_date}", DateUtil.getNowUpperDate());
-        String wordFileName = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
-        if (wordFileName != null) {
-            String path = System.getProperty("user.dir") + "\\static\\";
-            String pdfFileName = wordFileName.replace("docx", "pdf");
-            // 源文件 （office）
-            File source = new File(path + wordFileName);
-            // 目标文件 （pdf）
-            File target = new File(path + pdfFileName);
-            // 转换文件
-            if (!target.exists()) {
-                documentConverter.convert(source).to(target).execute();
-                //删除word
-                source.delete();
-            }
-            return ControllerUtil.getSuccessResultBySelf(pdfFileName);
-        }
-        return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SERVER_ERROR);
-    }
-
-
->>>>>>> 70a98439035e1529662a8535f4a1e6153e1c5044
     @ApiOperation(value = "通过学号下载鉴定表PDF", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stdNo", value = "学生学号", required = true),
             @ApiImplicitParam(name = "password", value = "密码123456", required = true),
     })
     @PostMapping("/identify/pdf")
-<<<<<<< HEAD
-=======
     @RequiresRoles(RoleCode.STUDENT)
->>>>>>> 70a98439035e1529662a8535f4a1e6153e1c5044
     public ResponseVO getIdentifyPdf(@RequestParam String stdNo, @RequestParam String password) throws OfficeException {
         if (!password.equals(psd)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
@@ -625,10 +519,7 @@ public class StudentController {
             @ApiImplicitParam(name = "password", value = "密码123456", required = true),
     })
     @PostMapping("/identifys/pdf")
-<<<<<<< HEAD
-=======
     @RequiresRoles(RoleCode.STUDENT)
->>>>>>> 70a98439035e1529662a8535f4a1e6153e1c5044
     public ResponseVO getidentifysPdf(@RequestParam List<String> stuNoLists,@RequestParam String password) throws OfficeException {
         if (!password.equals(psd)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
@@ -681,10 +572,7 @@ public class StudentController {
             @ApiImplicitParam(name = "password", value = "密码123456", required = true),
     })
     @PostMapping("/reports/pdf")
-<<<<<<< HEAD
-=======
     @RequiresRoles(RoleCode.STUDENT)
->>>>>>> 70a98439035e1529662a8535f4a1e6153e1c5044
     public ResponseVO getReportsPdf(@RequestParam List<String> stuNoLists,@RequestParam String password) throws OfficeException {
         if (!password.equals(psd)) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);

@@ -211,6 +211,13 @@ public class SxStudent {
     public void setGmtEnd(Date gmtEnd) {
         this.gmtEnd = gmtEnd;
     }
+    /**
+     *  是否是第一次登录
+     *  true  是第一次登录(默认值)
+     *  false 不是第一次登录
+     */
+    @Column(name = "is_first_login")
+    private Boolean firstLogin;
 
     public Integer getIdentifyFilledFlag() {
         return identifyFilledFlag;
@@ -402,6 +409,15 @@ public class SxStudent {
 
     public void setCorpTeacherNo(String corpTeacherNo) {
         this.corpTeacherNo = corpTeacherNo;
+    }
+
+
+    public Boolean getFirstLogin() {
+        return firstLogin;
+    }
+
+    public void setFirstLogin(Boolean firstLogin) {
+        this.firstLogin = firstLogin;
     }
 
     @Override
