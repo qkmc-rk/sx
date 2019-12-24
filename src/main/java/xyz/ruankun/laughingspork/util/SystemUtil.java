@@ -8,9 +8,8 @@ public class SystemUtil {
      */
     public static boolean isWindows(){
         String platform = System.getProperty("os.name");
-        boolean noWin = platform.toLowerCase().indexOf("linux") > -1 || platform.toLowerCase().indexOf("mac") > -1;
-        boolean unixBasedSys = !noWin;
-        if (unixBasedSys){
+        boolean isUnixBased = platform.toLowerCase().indexOf("linux") > -1 || platform.toLowerCase().indexOf("mac") > -1;
+        if (isUnixBased){
             return false;   // 不是windows
         }else {
             return true;    // 不是windows
@@ -41,5 +40,4 @@ public class SystemUtil {
         }
         return false;
     }
-
 }

@@ -68,12 +68,21 @@ public class UserController {
     })
     @PostMapping("/login")
     public ResponseVO login(String account, String password, String loginType, String code) {
+        // 如果没有验证码
         if(null == code){
             return ControllerUtil.getFalseResultMsgBySelf("verify code cannot be null");
         }
+        //
         if(!VerifyCodeUtil.verify(code.toLowerCase())){
             return ControllerUtil.getFalseResultMsgBySelf("verify code is wrong,please retry after refresh page");
         }else {
+            // 判断是否是第一次登陆
+            SxStudent sxStudent = null;
+            if ((sxStudent = sxStudentService.findByStuNo(account)) != null && (sxStudent.getFirstLogin())){
+                //第一次
+                return ControllerUtil.getFalseResultMsgBySelf("not registered(not set your password)");
+            }
+            // follow code by NadevXiang
             Subject subject = SecurityUtils.getSubject();
             //  设置Session30分钟过期 30分钟没有交互 Seeion将被删除
             subject.getSession().setTimeout(1800000);
@@ -165,7 +174,7 @@ public class UserController {
             if (sxStudent.getFirstLogin()){
                 return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
             }
-            return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
+            return ControllerUtil.getDataResult("{\"isFirstLogin\":false}");
         }
 
     }
@@ -175,53 +184,80 @@ public class UserController {
     public ResponseVO register(@RequestParam String account
             , @RequestParam String password
             , @RequestParam String idcard
-            , @RequestParam String loginType){
-        //先对密码进行校验,不合法的弱密码无法通过注册
-        Map<Boolean, String> rs = StrongPwdValidator.validate(password);
-        if (null != rs.get(false)){
-            return ControllerUtil.getFalseResultMsgBySelf(rs.get(false));
+            , @RequestParam String loginType
+            , @RequestParam String code){
+        // 如果没有验证码
+        if(null == code){
+            return ControllerUtil.getFalseResultMsgBySelf("verify code cannot be null");
         }
-
-        if (loginType.equals("Student")){
-            // student
-            SxStudent sxStudent = sxStudentService.findByStuNo(account);
-            if (null != sxStudent){
-                if (sxStudent.getFirstLogin()){
-                    return ControllerUtil.getFalseResultMsgBySelf("student already registered");
-                }else {
-                    // 注册
-                    if(idcard.equals(sxStudent.getIdCard())){
-                        //注册
-                        sxStudent.setPassword(MD5Util.md5(password).toUpperCase());
-                        sxStudentService.save(sxStudent);
-                        return ControllerUtil.getSuccessResultBySelf("register success");
-                    }else {
-                        // 身份证信息有误
-                        return ControllerUtil.getFalseResultMsgBySelf("idcard num is wrong");
-                    }
-                }
-            }else {
-                return ControllerUtil.getFalseResultMsgBySelf("no this student");
-            }
-        }else if(loginType.equals("Teacher")){
-            // teacher
-            SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
-            if (sxTeacher.getFirstLogin()){
-                return ControllerUtil.getFalseResultMsgBySelf("teacher already registered");
-            }else {
-                // 注册
-                if(idcard.equals(sxTeacher.getIdCard())){
-                    // 注册
-                    sxTeacher.setPassword(MD5Util.md5(password).toUpperCase());
-                    sxTeacherService.save(sxTeacher);
-                    return ControllerUtil.getSuccessResultBySelf("register success");
-                }else {
-                    // 身份证信息有误
-                    return ControllerUtil.getFalseResultMsgBySelf("idcard num is wrong");
-                }
-            }
+        //
+        if(!VerifyCodeUtil.verify(code.toLowerCase())){
+            return ControllerUtil.getFalseResultMsgBySelf("verify code is wrong,please retry after refresh page");
         }else {
-            return ControllerUtil.getFalseResultMsgBySelf("register type error");
+            //先对密码进行校验,不合法的弱密码无法通过注册
+            Map<Boolean, String> rs = StrongPwdValidator.validate(password);
+            if (null != rs.get(false)){
+                return ControllerUtil.getFalseResultMsgBySelf(rs.get(false));
+            }
+
+            if (loginType.equals("Student")){
+                // student
+                SxStudent sxStudent = sxStudentService.findByStuNo(account);
+                if (null != sxStudent){
+                    if (!sxStudent.getFirstLogin()){
+                        return ControllerUtil.getFalseResultMsgBySelf("student already registered");
+                    }else {
+                        // 注册
+                        return register(idcard, password, sxStudent);
+                    }
+                }else {
+                    return ControllerUtil.getFalseResultMsgBySelf("no this student");
+                }
+            }else if(loginType.equals("Teacher")){
+                // teacher
+                SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
+                if (sxTeacher.getFirstLogin()){
+                    return ControllerUtil.getFalseResultMsgBySelf("teacher already registered");
+                }else {
+                    // 注册
+                    return register(idcard, password, sxTeacher);
+                }
+            }else {
+                return ControllerUtil.getFalseResultMsgBySelf("register type error");
+            }
+        }
+    }
+
+    private <T> ResponseVO register(String idcard,String password, T t){
+        if (t instanceof SxStudent){
+            //student
+            if (!((SxStudent) t).getIdCard().equals(idcard)){
+                return ControllerUtil.getFalseResultMsgBySelf("idcard number is wrong!");
+            }
+            ((SxStudent) t).setPassword(MD5Util.trueMd5(password).toUpperCase());
+            ((SxStudent) t).setFirstLogin(false);   // 注册了就不是第一次登陆了
+            try {
+                sxStudentService.save((SxStudent) t);
+                return ControllerUtil.getSuccessResultBySelf("register success");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ControllerUtil.getFalseResultMsgBySelf("trying to save student,but:" + e.getMessage());
+            }
+        }else if(t instanceof  SxTeacher){
+            if (!((SxTeacher) t).getIdCard().equals(idcard)){
+                return ControllerUtil.getFalseResultMsgBySelf("idcard number is wrong!");
+            }
+            ((SxTeacher) t).setPassword(MD5Util.trueMd5(password).toUpperCase());
+            try {
+                sxTeacherService.save((SxTeacher) t);
+                ((SxTeacher) t).setFirstLogin(false);   // 注册了就不是第一次登陆了
+                return ControllerUtil.getSuccessResultBySelf("register success");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ControllerUtil.getFalseResultMsgBySelf("trying to save teacher,but:" + e.getMessage());
+            }
+        }else{
+            return ControllerUtil.getFalseResultMsgBySelf("server error:type input not teacher or student.");
         }
     }
 

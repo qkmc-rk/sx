@@ -42,7 +42,7 @@ import xyz.ruankun.laughingspork.vo.ResponseVO;
 @RestController
 @CrossOrigin
 @RequestMapping("/student2")
-@Api(tags = {"Ñ§Éú²Ù×÷2"})
+@Api(tags = {"å­¦ç”Ÿæ“ä½œ2"})
 public class StudentController2 {
 
     private static final Logger logger = LoggerFactory.getLogger(StudentController2.class);
@@ -50,10 +50,10 @@ public class StudentController2 {
     @Autowired
     SxReportService sxReportService;
 
-    @ApiOperation(value = "¸üĞÂÊµÏ°¿ªÊ¼½áÊø", httpMethod = "POST")
+    @ApiOperation(value = "æ›´æ–°å®ä¹ å¼€å§‹ç»“æŸ", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "gmtStart", value = "ÊµÏ°¿ªÊ¼Ê±¼ä", required = true),
-            @ApiImplicitParam(name = "gmtEnd", value = "ÊµÏ°½áÊøÊ±¼ä", required = true)
+            @ApiImplicitParam(name = "gmtStart", value = "å®ä¹ å¼€å§‹æ—¶é—´", required = true),
+            @ApiImplicitParam(name = "gmtEnd", value = "å®ä¹ ç»“æŸæ—¶é—´", required = true)
     })
     @PostMapping("/report/date")
     @RequiresRoles(RoleCode.STUDENT)
@@ -61,27 +61,27 @@ public class StudentController2 {
         boolean dateInputError = gmtEnd == null || gmtStart == null || gmtEnd.equals("") || gmtStart.equals("");
         boolean parseError = DateUtil.getDateByStr(gmtStart) == null || DateUtil.getDateByStr(gmtEnd) == null;
         if (dateInputError){
-            return ControllerUtil.getFalseResultMsgBySelf("Çë´«ÈëÊ±¼ägmtStart ºÍ gmtEnd");
+            return ControllerUtil.getFalseResultMsgBySelf("è¯·ä¼ å…¥æ—¶é—´gmtStart å’Œ gmtEnd");
         }else if(parseError){
-            return ControllerUtil.getFalseResultMsgBySelf("Ê±¼ä¸ñÊ½´íÎó,ÕıÈ·µÄÊ±¼ä¸ñÊ½:2020-11-21 12:12:12(Ê±·ÖÃë¿ÉÊ¡ÂÔ)");
+            return ControllerUtil.getFalseResultMsgBySelf("æ—¶é—´æ ¼å¼é”™è¯¯,æ­£ç¡®çš„æ—¶é—´æ ¼å¼:2020-11-21 12:12:12(æ—¶åˆ†ç§’å¯çœç•¥)");
         }
 
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
         if (sxReport == null){
-            return ControllerUtil.getFalseResultMsgBySelf("²éÑ¯ÊµÏ°±¨¸æÊ±³öÏÖ´íÎó£¡Çë²é¿´ºóÌ¨ÈÕÖ¾");
+            return ControllerUtil.getFalseResultMsgBySelf("æŸ¥è¯¢å®ä¹ æŠ¥å‘Šæ—¶å‡ºç°é”™è¯¯ï¼è¯·æŸ¥çœ‹åå°æ—¥å¿—");
         }
         SxReport sxReportFromFront = new SxReport();
         sxReportFromFront.setGmtEnd(DateUtil.getSqlDateByStr(gmtEnd));
         sxReportFromFront.setGmtStart(DateUtil.getSqlDateByStr(gmtStart));
         EntityUtil.update(sxReportFromFront,sxReport);
-        logger.info("sxReportÎ´¸üĞÂÇ°: " + sxReport.toString());
-        logger.info("sxReportÊµÏ°¿ªÊ¼½áÊøÊ±¼ä¼´½«±»¸üĞÂ: " + sxReportFromFront.toString());
+        logger.info("sxReportæœªæ›´æ–°å‰: " + sxReport.toString());
+        logger.info("sxReportå®ä¹ å¼€å§‹ç»“æŸæ—¶é—´å³å°†è¢«æ›´æ–°: " + sxReportFromFront.toString());
         try {
             sxReportService.saveReport(sxReportFromFront);
-            return ControllerUtil.getSuccessResultBySelf("¸üĞÂ³É¹¦");
+            return ControllerUtil.getSuccessResultBySelf("æ›´æ–°æˆåŠŸ");
         }catch (Exception e){
-            return ControllerUtil.getFalseResultMsgBySelf("¸üĞÂÊ§°Ü£º" + e.getMessage());
+            return ControllerUtil.getFalseResultMsgBySelf("æ›´æ–°å¤±è´¥ï¼š" + e.getMessage());
         }
     }
 }

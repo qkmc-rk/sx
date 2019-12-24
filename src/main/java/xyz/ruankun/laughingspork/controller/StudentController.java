@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.*;
 import xyz.ruankun.laughingspork.service.*;
-import xyz.ruankun.laughingspork.util.ControllerUtil;
-import xyz.ruankun.laughingspork.util.DateUtil;
-import xyz.ruankun.laughingspork.util.EntityUtil;
-import xyz.ruankun.laughingspork.util.RenderWordUtil;
+import xyz.ruankun.laughingspork.util.*;
 import xyz.ruankun.laughingspork.util.constant.RespCode;
 import xyz.ruankun.laughingspork.util.constant.RoleCode;
 import xyz.ruankun.laughingspork.vo.ResponseVO;
@@ -390,13 +387,17 @@ public class StudentController {
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/student/password")
     public ResponseVO setPassword(String oldPassword, String newPassword) {
+        String msg = null;
+        if ((msg = StrongPwdValidator.validate(newPassword).get(false))!= null){
+            return ControllerUtil.getFalseResultMsgBySelf(msg);
+        }
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
 
         boolean flag = sxStudentService.updatePassword(sxStudent.getStuNo(), oldPassword, newPassword);
         if (flag) {
-            return ControllerUtil.getSuccessResultBySelf("修改成功");
+            return ControllerUtil.getSuccessResultBySelf("修改成功 success");
         } else {
-            return ControllerUtil.getFalseResultMsgBySelf("原密码错误");
+            return ControllerUtil.getFalseResultMsgBySelf("原密码错误old password is wrong");
 
         }
 

@@ -11,7 +11,8 @@ public class DateUtil {
 
     public static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
-    public final static char[] upper = "〇一二三四五六七八九十".toCharArray();
+    // 使用char 出现部分平台中文乱码问题
+    public final static String[] upper = {"零","一","二","三","四","五","六","七","八","九"};//"〇一二三四五六七八九".toCharArray();
 
     /**
      * 返回当前日期

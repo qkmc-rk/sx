@@ -30,8 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
- * ´æ·ÅÑéÖ¤ÂëµÄ³Ø×Ó
- * È«¾ÖÖ»ÓĞÒ»¸ö ËùÓĞÑéÖ¤Âë´æµ½ÕâÀï
+ * å­˜æ”¾éªŒè¯ç çš„æ± å­
+ * å…¨å±€åªæœ‰ä¸€ä¸ª æ‰€æœ‰éªŒè¯ç å­˜åˆ°è¿™é‡Œ
  *
  */
 public abstract class VerifyCodePool {
@@ -40,32 +40,32 @@ public abstract class VerifyCodePool {
 
     private VerifyCodePool(){}
 
-    //ÑéÖ¤Âë³Ø
-    //ÔõÃ´´æ£¿ <ÑéÖ¤Âë,¹ıÆÚÊ±¼ä>
-    private static Map<String,Date> verifycodes = new ConcurrentHashMap<>(); //¶öºº
+    //éªŒè¯ç æ± 
+    //æ€ä¹ˆå­˜ï¼Ÿ <éªŒè¯ç ,è¿‡æœŸæ—¶é—´>
+    private static Map<String,Date> verifycodes = new ConcurrentHashMap<>(); //é¥¿æ±‰
 
-    //ÑéÖ¤Ã´×î´óÓĞĞ§Ê±¼ä  30 ·ÖÖÓ
+    //éªŒè¯ä¹ˆæœ€å¤§æœ‰æ•ˆæ—¶é—´  30 åˆ†é’Ÿ
     private final static long MAX_VALID_TIME = 1800l * 1000;
 
-    //¼ÆÊıÆ÷×î´óÖµ,´ïµ½Õâ¸öÖµ¾ÍÇåÀíÒ»´ÎmapÖĞµÄÖµ¡£
+    //è®¡æ•°å™¨æœ€å¤§å€¼,è¾¾åˆ°è¿™ä¸ªå€¼å°±æ¸…ç†ä¸€æ¬¡mapä¸­çš„å€¼ã€‚
     private static final long MAX_COUNT = 10000l;
 
-    //¼ÆÊıÆ÷ Ã¿¸ô
+    //è®¡æ•°å™¨ æ¯éš”
     private static Integer count = 0;
 
     /**
-     * ·ÅÈëÒ»¸öÑéÖ¤Âë
+     * æ”¾å…¥ä¸€ä¸ªéªŒè¯ç 
      * @param code
      */
     public static void setVerifyCode(String code){
         count++;
         logger.info("set verifycode to pool:" + code);
         verifycodes.put(code, new Date());
-        logger.info("»ñÈ¡µ½µÄÑéÖ¤Âë£º get verifycode: " + verifycodes.get(code));
+        logger.info("è·å–åˆ°çš„éªŒè¯ç ï¼š get verifycode: " + verifycodes.get(code));
     }
 
     /**
-     * ÑéÖ¤²¢É¾³ıÒ»¸öÑéÖ¤Âë
+     * éªŒè¯å¹¶åˆ é™¤ä¸€ä¸ªéªŒè¯ç 
      * @param code
      * @return
      */
@@ -77,15 +77,15 @@ public abstract class VerifyCodePool {
         cleanPool();
         Date date = verifycodes.get(code);
         if(null == date){
-            //ÑéÖ¤Âë²»´æÔÚ
+            //éªŒè¯ç ä¸å­˜åœ¨
             logger.info("verify code is not here");
             return false;
         }else {
-            logger.info("ÑéÖ¤ÂëÑéÖ¤:" + date.toString() + "´«ÈëµÄcode:" + code);
-            //ÑéÖ¤ÂëÊÇ´æÔÚµÄ
-            //ÑéÖ¤ÂëÊÇ·ñ¹ıÆÚ
+            logger.info("éªŒè¯ç éªŒè¯:" + date.toString() + "ä¼ å…¥çš„code:" + code);
+            //éªŒè¯ç æ˜¯å­˜åœ¨çš„
+            //éªŒè¯ç æ˜¯å¦è¿‡æœŸ
             boolean outOfDate = new Date().getTime() > date.getTime() + MAX_VALID_TIME;
-            //ÒÑ¾­ÑéÖ¤¹ıÁË¾ÍÒª°ÑÑéÖ¤ÂëÉ¾³ıµô
+            //å·²ç»éªŒè¯è¿‡äº†å°±è¦æŠŠéªŒè¯ç åˆ é™¤æ‰
             verifycodes.remove(code);
             if (outOfDate){
                 return false;
@@ -97,12 +97,12 @@ public abstract class VerifyCodePool {
 
 
     /**
-     * Ò»Íò´ÎÇåÀíÒ»´Î³Ø×Ó
+     * ä¸€ä¸‡æ¬¡æ¸…ç†ä¸€æ¬¡æ± å­
      */
     private static void cleanPool(){
         if (count >= MAX_COUNT){
             count = 0;
-            // ÇåÀíÑéÖ¤ÂëÊ±ĞèÒªËø¶¨³Ø×Ó£¬²»ÄÜÊ¹ÓÃµÄÊ±ºòÇåÀí
+            // æ¸…ç†éªŒè¯ç æ—¶éœ€è¦é”å®šæ± å­ï¼Œä¸èƒ½ä½¿ç”¨çš„æ—¶å€™æ¸…ç†
             synchronized (VerifyCodePool.class){
                 Map newMap = new ConcurrentHashMap<>();
                 Set<String> set = verifycodes.keySet();
@@ -110,12 +110,12 @@ public abstract class VerifyCodePool {
                         set) {
                     Date date = verifycodes.get(key);
                     if (date.getTime() + MAX_VALID_TIME > new Date().getTime()){
-                        // Ö»±£ÁôÓĞĞ§µÄ
+                        // åªä¿ç•™æœ‰æ•ˆçš„
                         newMap.put(key, date);
                     }
                 }
-                //ÀÏµÄ³Ø×ÓÏûÃğÁË?
-                //ĞÂµÄ³Ø×Ó
+                //è€çš„æ± å­æ¶ˆç­äº†?
+                //æ–°çš„æ± å­
                 verifycodes = newMap;
             }
         }
