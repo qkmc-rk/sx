@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class DateUtil {
@@ -65,6 +66,38 @@ public class DateUtil {
         }
         sb.append("日");//拼接日
         return sb.toString();
+    }
+
+    /**
+     * 字符串时间处理
+     * @param date 格式如：yyyy-MM-dd
+     * @return java.sql.date类
+     */
+    public static java.util.Date getDateByStr(String date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            logger.info("日期转换处理异常，日期无法转换：" + date);
+            return null;
+        }
+    }
+
+    /**
+     * 字符串时间处理
+     * @param date 格式如：yyyy-MM-dd
+     * @return java.sql.date类
+     */
+    public static Date getSqlDateByStr(String date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return new java.sql.Date(simpleDateFormat.parse(date).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            logger.info("日期转换处理异常，日期无法转换：" + date);
+            return null;
+        }
     }
 
 }

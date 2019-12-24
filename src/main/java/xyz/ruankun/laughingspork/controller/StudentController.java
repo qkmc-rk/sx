@@ -81,7 +81,35 @@ public class StudentController {
     @RequiresRoles(RoleCode.STUDENT)
     @GetMapping("/selfInfo")
     public ResponseVO getSelfInfo() {
-        return ControllerUtil.getDataResult((SxStudent) SecurityUtils.getSubject().getPrincipal());
+        SxStudent sxStudent  = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        SxReport sxReport = sxReportService.getReportInfo(sxStudent.getStuNo());
+        sxStudent.setGmtEnd(sxReport.getGmtEnd());
+        sxStudent.setGmtStart(sxReport.getGmtStart());
+        return ControllerUtil.getDataResult(sxStudent);
+    }
+
+    @ApiOperation(value = "学生修改自己信息", httpMethod = "POST")
+    @RequiresRoles(RoleCode.STUDENT)
+    @PostMapping("/selfInfo")
+    public ResponseVO changeSelfInfo(@RequestParam String phone, @RequestParam String wechat
+            , @RequestParam String qq, @RequestParam Integer age, @RequestParam String corpTeacherNo) {
+
+        SxStudent sxStudent  = (SxStudent) SecurityUtils.getSubject().getPrincipal();
+        SxStudent sxStudent1 = new SxStudent();
+        sxStudent1.setPhone(phone);
+        sxStudent1.setWechat(wechat);
+        sxStudent1.setQq(qq);
+        sxStudent1.setAge(age);
+        sxStudent1.setCorpTeacherNo(corpTeacherNo);
+        EntityUtil.update(sxStudent1, sxStudent);
+        logger.info("sxStudent未更新前: " + sxStudent.toString());
+        logger.info("sxStudent即将被更新: " + sxStudent1.toString());
+        try{
+            sxStudentService.save(sxStudent1);
+            return ControllerUtil.getSuccessResultBySelf(sxStudent1);
+        }catch (Exception e){
+            return ControllerUtil.getFalseResultMsgBySelf("更新出错：" + e.getMessage());
+        }
     }
 
     @ApiOperation(value = "学生查看自己校内导师信息", httpMethod = "GET")
@@ -150,12 +178,12 @@ public class StudentController {
     })
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/report/stage1")
-    public ResponseVO stage1Summary(Date gmtStart, String stage1Summary, String stage1GuideWay, String stage1GuideDate) {
-        if (stage1Summary == null || gmtStart == null) {
+    public ResponseVO stage1Summary(/*Date gmtStart,*/ String stage1Summary, String stage1GuideWay, String stage1GuideDate) {
+        if (stage1Summary == null/* || gmtStart == null*/) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
             //保存鉴定表内容到数据库
-            SxReport sxReport = sxStudentService.setStage1Summary(gmtStart, (SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1Summary, stage1GuideWay, stage1GuideDate);
+            SxReport sxReport = sxStudentService.setStage1Summary(/*gmtStart,*/ (SxStudent) SecurityUtils.getSubject().getPrincipal(), stage1Summary, stage1GuideWay, stage1GuideDate);
             if (sxReport == null) {
                 return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
             }
@@ -173,8 +201,8 @@ public class StudentController {
     })
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/report/stage2")
-    public ResponseVO stage2Summary(Date gmtEnd, String stage2Summary, String stage2GuideWay, String stage2GuideDate) {
-        if (stage2Summary == null || gmtEnd == null) {
+    public ResponseVO stage2Summary(/*Date gmtEnd,*/ String stage2Summary, String stage2GuideWay, String stage2GuideDate) {
+        if (stage2Summary == null/* || gmtEnd == null*/) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
             SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
@@ -183,14 +211,13 @@ public class StudentController {
             sxTeacherService.isIdentifyFlag(sxStudent);
             sxTeacherService.isReportFlag(sxStudent);
             //保存鉴定表内容到数据库
-            SxReport sxReport = sxStudentService.setStage2Summary(gmtEnd, sxStudent, stage2Summary, stage2GuideWay, stage2GuideDate);
+            SxReport sxReport = sxStudentService.setStage2Summary(/*gmtEnd, */sxStudent, stage2Summary, stage2GuideWay, stage2GuideDate);
             if (sxReport == null) {
                 return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_STAGE_ERROR);
             }
             return ControllerUtil.getDataResult(sxReport);
         }
     }
-
 
     @ApiOperation(value = "下载学生实习鉴定表", httpMethod = "GET")
     @GetMapping("/identify/form")
@@ -321,8 +348,12 @@ public class StudentController {
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/student/corp")
     public ResponseVO addCorpInfo(SxCorporation sxCorporation) {
+        //如果该企业已经被核准则不能再修改
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxCorporation oldCorp = sxCorporationService.findByStuNo(sxStudent.getStuNo());
+        if (oldCorp.getIsCorpChecked()){
+            return ControllerUtil.getFalseResultMsgBySelf("不好意思，该企业信息已经被核准，无法继续修改!");
+        }
         if (oldCorp != null) {
             if (sxCorporation.getId() == null || sxCorporation.getId().equals("")) {
                 return ControllerUtil.getFalseResultMsgBySelf("修改企业信息缺少ID");
@@ -708,4 +739,5 @@ public class StudentController {
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SUCCESS);
     }
+
 }

@@ -63,6 +63,17 @@ public class ControllerUtil {
         return ResponseVO;
     }
 
+    /**
+     * 过期  超时 一般用于验证码验证
+     * @param <T>
+     * @return
+     */
+    public static <T> ResponseVO<T> outOfDate() {
+        ResponseVO ResponseVO = new ResponseVO<>();
+        ResponseVO.error(RespCode.OUT_OF_DATE, RespCode.OUT_OF_DATE_MSG, null);
+        return ResponseVO;
+    }
+
 
     public static <T> ResponseVO<T> parData(Integer result, T data) {
         ResponseVO ResponseVO = new ResponseVO();
