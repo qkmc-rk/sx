@@ -238,7 +238,7 @@ public class StudentController {
         params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
         String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
         if (wordFileName != null) {
-            String path = System.getProperty("user.dir") + "\\static\\";
+            String path = System.getProperty("user.dir") + (SystemUtil.isWindows()?"\\static\\":"/static/");
             String pdfFileName = wordFileName.replace("docx", "pdf");
             // 源文件 （office）
             File source = new File(path + wordFileName);
@@ -292,7 +292,8 @@ public class StudentController {
         params.put("${fill_date}", DateUtil.getNowUpperDate());
         String wordFileName = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
         if (wordFileName != null) {
-            String path = System.getProperty("user.dir") + "\\static\\";
+
+            String path = System.getProperty("user.dir") + (SystemUtil.isWindows()?"\\static\\":"/static/");
             String pdfFileName = wordFileName.replace("docx", "pdf");
             // 源文件 （office）
             File source = new File(path + wordFileName);
@@ -445,7 +446,7 @@ public class StudentController {
         params.put("${fill_date}", DateUtil.getNowUpperDate());
         String wordFileName = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
         if (wordFileName != null) {
-            String path = System.getProperty("user.dir") + "\\static\\";
+            String path = System.getProperty("user.dir") + (SystemUtil.isWindows()?"\\static\\":"/static/");
             String pdfFileName = wordFileName.replace("docx", "pdf");
             // 源文件 （office）
             File source = new File(path + wordFileName);
@@ -498,7 +499,7 @@ public class StudentController {
         params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
         String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
         if (wordFileName != null) {
-            String path = System.getProperty("user.dir") + "\\static\\";
+            String path = System.getProperty("user.dir") + (SystemUtil.isWindows()?"\\static\\":"/static/");
             String pdfFileName = wordFileName.replace("docx", "pdf");
             // 源文件 （office）
             File source = new File(path + wordFileName);
@@ -551,7 +552,7 @@ public class StudentController {
             params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
             String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
             if (wordFileName != null) {
-                String path = System.getProperty("user.dir") + "\\static\\";
+                String path = System.getProperty("user.dir") + (SystemUtil.isWindows()?"\\static\\":"/static/");
                 String pdfFileName = wordFileName.replace("docx", "pdf");
                 // 源文件 （office）
                 File source = new File(path + wordFileName);
@@ -612,7 +613,7 @@ public class StudentController {
             params.put("${fill_date}", DateUtil.getNowUpperDate());
             String wordFileName = RenderWordUtil.exportWordToResponse("report", sxStudent.getStuNo(), params);
             if (wordFileName != null) {
-                String path = System.getProperty("user.dir") + "\\static\\";
+                String path = System.getProperty("user.dir") + (SystemUtil.isWindows()?"\\static\\":"/static/");
                 String pdfFileName = wordFileName.replace("docx", "pdf");
                 // 源文件 （office）
                 File source = new File(path + wordFileName);
