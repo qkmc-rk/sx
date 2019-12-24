@@ -12,21 +12,11 @@ public class RenderWordUtil {
 
     // windows下的路径
     // 实习报告册模板路径
-    public static String REPORT_PATH = "word\\report.docx";
+    public static String REPORT_PATH = SystemUtil.isWindows()?"word\\report.docx":"word/report.docx";
     // 实习鉴定表模板路径
-    public static String IDENTIFY_PATH = "word\\identify.docx";
+    public static String IDENTIFY_PATH = SystemUtil.isWindows()?"word\\identify.docx":"word/identify.docx";
 
-    public static String BASE_SAVE_PATH = "static\\";
-
-    // linux下需要重新初始化路径
-    static{
-        if (!SystemUtil.isWindows()){
-            logger.info("this platform is unix based system..");
-            REPORT_PATH = "word/report.docx";
-            IDENTIFY_PATH = "word/identify.docx";
-            BASE_SAVE_PATH = "static/";
-        }
-    }
+    public static String BASE_SAVE_PATH = SystemUtil.isWindows()?"static\\":"static/";
 
     /**
      * 渲染并导出word文档, 返回输出路径.
