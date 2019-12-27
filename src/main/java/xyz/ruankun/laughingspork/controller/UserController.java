@@ -107,12 +107,12 @@ public class UserController {
 
                 return ControllerUtil.getSuccessResultBySelf(data);
             } catch (IncorrectCredentialsException e) {
-                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR + ":" + e.getMessage());
             } catch (UnknownAccountException e) {
-                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR + ":" + e.getMessage());
             } catch (Exception e) {
                 logger.error(e.toString());
-                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_UNKNOWN_ERROR);
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_UNKNOWN_ERROR + ":" + e.getMessage());
             }
             //fi
         }
