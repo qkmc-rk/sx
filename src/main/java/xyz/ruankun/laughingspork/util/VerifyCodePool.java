@@ -41,14 +41,14 @@ public abstract class VerifyCodePool {
     private VerifyCodePool(){}
 
     //验证码池
-    //怎么存？ <验证码,过期时间>
-    private static Map<String,Date> verifycodes = new ConcurrentHashMap<>(); //饿汉
+    //怎么存？ <验证码,过期时间>   //初始化大小为1200,永远不会满，因为
+    private static Map<String,Date> verifycodes = new ConcurrentHashMap<>(1200); //饿汉
 
     //验证么最大有效时间  30 分钟
     private final static long MAX_VALID_TIME = 1800l * 1000;
 
-    //计数器最大值,达到这个值就清理一次map中的值。
-    private static final long MAX_COUNT = 10000l;
+    //计数器最大值,达到这个值就清理一次map中的值。  1000个清理一次
+    private static final long MAX_COUNT = 1000l;
 
     //计数器 每隔
     private static Integer count = 0;
@@ -97,10 +97,12 @@ public abstract class VerifyCodePool {
 
 
     /**
-     * 一万次清理一次池子
+     * 一千次清理一次池子
+     * 需不需要开启单独的线程清理?
      */
     private static void cleanPool(){
         if (count >= MAX_COUNT){
+            logger.info("验证码池已满" + count + ", 开始清理验证码池");
             count = 0;
             // 清理验证码时需要锁定池子，不能使用的时候清理
             synchronized (VerifyCodePool.class){
@@ -118,7 +120,7 @@ public abstract class VerifyCodePool {
                 //新的池子
                 verifycodes = newMap;
             }
+            logger.info("验证码池清理完毕,退出清理...");
         }
-
     }
 }
