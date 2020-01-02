@@ -70,17 +70,17 @@ public class UserController {
     public ResponseVO login(String account, String password, String loginType, String code) {
         // 如果没有验证码
         if(null == code){
-            return ControllerUtil.getFalseResultMsgBySelf("verify code cannot be null");
+            return ControllerUtil.getFalseResultMsgBySelf("验证码字段不能为空");
         }
         //
         if(!VerifyCodeUtil.verify(code.toLowerCase())){
-            return ControllerUtil.getFalseResultMsgBySelf("verify code is wrong,please retry after refresh page");
+            return ControllerUtil.getFalseResultMsgBySelf("验证码错误！请刷新重试");
         }else {
             // 判断是否是第一次登陆
             SxStudent sxStudent = null;
             if ((sxStudent = sxStudentService.findByStuNo(account)) != null && (sxStudent.getFirstLogin())){
                 //第一次
-                return ControllerUtil.getFalseResultMsgBySelf("not registered(not set your password)");
+                return ControllerUtil.getFalseResultMsgBySelf("没有注册(没有初始化密码, 但学生信息在数据库存在)");
             }
             // follow code by NadevXiang
             Subject subject = SecurityUtils.getSubject();
@@ -107,12 +107,12 @@ public class UserController {
 
                 return ControllerUtil.getSuccessResultBySelf(data);
             } catch (IncorrectCredentialsException e) {
-                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR + ":" + e.getMessage());
             } catch (UnknownAccountException e) {
-                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR);
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_VALIDATION_ERROR + ":" + e.getMessage());
             } catch (Exception e) {
                 logger.error(e.toString());
-                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_UNKNOWN_ERROR);
+                return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_UNKNOWN_ERROR + ":" + e.getMessage());
             }
             //fi
         }
@@ -157,26 +157,42 @@ public class UserController {
     @ApiOperation(value = "输入学号或者工号，返回是否是第一次登录", httpMethod = "GET")
     @GetMapping("/loginstatus")
     public ResponseVO isFirstLogin(@RequestParam String account){
+<<<<<<< HEAD
         System.out.println("账号：" + account);
         SxStudent sxStudent = sxStudentService.findByStuNo(account);
         if (null == sxStudent){
             SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
             if(null == sxTeacher){
                 return ControllerUtil.getFalseResultMsgBySelf("teacher and student not exist");
+=======
+        SxStudent sxStudent = null;
+        SxTeacher sxTeacher = null;
+        try{
+            sxStudent = sxStudentService.findByStuNo(account);
+            if (null == sxStudent){
+                sxTeacher = sxTeacherService.findByTeacherNo(account);
+                if(null == sxTeacher){
+                    return ControllerUtil.getFalseResultMsgBySelf("老师/学生不存在");
+                }else{
+                    //老师不为空
+                    if (sxTeacher.getFirstLogin()){
+                        return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
+                    }
+                    return ControllerUtil.getDataResult("{\"isFirstLogin\":false}");
+                }
+>>>>>>> d80de81bfd5c3e649f825df76a105799c95ea802
             }else{
-                //老师不为空
-                if (sxTeacher.getFirstLogin()){
+                //学生不为空
+                if (sxStudent.getFirstLogin()){
                     return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
                 }
                 return ControllerUtil.getDataResult("{\"isFirstLogin\":false}");
             }
-        }else{
-            //学生不为空
-            if (sxStudent.getFirstLogin()){
-                return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
-            }
-            return ControllerUtil.getDataResult("{\"isFirstLogin\":false}");
+        }catch (Exception e){
+            return ControllerUtil.getFalseResultMsgBySelf(e.getMessage());
         }
+
+
 
     }
 
@@ -189,11 +205,11 @@ public class UserController {
             , @RequestParam String code){
         // 如果没有验证码
         if(null == code){
-            return ControllerUtil.getFalseResultMsgBySelf("verify code cannot be null");
+            return ControllerUtil.getFalseResultMsgBySelf("验证码不能为空");
         }
         //
         if(!VerifyCodeUtil.verify(code.toLowerCase())){
-            return ControllerUtil.getFalseResultMsgBySelf("verify code is wrong,please retry after refresh page");
+            return ControllerUtil.getFalseResultMsgBySelf("验证码输入错误，请刷新后重试");
         }else {
             //先对密码进行校验,不合法的弱密码无法通过注册
             Map<Boolean, String> rs = StrongPwdValidator.validate(password);
@@ -206,25 +222,25 @@ public class UserController {
                 SxStudent sxStudent = sxStudentService.findByStuNo(account);
                 if (null != sxStudent){
                     if (!sxStudent.getFirstLogin()){
-                        return ControllerUtil.getFalseResultMsgBySelf("student already registered");
+                        return ControllerUtil.getFalseResultMsgBySelf("该学生已经注册");
                     }else {
                         // 注册
                         return register(idcard, password, sxStudent);
                     }
                 }else {
-                    return ControllerUtil.getFalseResultMsgBySelf("no this student");
+                    return ControllerUtil.getFalseResultMsgBySelf("没有这个学生");
                 }
             }else if(loginType.equals("Teacher")){
                 // teacher
                 SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
                 if (sxTeacher.getFirstLogin()){
-                    return ControllerUtil.getFalseResultMsgBySelf("teacher already registered");
+                    return ControllerUtil.getFalseResultMsgBySelf("老师早已注册");
                 }else {
                     // 注册
                     return register(idcard, password, sxTeacher);
                 }
             }else {
-                return ControllerUtil.getFalseResultMsgBySelf("register type error");
+                return ControllerUtil.getFalseResultMsgBySelf("注册类型有误");
             }
         }
     }
@@ -233,32 +249,32 @@ public class UserController {
         if (t instanceof SxStudent){
             //student
             if (!((SxStudent) t).getIdCard().equals(idcard)){
-                return ControllerUtil.getFalseResultMsgBySelf("idcard number is wrong!");
+                return ControllerUtil.getFalseResultMsgBySelf("身份证号码填写错误!");
             }
             ((SxStudent) t).setPassword(MD5Util.trueMd5(password).toUpperCase());
             ((SxStudent) t).setFirstLogin(false);   // 注册了就不是第一次登陆了
             try {
                 sxStudentService.save((SxStudent) t);
-                return ControllerUtil.getSuccessResultBySelf("register success");
+                return ControllerUtil.getSuccessResultBySelf("注册成功,请登录");
             } catch (Exception e) {
                 e.printStackTrace();
-                return ControllerUtil.getFalseResultMsgBySelf("trying to save student,but:" + e.getMessage());
+                return ControllerUtil.getFalseResultMsgBySelf("尝试保存学生信息,但发生以下错误:" + e.getMessage());
             }
         }else if(t instanceof  SxTeacher){
             if (!((SxTeacher) t).getIdCard().equals(idcard)){
-                return ControllerUtil.getFalseResultMsgBySelf("idcard number is wrong!");
+                return ControllerUtil.getFalseResultMsgBySelf("身份证号有误!");
             }
             ((SxTeacher) t).setPassword(MD5Util.trueMd5(password).toUpperCase());
             try {
                 sxTeacherService.save((SxTeacher) t);
                 ((SxTeacher) t).setFirstLogin(false);   // 注册了就不是第一次登陆了
-                return ControllerUtil.getSuccessResultBySelf("register success");
+                return ControllerUtil.getSuccessResultBySelf("注册成功,请登录");
             } catch (Exception e) {
                 e.printStackTrace();
-                return ControllerUtil.getFalseResultMsgBySelf("trying to save teacher,but:" + e.getMessage());
+                return ControllerUtil.getFalseResultMsgBySelf("尝试保存教师信息,但发生以下错误:" + e.getMessage());
             }
         }else{
-            return ControllerUtil.getFalseResultMsgBySelf("server error:type input not teacher or student.");
+            return ControllerUtil.getFalseResultMsgBySelf("服务器错误:输入类型既不是学生也不是教师.");
         }
     }
 

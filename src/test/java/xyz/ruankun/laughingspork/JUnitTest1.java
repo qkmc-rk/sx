@@ -55,6 +55,8 @@ public class JUnitTest1 {
     @Test
     public void testSystemType(){
         System.out.println(SystemUtil.isWindows());
+        System.out.println(SystemUtil.isLinux());
+        System.out.println(SystemUtil.isMac());
     }
     @Test
     public void testEncoding(){
