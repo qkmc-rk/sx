@@ -157,14 +157,7 @@ public class UserController {
     @ApiOperation(value = "输入学号或者工号，返回是否是第一次登录", httpMethod = "GET")
     @GetMapping("/loginstatus")
     public ResponseVO isFirstLogin(@RequestParam String account){
-<<<<<<< HEAD
         System.out.println("账号：" + account);
-        SxStudent sxStudent = sxStudentService.findByStuNo(account);
-        if (null == sxStudent){
-            SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
-            if(null == sxTeacher){
-                return ControllerUtil.getFalseResultMsgBySelf("teacher and student not exist");
-=======
         SxStudent sxStudent = null;
         SxTeacher sxTeacher = null;
         try{
@@ -180,7 +173,6 @@ public class UserController {
                     }
                     return ControllerUtil.getDataResult("{\"isFirstLogin\":false}");
                 }
->>>>>>> d80de81bfd5c3e649f825df76a105799c95ea802
             }else{
                 //学生不为空
                 if (sxStudent.getFirstLogin()){
