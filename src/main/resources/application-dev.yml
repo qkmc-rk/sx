@@ -1,0 +1,37 @@
+﻿spring:
+    # 数据源
+    datasource:
+        username: mrruan
+        password: '@Sicau211'
+        url: jdbc:mysql://113.54.15.16:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+        open-in-view: false
+        show-sql: false
+        hibernate:
+            ddl-auto: update
+        #--------------------------charset--------------------------
+    http:
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true
+
+    # 热重启
+    devtools:
+        restart:
+            enabled: true
+
+    # 允许同名bean覆盖注册
+    main:
+        allow-bean-definition-overriding: true
+
+
+jodconverter:
+    enabled: true
+    # open office 安装路径
+    office-home: C:\Program Files (x86)\OpenOffice 4
+
+    max-tasks-per-process: 10
+    port-numbers: 8100
+    kill-existing-process: true

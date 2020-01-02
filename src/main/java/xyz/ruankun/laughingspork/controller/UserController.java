@@ -157,6 +157,7 @@ public class UserController {
     @ApiOperation(value = "输入学号或者工号，返回是否是第一次登录", httpMethod = "GET")
     @GetMapping("/loginstatus")
     public ResponseVO isFirstLogin(@RequestParam String account){
+        System.out.println("账号：" + account);
         SxStudent sxStudent = sxStudentService.findByStuNo(account);
         if (null == sxStudent){
             SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
