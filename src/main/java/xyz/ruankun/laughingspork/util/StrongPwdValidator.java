@@ -37,7 +37,7 @@ public class StrongPwdValidator {
         boolean isLongEnough = (pwd.length() >= MIN_LENGTH)?true:false;
         if (!isLongEnough){
             //长度不够
-            map.put(false,"the password length is lower than 12.");
+            map.put(false,"密码长度必须大于12位.");
             return map;
         }else {
             //长度够了
@@ -63,16 +63,16 @@ public class StrongPwdValidator {
             }
 
             if (!hasBigLetters){
-                map.put(false,"no big letters in your password");
+                map.put(false,"密码中必须包含大小写字母，数字，特殊符号！你的密码中没有大写字母");
                 return map;
             }else if(!hasSmallLetters){
-                map.put(false,"no small letters in your password");
+                map.put(false,"密码中必须包含大小写字母，数字，特殊符号！你的密码中没有小写字母");
                 return map;
             }else if(!hasNumbers){
-                map.put(false,"no numbers in your password");
+                map.put(false,"密码中必须包含大小写字母，数字，特殊符号！你的密码中没有数字");
                 return map;
             }else if(!hasSpecialChars){
-                map.put(false,"no special characters in your password: ~!@#$%^&*()_+-={}[],./<>?:|");
+                map.put(false,"密码中必须包含大小写字母，数字，特殊符号！你的密码中没有特殊字符: ~!@#$%^&*()_+-={}[],./<>?:|");
                 return map;
             }
             map.put(true,"password is validated");

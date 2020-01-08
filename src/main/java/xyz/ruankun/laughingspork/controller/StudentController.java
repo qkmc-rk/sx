@@ -342,10 +342,11 @@ public class StudentController {
         //如果该企业已经被核准则不能再修改
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
         SxCorporation oldCorp = sxCorporationService.findByStuNo(sxStudent.getStuNo());
-        if (oldCorp.getIsCorpChecked()){
-            return ControllerUtil.getFalseResultMsgBySelf("不好意思，该企业信息已经被核准，无法继续修改!");
+        if (null != oldCorp && oldCorp.getIsCorpChecked()){
+            return ControllerUtil.getFalseResultMsgBySelf("该企业信息已经被核准，无法继续修改!");
         }
-        if (oldCorp != null) {
+
+        if (null != oldCorp) {
             if (sxCorporation.getId() == null || sxCorporation.getId().equals("")) {
                 return ControllerUtil.getFalseResultMsgBySelf("修改企业信息缺少ID");
             }

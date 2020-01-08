@@ -270,4 +270,34 @@ public class UserController {
         }
     }
 
+    @PostMapping("/password")
+    @ApiOperation("修改密码")
+    public ResponseVO changePassword(String account, String type, String idCard,String password){
+        Map<Boolean, String> rs = StrongPwdValidator.validate(password);
+        if (null != rs.get(false)){
+            return ControllerUtil.getFalseResultMsgBySelf(rs.get(false));
+        }
+        if (type.equals("Teacher")){
+            SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
+            if (!idCard.equals(sxTeacher.getIdCard())){
+                return ControllerUtil.getFalseResultMsgBySelf("身份证号码错误");
+            }else {
+                sxTeacher.setPassword(MD5Util.trueMd5(password).toUpperCase());
+                sxTeacherService.save(sxTeacher);
+                return ControllerUtil.getTrueOrFalseResult(true);
+            }
+        }else if(type.equals("Student")){
+            SxStudent sxStudent = sxStudentService.findByStuNo(account);
+            if (!idCard.equals(sxStudent.getIdCard())){
+                return ControllerUtil.getFalseResultMsgBySelf("身份证号码错误");
+            }else {
+                sxStudent.setPassword(MD5Util.trueMd5(password).toUpperCase());
+                sxStudentService.save(sxStudent);
+                return ControllerUtil.getTrueOrFalseResult(true);
+            }
+        }else {
+            return ControllerUtil.getFalseResultMsgBySelf("用户身份类型不符合");
+        }
+    }
+
 }
