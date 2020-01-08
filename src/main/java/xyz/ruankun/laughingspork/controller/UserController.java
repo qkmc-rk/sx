@@ -225,7 +225,7 @@ public class UserController {
             }else if(loginType.equals("Teacher")){
                 // teacher
                 SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
-                if (sxTeacher.getFirstLogin()){
+                if (!sxTeacher.getFirstLogin()){
                     return ControllerUtil.getFalseResultMsgBySelf("老师早已注册");
                 }else {
                     // 注册
