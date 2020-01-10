@@ -145,7 +145,7 @@ public class StudentController {
     })
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/identify")
-    public ResponseVO fillIdentifyForm(String practiceContent, String selfSummary) {
+    public ResponseVO fillIdentifyForm(String practiceContent, String selfSummary,String corpOpinion,String corpTeacherOpinion) {
         if (practiceContent == null || selfSummary == null) {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
@@ -155,7 +155,7 @@ public class StudentController {
             sxTeacherService.isIdentifyFlag(sxStudent);
             sxTeacherService.isReportFlag(sxStudent);
             //保存鉴定表内容到数据库
-            return ControllerUtil.getDataResult(sxStudentService.saveIdentifyForm(sxStudent, practiceContent, selfSummary));
+            return ControllerUtil.getDataResult(sxStudentService.saveIdentifyForm(sxStudent, practiceContent, selfSummary,corpOpinion, corpTeacherOpinion));
         }
     }
 

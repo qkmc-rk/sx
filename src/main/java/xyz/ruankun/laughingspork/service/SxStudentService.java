@@ -57,7 +57,7 @@ public interface SxStudentService {
      * @param selfSummary     :
      * @return: xyz.ruankun.laughingspork.entity.SxStudent
      */
-    SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary);
+    SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary, String corpOpinion, String corpTeacherOpinion);
 
     /**
      * 保存实习阶段的实习总结

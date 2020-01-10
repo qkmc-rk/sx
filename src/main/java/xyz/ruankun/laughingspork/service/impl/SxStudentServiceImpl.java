@@ -36,7 +36,7 @@ public class SxStudentServiceImpl implements SxStudentService {
 
 
     @Override
-    public SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary) {
+    public SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary, String corpOpinion, String corpTeacherOpinion) {
         //实习内容，自我总结
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
         sxStudent = sxStudentRepository.findByStuNo(sxStudent.getStuNo());
@@ -46,6 +46,9 @@ public class SxStudentServiceImpl implements SxStudentService {
         }
         sxIdentifyForm.setSxContent(practiceContent);
         sxIdentifyForm.setSelfSummary(selfSummary);
+        sxIdentifyForm.setCorpOpinion(corpOpinion);
+        sxIdentifyForm.setCorpTeacherOpinion(corpTeacherOpinion);
+
         sxIdentifyFormRepository.save(sxIdentifyForm);
         sxStudentRepository.save(sxStudent);
         return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());

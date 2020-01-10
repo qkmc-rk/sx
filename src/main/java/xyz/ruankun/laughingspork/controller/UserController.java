@@ -292,6 +292,7 @@ public class UserController {
                 return ControllerUtil.getFalseResultMsgBySelf("身份证号码错误");
             }else {
                 sxStudent.setPassword(MD5Util.trueMd5(password).toUpperCase());
+                sxStudent.setFirstLogin(false);
                 sxStudentService.save(sxStudent);
                 return ControllerUtil.getTrueOrFalseResult(true);
             }
