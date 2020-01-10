@@ -279,22 +279,26 @@ public class UserController {
         }
         if (type.equals("Teacher")){
             SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
-            if (!idCard.equals(sxTeacher.getIdCard())){
+            if (null != sxTeacher && !idCard.equals(sxTeacher.getIdCard())){
                 return ControllerUtil.getFalseResultMsgBySelf("身份证号码错误");
-            }else {
+            }else if(null != sxTeacher) {
                 sxTeacher.setPassword(MD5Util.trueMd5(password).toUpperCase());
                 sxTeacherService.save(sxTeacher);
                 return ControllerUtil.getTrueOrFalseResult(true);
+            }else{
+                return ControllerUtil.getFalseResultMsgBySelf("未查询到该教师信息,账号：" + account);
             }
         }else if(type.equals("Student")){
             SxStudent sxStudent = sxStudentService.findByStuNo(account);
-            if (!idCard.equals(sxStudent.getIdCard())){
+            if (null != sxStudent && !idCard.equals(sxStudent.getIdCard())){
                 return ControllerUtil.getFalseResultMsgBySelf("身份证号码错误");
-            }else {
+            }else if(null != sxStudent){
                 sxStudent.setPassword(MD5Util.trueMd5(password).toUpperCase());
                 sxStudent.setFirstLogin(false);
                 sxStudentService.save(sxStudent);
                 return ControllerUtil.getTrueOrFalseResult(true);
+            }else{
+                return ControllerUtil.getFalseResultMsgBySelf("未查询到该学生信息,账号：" + account);
             }
         }else {
             return ControllerUtil.getFalseResultMsgBySelf("用户身份类型不符合");
