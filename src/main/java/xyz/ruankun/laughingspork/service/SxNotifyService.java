@@ -20,4 +20,17 @@ public interface SxNotifyService {
      * @return
      */
     SxNotify findById(int id);
+
+    /**
+     * 赞一个通知
+     * @param id
+     */
+    SxNotify praise(Integer id);
+
+    /**
+     * 踩一个通知
+     * @param id
+     * @return
+     */
+    SxNotify low(Integer id);
 }

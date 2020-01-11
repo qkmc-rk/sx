@@ -51,8 +51,48 @@ public class SxNotify {
     @Column(name = "publisher")
     private String publisher = "教务处-实习小组";
 
+    // 点赞
+    @Column(name = "praise")
+    private Integer praise;
+
+    /**
+     * 踩
+     */
+    @Column(name = "low")
+    private Integer low;
+
+    /**
+     * 阅读量
+     */
+    @Column(name = "readnum")
+    private Integer read;
+
     @Transient
     private Integer total;
+
+    public Integer getPraise() {
+        return praise;
+    }
+
+    public void setPraise(Integer praise) {
+        this.praise = praise;
+    }
+
+    public Integer getLow() {
+        return low;
+    }
+
+    public void setLow(Integer low) {
+        this.low = low;
+    }
+
+    public Integer getRead() {
+        return read;
+    }
+
+    public void setRead(Integer read) {
+        this.read = read;
+    }
 
     public Integer getTotal() {
         return total;

@@ -48,4 +48,14 @@ public class NotifyController {
     public ResponseVO getNotifyById(@PathVariable Integer id){
         return ControllerUtil.getDataResult(sxNotifyService.findById(id));
     }
+
+    @PostMapping("/{id}/praise")
+    public ResponseVO praise(@PathVariable Integer id){
+        return ControllerUtil.getDataResult(sxNotifyService.praise(id));
+    }
+
+    @PostMapping("/{id}/low")
+    public ResponseVO low(@PathVariable Integer id){
+        return ControllerUtil.getDataResult(sxNotifyService.low(id));
+    }
 }
