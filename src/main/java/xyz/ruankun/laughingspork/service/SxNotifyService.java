@@ -13,4 +13,11 @@ public interface SxNotifyService {
      * @return
      */
     List<SxNotify> findByPageAndLimit(int page, int limit);
+
+    /**
+     * 通过id查询SxNotify
+     * @param id
+     * @return
+     */
+    SxNotify findById(int id);
 }

@@ -51,4 +51,16 @@ public class SxNotifyServiceImpl implements SxNotifyService {
         }
         return sxNotifiesNew;
     }
+
+    @Override
+    public SxNotify findById(int id) {
+        try {
+            SxNotify sxNotify = sxNotifyRepository.findById(id).get();
+            sxNotify.setTotal((int)(sxNotifyRepository.count()));
+            return sxNotify;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -43,4 +43,9 @@ public class NotifyController {
             return ControllerUtil.getDataResult(sxNotifyService.findByPageAndLimit(page, limit));
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseVO getNotifyById(@PathVariable Integer id){
+        return ControllerUtil.getDataResult(sxNotifyService.findById(id));
+    }
 }

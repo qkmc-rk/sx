@@ -56,7 +56,7 @@ public class DateUtil {
         sb.append("月");//拼接月
 
         int day = Integer.parseInt(date.substring(6));
-        if (day <= 10) {
+        if (day < 10) {
             sb.append(upper[day]);
         } else if (day < 20) {
             sb.append("十").append(upper[day % 10]);
