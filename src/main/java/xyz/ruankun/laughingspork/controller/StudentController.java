@@ -353,7 +353,9 @@ public class StudentController {
             if (oldCorp.getId() != sxCorporation.getId()) {
                 return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_NOT_FOUND_DATA);
             }
-            EntityUtil.update(oldCorp, sxCorporation);
+            EntityUtil.update(sxCorporation,oldCorp);
+            System.out.println(oldCorp.toString());
+            System.out.println(sxCorporation.toString());
         }
 
         sxCorporation.setStuNo(sxStudent.getStuNo());
