@@ -257,6 +257,7 @@ public class UserController {
                 return ControllerUtil.getFalseResultMsgBySelf("身份证号有误!");
             }
             ((SxTeacher) t).setPassword(MD5Util.trueMd5(password).toUpperCase());
+            ((SxTeacher) t).setFirstLogin(false);   // 注册了就不是第一次登陆了
             try {
                 sxTeacherService.save((SxTeacher) t);
                 ((SxTeacher) t).setFirstLogin(false);   // 注册了就不是第一次登陆了

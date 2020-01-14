@@ -24,7 +24,7 @@ public class SxCorporationServiceImpl implements SxCorporationService {
         sxStudent.setCorpName(sxCorporation.getCorpName());
         sxStudent.setCorpRegCode(sxCorporation.getRegCode());
         sxStudent.setCorpTaxcode(sxCorporation.getCreditCode());
-        resp.save(sxCorporation);
+        resp.saveAndFlush(sxCorporation);
     }
 
     @Override
