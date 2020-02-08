@@ -11,6 +11,7 @@ import xyz.ruankun.laughingspork.service.SxStudentService;
 
 @Service
 public class SxCorporationServiceImpl implements SxCorporationService {
+
     @Autowired
     private SxCorporationRepository resp;
 
@@ -25,6 +26,11 @@ public class SxCorporationServiceImpl implements SxCorporationService {
         sxStudent.setCorpRegCode(sxCorporation.getRegCode());
         sxStudent.setCorpTaxcode(sxCorporation.getCreditCode());
         resp.saveAndFlush(sxCorporation);
+    }
+
+    @Override
+    public void delete(SxCorporation sxCorporation) {
+        resp.deleteById(sxCorporation.getId());
     }
 
     @Override
