@@ -396,7 +396,7 @@ public class StudentController {
     @PostMapping("/student/password")
     public ResponseVO setPassword(String oldPassword, String newPassword) {
         String msg = null;
-        if ((msg = StrongPwdValidator.validate(newPassword).get(false))!= null){
+        if ((msg = EasyPwdValidator.validate(newPassword).get(false))!= null){
             return ControllerUtil.getFalseResultMsgBySelf(msg);
         }
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
