@@ -160,10 +160,6 @@ public class StudentController {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
             SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
-            sxTeacherService.isIdentifyFilledFlag(sxStudent);
-            sxTeacherService.isReportFilledFlag(sxStudent);
-            sxTeacherService.isIdentifyFlag(sxStudent);
-            sxTeacherService.isReportFlag(sxStudent);
             //保存鉴定表内容到数据库
             return ControllerUtil.getDataResult(sxStudentService.saveIdentifyForm(sxStudent, practiceContent, selfSummary,corpOpinion, corpTeacherOpinion));
         }
@@ -171,7 +167,7 @@ public class StudentController {
 
     @ApiOperation(value = "学生填写报告第一阶段信息", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "gmtStart", value = "实习开始时间", required = true),
+//            @ApiImplicitParam(name = "gmtStart", value = "实习开始时间", required = true),
             @ApiImplicitParam(name = "stage1Summary", value = "自我总结", required = true),
             @ApiImplicitParam(name = "stage1GuideWay", value = "指导方式", required = true),
             @ApiImplicitParam(name = "stage1GuideDate", value = "指导时间,为字符串，可能是一个时间段", required = true),
@@ -194,7 +190,7 @@ public class StudentController {
 
     @ApiOperation(value = "学生填写报告第二阶段信息", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "gmtEnd", value = "实习结束时间", required = true),
+//            @ApiImplicitParam(name = "gmtEnd", value = "实习结束时间", required = true),
             @ApiImplicitParam(name = "stage2Summary", value = "自我总结", required = true),
             @ApiImplicitParam(name = "stage2GuideWay", value = "指导方式", required = true),
             @ApiImplicitParam(name = "stage2GuideDate", value = "指导时间,为字符串，可能是一个时间段", required = true),
@@ -207,10 +203,6 @@ public class StudentController {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INCOMPLETE_DATA);
         } else {
             SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
-            sxTeacherService.isIdentifyFilledFlag(sxStudent);
-            sxTeacherService.isReportFilledFlag(sxStudent);
-            sxTeacherService.isIdentifyFlag(sxStudent);
-            sxTeacherService.isReportFlag(sxStudent);
             //保存鉴定表内容到数据库
             SxReport sxReport = sxStudentService.setStage2Summary(/*gmtEnd, */sxStudent, stage2Summary, stage2GuideWay, stage2GuideDate);
             if (sxReport == null) {
@@ -348,7 +340,6 @@ public class StudentController {
     @ApiOperation(value = "学生添加/修改企业信息", httpMethod = "POST")
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/student/corp")
-    //@Transactional
     public ResponseVO addCorpInfo(SxCorporation sxCorporation) {
         //如果该企业已经被核准则不能再修改
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();

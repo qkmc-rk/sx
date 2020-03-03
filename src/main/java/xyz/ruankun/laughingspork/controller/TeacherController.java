@@ -52,10 +52,6 @@ public class TeacherController {
         } else {
             for (SxStudent s : sxStudents
             ) {
-                s.setIdentifyFilledFlag(sxTeacherService.isIdentifyFilledFlag(s));
-                s.setReportFilledFlag(sxTeacherService.isReportFilledFlag(s));
-                sxTeacherService.isIdentifyFlag(s);
-                sxTeacherService.isReportFlag(s);
                 s.setPassword(null);
             }
 
@@ -161,8 +157,7 @@ public class TeacherController {
         if (sxStudentService.testAuth(tNo, sNo)) {
             SxIdentifyForm oldSxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sNo);
             EntityUtil.update(sxIdentifyForm, oldSxIdentifyForm);
-            sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm);
-            return ControllerUtil.getDataResult(sxIdentifyFormService.getIdentifyInfo(sNo));
+            return ControllerUtil.getDataResult(sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm));
         } else {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
         }
@@ -178,8 +173,7 @@ public class TeacherController {
         if (sxStudentService.testAuth(tNo, sNo)) {
             SxReport OldSxReport = sxReportService.getReportInfo(sNo);
             EntityUtil.update(sxReport, OldSxReport);
-            sxReportService.saveReport(sxReport);
-            return ControllerUtil.getDataResult(sxReportService.getReportInfo(sNo));
+            return ControllerUtil.getDataResult(sxReportService.saveReport(sxReport));
         } else {
             return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_INVALID_OPERATION);
         }

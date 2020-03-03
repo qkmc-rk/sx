@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.ruankun.laughingspork.entity.*;
 import xyz.ruankun.laughingspork.repository.*;
+import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
+import xyz.ruankun.laughingspork.service.SxReportService;
 import xyz.ruankun.laughingspork.service.SxStudentService;
 
 import java.util.List;
@@ -34,16 +36,17 @@ public class SxStudentServiceImpl implements SxStudentService {
     @Autowired
     private SxStudentRepository sxStudentRepository;
 
+    @Autowired
+    private SxIdentifyFormService sxIdentifyFormService;
+
+    @Autowired
+    private SxReportService sxReportService;
+
 
     @Override
     public SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary, String corpOpinion, String corpTeacherOpinion) {
         //实习内容，自我总结
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
-        sxStudent = sxStudentRepository.findByStuNo(sxStudent.getStuNo());
-        sxStudent.setIdentifyFlag(2);
-        if (sxIdentifyForm == null) {
-            return null;
-        }
         sxIdentifyForm.setSxContent(practiceContent);
         sxIdentifyForm.setSelfSummary(selfSummary);
         sxIdentifyForm.setCorpOpinion(corpOpinion);
@@ -67,8 +70,7 @@ public class SxStudentServiceImpl implements SxStudentService {
         sxReport.setStage1Summary(stage1Summary);
         sxReport.setStage1GuideWay(stage1GuideWay);
         sxReport.setStage1GuideDate(stage1GuideDate);
-        sxReportRepository.save(sxReport);
-        return sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        return sxReportService.saveReport(sxReport);
     }
 
     @Override
@@ -93,9 +95,8 @@ public class SxStudentServiceImpl implements SxStudentService {
         sxReport.setStage2Summary(stage2Summary);
         sxReport.setStage2GuideWay(stage2GuideWay);
         sxReport.setStage2GuideDate(stage2GuideDate);
-        sxReportRepository.save(sxReport);
         sxStudentRepository.save(sxStudent);
-        return sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
+        return sxReportService.saveReport(sxReport);
     }
 
     @Override
