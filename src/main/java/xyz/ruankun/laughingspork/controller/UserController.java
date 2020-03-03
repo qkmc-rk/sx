@@ -69,23 +69,23 @@ public class UserController {
     @PostMapping("/login")
     public ResponseVO login(String account, String password, String loginType, String code) {
         // 如果没有验证码
-        if(null == code){
+        if (null == code) {
             return ControllerUtil.getFalseResultMsgBySelf("验证码字段不能为空");
         }
         //
-        if(!VerifyCodeUtil.verify(code.toLowerCase())){
+        if (!VerifyCodeUtil.verify(code.toLowerCase())) {
             return ControllerUtil.getFalseResultMsgBySelf("验证码错误！请刷新重试");
-        }else {
+        } else {
             // 判断是否是第一次登陆
             SxStudent sxStudent = null;
-            if ((sxStudent = sxStudentService.findByStuNo(account)) != null && (sxStudent.getFirstLogin())){
+            if ((sxStudent = sxStudentService.findByStuNo(account)) != null && (sxStudent.getFirstLogin())) {
                 //第一次
                 return ControllerUtil.getFalseResultMsgBySelf("没有注册(没有初始化密码, 但学生信息在数据库存在)");
             }
             // follow code by NadevXiang
             Subject subject = SecurityUtils.getSubject();
-            //  设置Session30分钟过期 30分钟没有交互 Seeion将被删除
-            subject.getSession().setTimeout(1800000);
+            //  设置Session 1200分钟过期 1200分钟没有交互 Seeion将被删除
+            subject.getSession().setTimeout(72000000);
             try {
                 subject.login(new UserToken(account, password, loginType));
                 HashMap<String, Object> data = new HashMap<>();
@@ -149,41 +149,42 @@ public class UserController {
         OutputStream os = response.getOutputStream();
         ImageIO.write(image, "png", os);
     }
+
     /**
-     *  是否是第一次登录, 按照官方要求，第一次登录需要设置一个复杂的密码
+     * 是否是第一次登录, 按照官方要求，第一次登录需要设置一个复杂的密码
+     *
      * @param account
      * @return
      */
     @ApiOperation(value = "输入学号或者工号，返回是否是第一次登录", httpMethod = "GET")
     @GetMapping("/loginstatus")
-    public ResponseVO isFirstLogin(@RequestParam String account){
+    public ResponseVO isFirstLogin(@RequestParam String account) {
         System.out.println("账号：" + account);
         SxStudent sxStudent = null;
         SxTeacher sxTeacher = null;
-        try{
+        try {
             sxStudent = sxStudentService.findByStuNo(account);
-            if (null == sxStudent){
+            if (null == sxStudent) {
                 sxTeacher = sxTeacherService.findByTeacherNo(account);
-                if(null == sxTeacher){
+                if (null == sxTeacher) {
                     return ControllerUtil.getFalseResultMsgBySelf("老师/学生不存在");
-                }else{
+                } else {
                     //老师不为空
-                    if (sxTeacher.getFirstLogin()){
+                    if (sxTeacher.getFirstLogin()) {
                         return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
                     }
                     return ControllerUtil.getDataResult("{\"isFirstLogin\":false}");
                 }
-            }else{
+            } else {
                 //学生不为空
-                if (sxStudent.getFirstLogin()){
+                if (sxStudent.getFirstLogin()) {
                     return ControllerUtil.getDataResult("{\"isFirstLogin\":true}");
                 }
                 return ControllerUtil.getDataResult("{\"isFirstLogin\":false}");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return ControllerUtil.getFalseResultMsgBySelf(e.getMessage());
         }
-
 
 
     }
@@ -194,53 +195,53 @@ public class UserController {
             , @RequestParam String password
             , @RequestParam String idcard
             , @RequestParam String loginType
-            , @RequestParam String code){
+            , @RequestParam String code) {
         // 如果没有验证码
-        if(null == code){
+        if (null == code) {
             return ControllerUtil.getFalseResultMsgBySelf("验证码不能为空");
         }
         //
-        if(!VerifyCodeUtil.verify(code.toLowerCase())){
+        if (!VerifyCodeUtil.verify(code.toLowerCase())) {
             return ControllerUtil.getFalseResultMsgBySelf("验证码输入错误，请刷新后重试");
-        }else {
+        } else {
             //先对密码进行校验,不合法的弱密码无法通过注册
             Map<Boolean, String> rs = EasyPwdValidator.validate(password);
-            if (null != rs.get(false)){
+            if (null != rs.get(false)) {
                 return ControllerUtil.getFalseResultMsgBySelf(rs.get(false));
             }
 
-            if (loginType.equals("Student")){
+            if (loginType.equals("Student")) {
                 // student
                 SxStudent sxStudent = sxStudentService.findByStuNo(account);
-                if (null != sxStudent){
-                    if (!sxStudent.getFirstLogin()){
+                if (null != sxStudent) {
+                    if (!sxStudent.getFirstLogin()) {
                         return ControllerUtil.getFalseResultMsgBySelf("该学生已经注册");
-                    }else {
+                    } else {
                         // 注册
                         return register(idcard, password, sxStudent);
                     }
-                }else {
+                } else {
                     return ControllerUtil.getFalseResultMsgBySelf("没有这个学生");
                 }
-            }else if(loginType.equals("Teacher")){
+            } else if (loginType.equals("Teacher")) {
                 // teacher
                 SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
-                if (!sxTeacher.getFirstLogin()){
+                if (!sxTeacher.getFirstLogin()) {
                     return ControllerUtil.getFalseResultMsgBySelf("老师早已注册");
-                }else {
+                } else {
                     // 注册
                     return register(idcard, password, sxTeacher);
                 }
-            }else {
+            } else {
                 return ControllerUtil.getFalseResultMsgBySelf("注册类型有误");
             }
         }
     }
 
-    private <T> ResponseVO register(String idcard,String password, T t){
-        if (t instanceof SxStudent){
+    private <T> ResponseVO register(String idcard, String password, T t) {
+        if (t instanceof SxStudent) {
             //student
-            if (!((SxStudent) t).getIdCard().equals(idcard)){
+            if (!((SxStudent) t).getIdCard().equals(idcard)) {
                 return ControllerUtil.getFalseResultMsgBySelf("身份证号码填写错误!");
             }
             ((SxStudent) t).setPassword(MD5Util.trueMd5(password).toUpperCase());
@@ -252,8 +253,8 @@ public class UserController {
                 e.printStackTrace();
                 return ControllerUtil.getFalseResultMsgBySelf("尝试保存学生信息,但发生以下错误:" + e.getMessage());
             }
-        }else if(t instanceof  SxTeacher){
-            if (!((SxTeacher) t).getIdCard().equals(idcard)){
+        } else if (t instanceof SxTeacher) {
+            if (!((SxTeacher) t).getIdCard().equals(idcard)) {
                 return ControllerUtil.getFalseResultMsgBySelf("身份证号有误!");
             }
             ((SxTeacher) t).setPassword(MD5Util.trueMd5(password).toUpperCase());
@@ -266,42 +267,42 @@ public class UserController {
                 e.printStackTrace();
                 return ControllerUtil.getFalseResultMsgBySelf("尝试保存教师信息,但发生以下错误:" + e.getMessage());
             }
-        }else{
+        } else {
             return ControllerUtil.getFalseResultMsgBySelf("服务器错误:输入类型既不是学生也不是教师.");
         }
     }
 
     @PostMapping("/password")
     @ApiOperation("修改密码")
-    public ResponseVO changePassword(String account, String type, String idCard,String password){
+    public ResponseVO changePassword(String account, String type, String idCard, String password) {
         Map<Boolean, String> rs = EasyPwdValidator.validate(password);
-        if (null != rs.get(false)){
+        if (null != rs.get(false)) {
             return ControllerUtil.getFalseResultMsgBySelf(rs.get(false));
         }
-        if (type.equals("Teacher")){
+        if (type.equals("Teacher")) {
             SxTeacher sxTeacher = sxTeacherService.findByTeacherNo(account);
-            if (null != sxTeacher && !idCard.equals(sxTeacher.getIdCard())){
+            if (null != sxTeacher && !idCard.equals(sxTeacher.getIdCard())) {
                 return ControllerUtil.getFalseResultMsgBySelf("身份证号码错误");
-            }else if(null != sxTeacher) {
+            } else if (null != sxTeacher) {
                 sxTeacher.setPassword(MD5Util.trueMd5(password).toUpperCase());
                 sxTeacherService.save(sxTeacher);
                 return ControllerUtil.getTrueOrFalseResult(true);
-            }else{
+            } else {
                 return ControllerUtil.getFalseResultMsgBySelf("未查询到该教师信息,账号：" + account);
             }
-        }else if(type.equals("Student")){
+        } else if (type.equals("Student")) {
             SxStudent sxStudent = sxStudentService.findByStuNo(account);
-            if (null != sxStudent && !idCard.equals(sxStudent.getIdCard())){
+            if (null != sxStudent && !idCard.equals(sxStudent.getIdCard())) {
                 return ControllerUtil.getFalseResultMsgBySelf("身份证号码错误");
-            }else if(null != sxStudent){
+            } else if (null != sxStudent) {
                 sxStudent.setPassword(MD5Util.trueMd5(password).toUpperCase());
                 sxStudent.setFirstLogin(false);
                 sxStudentService.save(sxStudent);
                 return ControllerUtil.getTrueOrFalseResult(true);
-            }else{
+            } else {
                 return ControllerUtil.getFalseResultMsgBySelf("未查询到该学生信息,账号：" + account);
             }
-        }else {
+        } else {
             return ControllerUtil.getFalseResultMsgBySelf("用户身份类型不符合");
         }
     }

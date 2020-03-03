@@ -75,8 +75,6 @@ public class StudentController2 {
         sxReportFromFront.setGmtEnd(DateUtil.getSqlDateByStr(gmtEnd));
         sxReportFromFront.setGmtStart(DateUtil.getSqlDateByStr(gmtStart));
         EntityUtil.update(sxReportFromFront,sxReport);
-        logger.info("sxReport未更新前: " + sxReport.toString());
-        logger.info("sxReport实习开始结束时间即将被更新: " + sxReportFromFront.toString());
         try {
             sxReportService.saveReport(sxReportFromFront);
             return ControllerUtil.getSuccessResultBySelf("更新成功");
