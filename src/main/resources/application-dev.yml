@@ -6,9 +6,9 @@
 spring:
     # 数据源
     datasource:
-        username: mrruan
+        username: root
         password: '@Sicau211'
-        url: jdbc:mysql://113.54.15.16:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+        url: jdbc:mysql://45.40.193.214:3306/sx?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
         driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
         open-in-view: false
@@ -35,7 +35,7 @@ spring:
 jodconverter:
     enabled: true
     # open office 安装路径
-    office-home: C:\Program Files (x86)\OpenOffice 4
+    office-home: /Applications/OpenOffice.app/Contents
 
     max-tasks-per-process: 10
     port-numbers: 8100

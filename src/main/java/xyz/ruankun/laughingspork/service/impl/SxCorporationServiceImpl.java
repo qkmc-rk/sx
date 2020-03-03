@@ -21,10 +21,12 @@ public class SxCorporationServiceImpl implements SxCorporationService {
     @Override
     @Transactional
     public void save(SxCorporation sxCorporation) {
+        resp.deleteById(sxCorporation.getId());
         SxStudent sxStudent = sxStudentService.findByStuNo(sxCorporation.getStuNo());
         sxStudent.setCorpName(sxCorporation.getCorpName());
         sxStudent.setCorpRegCode(sxCorporation.getRegCode());
         sxStudent.setCorpTaxcode(sxCorporation.getCreditCode());
+        sxStudentService.save(sxStudent);
         resp.saveAndFlush(sxCorporation);
     }
 

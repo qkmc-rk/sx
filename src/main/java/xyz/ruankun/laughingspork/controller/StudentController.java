@@ -348,7 +348,7 @@ public class StudentController {
     @ApiOperation(value = "学生添加/修改企业信息", httpMethod = "POST")
     @RequiresRoles(RoleCode.STUDENT)
     @PostMapping("/student/corp")
-    @Transactional
+    //@Transactional
     public ResponseVO addCorpInfo(SxCorporation sxCorporation) {
         //如果该企业已经被核准则不能再修改
         SxStudent sxStudent = (SxStudent) SecurityUtils.getSubject().getPrincipal();
@@ -369,8 +369,8 @@ public class StudentController {
 
         sxCorporation.setStuNo(sxStudent.getStuNo());
         sxCorporation.setIsCorpChecked(false);
-        sxCorporationService.delete(sxCorporation);
-        sxCorporation.setId(null);
+        //sxCorporationService.delete(sxCorporation);
+        //sxCorporation.setId(null);
         sxCorporationService.save(sxCorporation);
         return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
     }
