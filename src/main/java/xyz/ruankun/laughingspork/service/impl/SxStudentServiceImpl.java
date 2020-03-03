@@ -51,7 +51,12 @@ public class SxStudentServiceImpl implements SxStudentService {
         sxIdentifyForm.setSelfSummary(selfSummary);
         sxIdentifyForm.setCorpOpinion(corpOpinion);
         sxIdentifyForm.setCorpTeacherOpinion(corpTeacherOpinion);
-        return sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm);
+
+        sxIdentifyForm.setCODate(new Date(System.currentTimeMillis()));
+        sxIdentifyForm.setCTODate(new Date(System.currentTimeMillis()));
+        sxIdentifyFormRepository.save(sxIdentifyForm);
+        sxStudentRepository.save(sxStudent);
+        return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
     }
 
     @Override

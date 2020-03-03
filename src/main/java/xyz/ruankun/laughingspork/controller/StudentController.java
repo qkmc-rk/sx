@@ -360,8 +360,8 @@ public class StudentController {
 
         sxCorporation.setStuNo(sxStudent.getStuNo());
         sxCorporation.setIsCorpChecked(false);
-        sxCorporationService.delete(sxCorporation);
-        sxCorporation.setId(null);
+        //sxCorporationService.delete(sxCorporation);
+        //sxCorporation.setId(null);
         sxCorporationService.save(sxCorporation);
         return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
     }

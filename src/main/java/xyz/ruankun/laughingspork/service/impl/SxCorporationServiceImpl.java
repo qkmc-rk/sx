@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.ruankun.laughingspork.entity.SxCorporation;
 import xyz.ruankun.laughingspork.entity.SxStudent;
+import xyz.ruankun.laughingspork.repository.SxStudentRepository;
 import xyz.ruankun.laughingspork.service.SxCorporationService;
 import xyz.ruankun.laughingspork.repository.SxCorporationRepository;
 import xyz.ruankun.laughingspork.service.SxStudentService;
@@ -16,15 +17,17 @@ public class SxCorporationServiceImpl implements SxCorporationService {
     private SxCorporationRepository resp;
 
     @Autowired
-    private SxStudentService sxStudentService;
+    private SxStudentRepository sxStudentRepository;
 
     @Override
     @Transactional
     public void save(SxCorporation sxCorporation) {
-        SxStudent sxStudent = sxStudentService.findByStuNo(sxCorporation.getStuNo());
+        SxStudent sxStudent = sxStudentRepository.findByStuNo(sxCorporation.getStuNo());
         sxStudent.setCorpName(sxCorporation.getCorpName());
         sxStudent.setCorpRegCode(sxCorporation.getRegCode());
         sxStudent.setCorpTaxcode(sxCorporation.getCreditCode());
+        resp.deleteAllByStuNo(sxCorporation.getStuNo());
+        sxStudentRepository.saveAndFlush(sxStudent);
         resp.saveAndFlush(sxCorporation);
     }
 
