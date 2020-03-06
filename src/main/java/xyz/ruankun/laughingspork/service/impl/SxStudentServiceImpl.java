@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.ruankun.laughingspork.entity.*;
 import xyz.ruankun.laughingspork.repository.*;
 import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
@@ -45,6 +46,7 @@ public class SxStudentServiceImpl implements SxStudentService {
 
 
     @Override
+    @Transactional
     public SxIdentifyForm saveIdentifyForm(SxStudent sxStudent, String practiceContent, String selfSummary, String corpOpinion, String corpTeacherOpinion) {
         //实习内容，自我总结
         SxIdentifyForm sxIdentifyForm = sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
@@ -55,8 +57,8 @@ public class SxStudentServiceImpl implements SxStudentService {
 
         sxIdentifyForm.setCODate(new Date(System.currentTimeMillis()));
         sxIdentifyForm.setCTODate(new Date(System.currentTimeMillis()));
-        sxIdentifyFormRepository.save(sxIdentifyForm);
-        sxStudentRepository.save(sxStudent);
+        sxIdentifyFormRepository.saveAndFlush(sxIdentifyForm);
+        sxStudentRepository.saveAndFlush(sxStudent);
         return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
     }
 
@@ -85,6 +87,7 @@ public class SxStudentServiceImpl implements SxStudentService {
     }
 
     @Override
+    @Transactional
     public SxReport setStage2Summary(/*Date gmtEnd, */SxStudent sxStudent, String stage2Summary, String stage2GuideWay, String stage2GuideDate) {
         SxReport sxReport = sxReportRepository.findSxReportByStuNo(sxStudent.getStuNo());
         sxStudent = sxStudentRepository.findByStuNo(sxStudent.getStuNo());
@@ -127,7 +130,9 @@ public class SxStudentServiceImpl implements SxStudentService {
     public Boolean testAuth(String tNo, String stuNO) {
         if (resp.findByStuNoAndTeacherNo(stuNO, tNo) == null) {
             return false;
-        } else return true;
+        } else {
+            return true;
+        }
     }
 
     @Override
