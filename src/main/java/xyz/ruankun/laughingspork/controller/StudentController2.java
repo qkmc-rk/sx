@@ -57,8 +57,9 @@ public class StudentController2 {
     })
     @PostMapping("/report/date")
     @RequiresRoles(RoleCode.STUDENT)
-    public ResponseVO bindSxDate(@RequestParam(required = true) String gmtStart,@RequestParam(required = true) String gmtEnd){
+    public ResponseVO bindSxDate(@RequestParam String gmtStart,@RequestParam String gmtEnd){
         boolean dateInputError = gmtEnd == null || gmtStart == null || gmtEnd.equals("") || gmtStart.equals("");
+        // 若用户不传入时间, 则使用默认当前时间
         boolean parseError = DateUtil.getDateByStr(gmtStart) == null || DateUtil.getDateByStr(gmtEnd) == null;
         if (dateInputError){
             return ControllerUtil.getFalseResultMsgBySelf("请传入时间gmtStart 和 gmtEnd");
