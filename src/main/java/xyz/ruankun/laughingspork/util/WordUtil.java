@@ -122,10 +122,11 @@ public class WordUtil {
     }
 
     /**
-     * 替换表格里面的变量 ${variable}
      *
+     * 替换表格里面的变量 ${variable}
      * @param doc
      * @param params
+     *
      */
     public void replaceInTable(XWPFDocument doc, Map<String, String> params) {
         Iterator<XWPFTable> iterator = doc.getTablesIterator();
@@ -150,7 +151,6 @@ public class WordUtil {
 
     /**
      * 将word docx文件保存到本地文件中
-     *
      * @param docx     当前编辑的docx文件
      * @param fileName 要保存的docx文件的名字,不包括后缀<b>.docx</b>
      * @param path
@@ -180,7 +180,6 @@ public class WordUtil {
 
     /**
      * 正则表达式 匹配形如 ${userName} 的表达式
-     *
      * @param str 字符串
      * @return 返回 Matcher 对象
      */
@@ -191,12 +190,6 @@ public class WordUtil {
         return matcher;
     }
 
-    /**
-     * 关闭流
-     * 之所以封装 是因为有try catch代码比较乱
-     *
-     * @param inputStream 输入流对象
-     */
     public void close(InputStream inputStream) {
         if (inputStream != null) {
             try {
@@ -207,12 +200,6 @@ public class WordUtil {
         }
     }
 
-    /**
-     * 关闭输出流
-     * 之所以封装 是因为有try catch 代码比较乱
-     *
-     * @param outputStream 输出流对象
-     */
     public void close(OutputStream outputStream) {
         if (outputStream != null) {
             try {
@@ -222,5 +209,4 @@ public class WordUtil {
             }
         }
     }
-    /* end */
 }
