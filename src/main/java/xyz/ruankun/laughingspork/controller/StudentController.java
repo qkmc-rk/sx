@@ -361,6 +361,10 @@ public class StudentController {
         //sxCorporationService.delete(sxCorporation);
         //sxCorporation.setId(null);
         sxCorporationService.save(sxCorporation);
+        // 还要更新到个人信息栏中
+        SxStudent byStuNo = sxStudentService.findByStuNo(sxStudent.getStuNo());
+        byStuNo.setCorpName(sxCorporation.getCorpName());
+        sxStudentService.save(byStuNo);
         return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
     }
 
