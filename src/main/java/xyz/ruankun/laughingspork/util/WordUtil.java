@@ -28,8 +28,8 @@ public class WordUtil {
 
     public static final Logger logger = LoggerFactory.getLogger(WordUtil.class);
 
-    @Autowired
-    DocumentConverter documentConverter;
+    // @Autowired
+    // DocumentConverter documentConverter;
 
     /**
      * 通过路径读入word模板文件

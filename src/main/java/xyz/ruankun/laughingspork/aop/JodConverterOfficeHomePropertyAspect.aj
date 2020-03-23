@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 暂时未实现，存在问题，读不进去
- * 2019-21-21
+ * 2019-12-21
  */
 @Aspect
 @Component
@@ -29,7 +29,6 @@ public class JodConverterOfficeHomePropertyAspect {
         Object[] path = proceedingJoinPoint.getArgs();
         System.out.println("拦截成功！");
         System.out.println(path);
-
         try {
             return proceedingJoinPoint.proceed();
         } catch (Throwable throwable) {
@@ -42,9 +41,5 @@ public class JodConverterOfficeHomePropertyAspect {
     public void after(){
         System.out.println("after did here");
     }
-
-
-
-
 
 }
