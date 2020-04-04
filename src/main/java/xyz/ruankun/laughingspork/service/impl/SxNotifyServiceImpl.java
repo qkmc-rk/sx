@@ -53,21 +53,6 @@ public class SxNotifyServiceImpl implements SxNotifyService {
         return sxNotifiesNew;
     }
 
-    @Transactional
-    @Override
-    public SxNotify findById(int id) {
-        try {
-            SxNotify sxNotify = sxNotifyRepository.findById(id).get();
-            sxNotify.setRead(sxNotify.getRead() + 1);
-            sxNotifyRepository.save(sxNotify);
-            sxNotify.setTotal((int)(sxNotifyRepository.count()));
-            return sxNotify;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     @Override
     @Transactional
     public SxNotify praise(Integer id) {
@@ -98,5 +83,20 @@ public class SxNotifyServiceImpl implements SxNotifyService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public SxNotify findById(int id) {
+        try {
+            SxNotify sxNotify = sxNotifyRepository.findById(id).get();
+            sxNotify.setRead(sxNotify.getRead() + 1);
+            sxNotifyRepository.save(sxNotify);
+            sxNotify.setTotal((int)(sxNotifyRepository.count()));
+            return sxNotify;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

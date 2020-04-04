@@ -2,6 +2,7 @@ package xyz.ruankun.laughingspork.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxReport;
@@ -30,8 +31,9 @@ public class SxReportServiceImpl implements SxReportService {
     }
 
     @Override
+    @Transactional
     public SxReport saveReport(SxReport sxReport) {
-        SxReport newReport = sxReportRepository.save(sxReport);
+        SxReport newReport = sxReportRepository.saveAndFlush(sxReport);
         SxStudent sxStudent = sxStudentRepository.findByStuNo(newReport.getStuNo());
 
         // 更新filled flag 学生填写状态
@@ -58,7 +60,7 @@ public class SxReportServiceImpl implements SxReportService {
 
         sxStudent.setReportFlag(reportFlag);
         sxStudent.setReportFilledFlag(reportFilledFlag);
-        sxStudentRepository.save(sxStudent);
+        sxStudentRepository.saveAndFlush(sxStudent);
         return newReport;
     }
 

@@ -59,7 +59,7 @@ public class TeacherController {
         }
     }
 
-    @ApiOperation(value = "教师根据根据学生学号获取对应学生信息", httpMethod = "GET")
+    @ApiOperation(value = "教师根据学生学号获取对应学生信息", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "stuNo", value = "学生学号", required = true)
     })

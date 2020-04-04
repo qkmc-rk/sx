@@ -37,6 +37,6 @@ jodconverter:
     # open office 安装路径
     office-home: /Applications/OpenOffice.app/Contents
 
-    max-tasks-per-process: 10
+    max-tasks-per-process: 500
     port-numbers: 8100
     kill-existing-process: true

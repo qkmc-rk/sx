@@ -30,8 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import xyz.ruankun.laughingspork.entity.SxIdentifyForm;
 import xyz.ruankun.laughingspork.entity.SxReport;
 import xyz.ruankun.laughingspork.entity.SxStudent;
+import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
 import xyz.ruankun.laughingspork.service.SxReportService;
 import xyz.ruankun.laughingspork.util.ControllerUtil;
 import xyz.ruankun.laughingspork.util.DateUtil;
@@ -49,6 +51,8 @@ public class StudentController2 {
 
     @Autowired
     SxReportService sxReportService;
+    @Autowired
+    SxIdentifyFormService sxIdentifyFormService;
 
     @ApiOperation(value = "更新实习开始结束", httpMethod = "POST")
     @ApiImplicitParams({
@@ -57,8 +61,9 @@ public class StudentController2 {
     })
     @PostMapping("/report/date")
     @RequiresRoles(RoleCode.STUDENT)
-    public ResponseVO bindSxDate(@RequestParam(required = true) String gmtStart,@RequestParam(required = true) String gmtEnd){
+    public ResponseVO bindSxDate(@RequestParam String gmtStart,@RequestParam String gmtEnd){
         boolean dateInputError = gmtEnd == null || gmtStart == null || gmtEnd.equals("") || gmtStart.equals("");
+        // 若用户不传入时间, 则使用默认当前时间
         boolean parseError = DateUtil.getDateByStr(gmtStart) == null || DateUtil.getDateByStr(gmtEnd) == null;
         if (dateInputError){
             return ControllerUtil.getFalseResultMsgBySelf("请传入时间gmtStart 和 gmtEnd");
@@ -75,8 +80,16 @@ public class StudentController2 {
         sxReportFromFront.setGmtEnd(DateUtil.getSqlDateByStr(gmtEnd));
         sxReportFromFront.setGmtStart(DateUtil.getSqlDateByStr(gmtStart));
         EntityUtil.update(sxReportFromFront,sxReport);
+
+        SxIdentifyForm sxIdentifyForm = sxIdentifyFormService.getIdentifyInfo(sxStudent.getStuNo());
+        SxIdentifyForm sxIdentifyFormFromFront = new SxIdentifyForm();
+        sxIdentifyFormFromFront.setGmtStart(DateUtil.getSqlDateByStr(gmtStart));
+        sxIdentifyFormFromFront.setGmtEnd(DateUtil.getSqlDateByStr(gmtEnd));
+        EntityUtil.update(sxIdentifyFormFromFront, sxIdentifyForm);
+
         try {
             sxReportService.saveReport(sxReportFromFront);
+            sxIdentifyFormService.saveIdentifyForm(sxIdentifyFormFromFront);
             return ControllerUtil.getSuccessResultBySelf("更新成功");
         }catch (Exception e){
             return ControllerUtil.getFalseResultMsgBySelf("更新失败：" + e.getMessage());

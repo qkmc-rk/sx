@@ -79,9 +79,10 @@ public class DateUtil {
         try {
             return simpleDateFormat.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
-            logger.info("日期转换处理异常，日期无法转换：" + date);
-            return null;
+            logger.error(e.getMessage());
+            logger.error("日期转换处理异常，日期无法转换：" + date);
+            logger.error("使用默认当前日期");
+            return new java.util.Date();
         }
     }
 

@@ -10,13 +10,11 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.jodconverter.DocumentConverter;
-import org.jodconverter.office.LocalOfficeManager;
 import org.jodconverter.office.OfficeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import xyz.ruankun.laughingspork.entity.*;
 import xyz.ruankun.laughingspork.service.*;
@@ -235,7 +233,7 @@ public class StudentController {
         params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
         params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
         params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
-        params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
+        params.put("${comprehsv_grade}", (sxIdentifyForm.getComprehsvGrade() == null)?"":sxIdentifyForm.getComprehsvGrade());
         params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
         params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
         String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
@@ -363,6 +361,10 @@ public class StudentController {
         //sxCorporationService.delete(sxCorporation);
         //sxCorporation.setId(null);
         sxCorporationService.save(sxCorporation);
+        // 还要更新到个人信息栏中
+        SxStudent byStuNo = sxStudentService.findByStuNo(sxStudent.getStuNo());
+        byStuNo.setCorpName(sxCorporation.getCorpName());
+        sxStudentService.save(byStuNo);
         return ControllerUtil.getSuccessResultBySelf(sxCorporationService.findByStuNo(sxStudent.getStuNo()));
     }
 
@@ -498,22 +500,22 @@ public class StudentController {
         EntityUtil.setNullFiledToString(sxStudent);
         EntityUtil.setNullFiledToString(sxIdentifyForm);
         Map<String, String> params = new HashMap<>();
-        params.put("${college}", sxStudent.getCollege());
-        params.put("${major}", sxStudent.getMajor());
-        params.put("${stu_name}", sxStudent.getName());
-        params.put("${stu_no}", sxStudent.getStuNo());
-        params.put("${corp_name}", sxStudent.getCorpName());
-        params.put("${gmt_start}", DateUtil.getUpperDate(sxIdentifyForm.getGmtStart()));
-        params.put("${gmt_end}", DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd()));
-        params.put("${fill_date}", DateUtil.getNowUpperDate());
-        params.put("${content}", sxIdentifyForm.getSxContent());
-        params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
-        params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
-        params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
-        params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
-        params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
-        params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
-        params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
+        params.put("${college}", nullToEmptyStr(sxStudent.getCollege()));
+        params.put("${major}", nullToEmptyStr(sxStudent.getMajor()));
+        params.put("${stu_name}", nullToEmptyStr(sxStudent.getName()));
+        params.put("${stu_no}", nullToEmptyStr(sxStudent.getStuNo()));
+        params.put("${corp_name}", nullToEmptyStr(sxStudent.getCorpName()));
+        params.put("${gmt_start}", nullToEmptyStr(DateUtil.getUpperDate(sxIdentifyForm.getGmtStart())));
+        params.put("${gmt_end}", nullToEmptyStr(DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd())));
+        params.put("${fill_date}", nullToEmptyStr(DateUtil.getNowUpperDate()));
+        params.put("${content}", nullToEmptyStr(sxIdentifyForm.getSxContent()));
+        params.put("${self_summary}", nullToEmptyStr(sxIdentifyForm.getSelfSummary()));
+        params.put("${corp_teacher_opinion}", nullToEmptyStr(sxIdentifyForm.getCorpTeacherOpinion()));
+        params.put("${corp_opinion}", nullToEmptyStr(sxIdentifyForm.getCorpOpinion()));
+        params.put("${teacher_grade}", nullToEmptyStr(sxIdentifyForm.getTeacherGrade()));
+        params.put("${comprehsv_grade}", nullToEmptyStr(sxIdentifyForm.getComprehsvGrade()));
+        params.put("${college_principal_opinion}", nullToEmptyStr(sxIdentifyForm.getCollegePrincipalOpinion()));
+        params.put("${corp_teacher_score}", nullToEmptyStr(sxIdentifyForm.getCorpTeacherScore()));
         String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
         if (wordFileName != null) {
             String path = System.getProperty("user.dir") + (SystemUtil.isWindows()?"\\static\\":"/static/");
@@ -551,22 +553,22 @@ public class StudentController {
             EntityUtil.setNullFiledToString(sxStudent);
             EntityUtil.setNullFiledToString(sxIdentifyForm);
             Map<String, String> params = new HashMap<>();
-            params.put("${college}", sxStudent.getCollege());
-            params.put("${major}", sxStudent.getMajor());
-            params.put("${stu_name}", sxStudent.getName());
-            params.put("${stu_no}", sxStudent.getStuNo());
-            params.put("${corp_name}", sxStudent.getCorpName());
-            params.put("${gmt_start}", DateUtil.getUpperDate(sxIdentifyForm.getGmtStart()));
-            params.put("${gmt_end}", DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd()));
-            params.put("${fill_date}", DateUtil.getNowUpperDate());
-            params.put("${content}", sxIdentifyForm.getSxContent());
-            params.put("${self_summary}", sxIdentifyForm.getSelfSummary());
-            params.put("${corp_teacher_opinion}", sxIdentifyForm.getCorpTeacherOpinion());
-            params.put("${corp_opinion}", sxIdentifyForm.getCorpOpinion());
-            params.put("${teacher_grade}", sxIdentifyForm.getTeacherGrade());
-            params.put("${comprehsv_grade}", sxIdentifyForm.getComprehsvGrade());
-            params.put("${college_principal_opinion}", sxIdentifyForm.getCollegePrincipalOpinion());
-            params.put("${corp_teacher_score}", sxIdentifyForm.getCorpTeacherScore());
+            params.put("${college}", nullToEmptyStr(sxStudent.getCollege()));
+            params.put("${major}", nullToEmptyStr(sxStudent.getMajor()));
+            params.put("${stu_name}", nullToEmptyStr(sxStudent.getName()));
+            params.put("${stu_no}", nullToEmptyStr(sxStudent.getStuNo()));
+            params.put("${corp_name}", nullToEmptyStr(sxStudent.getCorpName()));
+            params.put("${gmt_start}", nullToEmptyStr(DateUtil.getUpperDate(sxIdentifyForm.getGmtStart())));
+            params.put("${gmt_end}", nullToEmptyStr(DateUtil.getUpperDate(sxIdentifyForm.getGmtEnd())));
+            params.put("${fill_date}", nullToEmptyStr(DateUtil.getNowUpperDate()));
+            params.put("${content}", nullToEmptyStr(sxIdentifyForm.getSxContent()));
+            params.put("${self_summary}", nullToEmptyStr(sxIdentifyForm.getSelfSummary()));
+            params.put("${corp_teacher_opinion}", nullToEmptyStr(sxIdentifyForm.getCorpTeacherOpinion()));
+            params.put("${corp_opinion}", nullToEmptyStr(sxIdentifyForm.getCorpOpinion()));
+            params.put("${teacher_grade}", nullToEmptyStr(sxIdentifyForm.getTeacherGrade()));
+            params.put("${comprehsv_grade}", nullToEmptyStr(sxIdentifyForm.getComprehsvGrade()));
+            params.put("${college_principal_opinion}", nullToEmptyStr(sxIdentifyForm.getCollegePrincipalOpinion()));
+            params.put("${corp_teacher_score}", nullToEmptyStr(sxIdentifyForm.getCorpTeacherScore()));
             String wordFileName = RenderWordUtil.exportWordToResponse("identify", sxStudent.getStuNo(), params);
             if (wordFileName != null) {
                 String path = System.getProperty("user.dir") + (SystemUtil.isWindows()?"\\static\\":"/static/");
@@ -645,6 +647,15 @@ public class StudentController {
             }
         }
         return ControllerUtil.getFalseResultMsgBySelf(RespCode.MSG_SUCCESS);
+    }
+
+    /**
+     * 如果是null 就转换成""
+     * @param str
+     * @return
+     */
+    private String nullToEmptyStr(String str){
+        return (str == null)?"":str;
     }
 
 }
