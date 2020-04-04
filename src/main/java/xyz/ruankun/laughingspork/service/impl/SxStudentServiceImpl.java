@@ -11,6 +11,7 @@ import xyz.ruankun.laughingspork.repository.*;
 import xyz.ruankun.laughingspork.service.SxIdentifyFormService;
 import xyz.ruankun.laughingspork.service.SxReportService;
 import xyz.ruankun.laughingspork.service.SxStudentService;
+import xyz.ruankun.laughingspork.util.DateUtil;
 
 import java.sql.Date;
 import java.util.List;
@@ -55,10 +56,10 @@ public class SxStudentServiceImpl implements SxStudentService {
         sxIdentifyForm.setCorpOpinion(corpOpinion);
         sxIdentifyForm.setCorpTeacherOpinion(corpTeacherOpinion);
 
-        sxIdentifyForm.setCODate(new Date(System.currentTimeMillis()));
-        sxIdentifyForm.setCTODate(new Date(System.currentTimeMillis()));
-        sxIdentifyFormRepository.saveAndFlush(sxIdentifyForm);
-        sxStudentRepository.saveAndFlush(sxStudent);
+        sxIdentifyForm.setCODate(DateUtil.getSqlDate());
+        sxIdentifyForm.setCTODate(DateUtil.getSqlDate());
+        sxIdentifyFormService.saveIdentifyForm(sxIdentifyForm);
+//        sxStudentRepository.saveAndFlush(sxStudent);
         return sxIdentifyFormRepository.findByStuNo(sxStudent.getStuNo());
     }
 
@@ -69,7 +70,7 @@ public class SxStudentServiceImpl implements SxStudentService {
         if (!sxStagemanage.getIsReportStage1Open()) {
             return null;
         }
-        //sxReport.setGmtStart(gmtStart);
+        sxReport.setStage1Date(DateUtil.getSqlDate());
         sxReport.setStage1Summary(stage1Summary);
         sxReport.setStage1GuideWay(stage1GuideWay);
         sxReport.setStage1GuideDate(stage1GuideDate);
@@ -95,7 +96,7 @@ public class SxStudentServiceImpl implements SxStudentService {
         if (!sxStagemanage.getIsReportStage2Open()) {
             return null;
         }
-        //sxReport.setGmtEnd(gmtEnd);
+        sxReport.setStage2Date(DateUtil.getSqlDate());
         sxReport.setStage2Summary(stage2Summary);
         sxReport.setStage2GuideWay(stage2GuideWay);
         sxReport.setStage2GuideDate(stage2GuideDate);
