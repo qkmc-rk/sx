@@ -16,15 +16,17 @@ import xyz.ruankun.laughingspork.util.GradeCalcUtil;
 
 import java.sql.Date;
 
+
 @Service
 public class SxIdentifyFormServiceImpl implements SxIdentifyFormService {
+
+    public static final Logger log = LoggerFactory.getLogger(SxIdentifyFormService.class);
+
     @Autowired
     private SxIdentifyFormRepository sxIdentifyFormRepository;
 
     @Autowired
     SxStudentRepository sxStudentRepository;
-
-    public static final Logger log = LoggerFactory.getLogger(SxIdentifyFormService.class);
 
     @Override
     public SxIdentifyForm getIdentifyInfo(String stuNo) {
@@ -38,7 +40,7 @@ public class SxIdentifyFormServiceImpl implements SxIdentifyFormService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public SxIdentifyForm saveIdentifyForm(SxIdentifyForm sxIdentifyForm) {
-        SxIdentifyForm newIdentifyForm = sxIdentifyFormRepository.save(sxIdentifyForm);
+        SxIdentifyForm newIdentifyForm = sxIdentifyFormRepository.saveAndFlush(sxIdentifyForm);
         // 更新filled flag 学生填写状态
         SxStudent sxStudent = sxStudentRepository.findByStuNo(newIdentifyForm.getStuNo());
 
@@ -49,7 +51,6 @@ public class SxIdentifyFormServiceImpl implements SxIdentifyFormService {
         if (!StringUtils.isEmpty(newIdentifyForm.getSelfSummary())) {
             identifyFilled++;
         }
-
         // 更新flag 教师填写状态
         int identifyFlag = 0;
 
@@ -69,7 +70,7 @@ public class SxIdentifyFormServiceImpl implements SxIdentifyFormService {
 
         sxStudent.setIdentifyFilledFlag(identifyFilled);
         sxStudent.setIdentifyFlag(identifyFlag);
-        sxStudentRepository.save(sxStudent);
+        sxStudentRepository.saveAndFlush(sxStudent);
         return newIdentifyForm;
     }
 
